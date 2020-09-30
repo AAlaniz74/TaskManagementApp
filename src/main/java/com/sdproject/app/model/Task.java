@@ -21,8 +21,8 @@ public class Task {
 
 	Task(String name, String description, Date dueDate, User createdBy) {
 		this.name = name;
-		this.description = description
-		this.dueDate = dueDate
+		this.description = description;
+		this.dueDate = dueDate;
 		this.createdBy = createdBy;
 		this.status = Status.IN_PROGRESS;
 		this.createdOn = new Date();
@@ -32,7 +32,7 @@ public class Task {
 		this.subtasks = subtasks;
 	}
 
-	public List<Task> getSubtasks() {
+	public ArrayList<Task> getSubtasks() {
 		return this.subtasks;
 	}
 
@@ -88,7 +88,7 @@ public class Task {
 		return this.status;
 	}
 
-	public Status setStatus(Status newStatus) {
+	public void setStatus(Status newStatus) {
 		this.status = newStatus;
 	}
 }
