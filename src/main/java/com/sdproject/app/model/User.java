@@ -1,6 +1,6 @@
 package com.sdproject.app.model;
 
-public class User {
+public class User implements Assignable {
 
 	public enum UserType {
 		NORMAL,
