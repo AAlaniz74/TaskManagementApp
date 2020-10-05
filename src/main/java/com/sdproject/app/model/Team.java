@@ -16,11 +16,11 @@ public class Team implements Assignable {
 
 	public ArrayList<User> getTeamMembers() {
 		return users;
-	}	
-
-	public void addMember(User newMember) {
-		users.add(newMember);
 	}
+
+	public int getTeamSize() { return users.size(); }
+
+	public void addMember(User newMember) { users.add(newMember); }
 
 	public void removeMember(User memberToRemove) {
 		users.remove(memberToRemove);

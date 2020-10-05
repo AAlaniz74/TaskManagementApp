@@ -18,6 +18,7 @@ public class Task {
 	private Status status;
 	private User createdBy;
 	private Date createdOn;
+	private static int countTasks;
 
 	Task(String name, String description, Date dueDate, User createdBy) {
 		this.name = name;
@@ -26,10 +27,22 @@ public class Task {
 		this.createdBy = createdBy;
 		this.status = Status.IN_PROGRESS;
 		this.createdOn = new Date();
+		countTasks++;
 	}
 
-	public void addSubtasks(ArrayList<Task> subtasks) {
+	Task(String name, String description, ArrayList<Task> subtasks, Date dueDate, User createdBy) {
+		this.name = name;
+		this.description = description;
 		this.subtasks = subtasks;
+		this.dueDate = dueDate;
+		this.createdBy = createdBy;
+		this.status = Status.IN_PROGRESS;
+		this.createdOn = new Date();
+		countTasks++;
+	}
+
+	public void addSubTask(Task subtask) {
+		subtasks.add(subtask);
 	}
 
 	public ArrayList<Task> getSubtasks() {
@@ -91,4 +104,6 @@ public class Task {
 	public void setStatus(Status newStatus) {
 		this.status = newStatus;
 	}
+
+	public static int getCountTasks() { return countTasks; }
 }
