@@ -105,5 +105,18 @@ public class Task {
 		this.status = newStatus;
 	}
 
+	public int getSubTaskSize(){
+		return subtasks.size();
+	}
+
 	public static int getCountTasks() { return countTasks; }
+
+	public void removeTask(Task task) {
+		task = null;
+		countTasks--;
+	}
+
+	public void removeSubTask(Task subtask){
+		subtasks.remove(subtask);
+	}
 }

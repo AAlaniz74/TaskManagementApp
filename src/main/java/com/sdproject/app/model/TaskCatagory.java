@@ -10,7 +10,6 @@ public class TaskCatagory {
     private ArrayList<Task> taskList;
     private User createdBy;
     private Date createdOn;
-    private static int countTasks;
 
     TaskCatagory(String name, String description, ArrayList<Task> taskList, User createdBy) {
         this.name = name;
@@ -18,7 +17,6 @@ public class TaskCatagory {
         this.taskList = taskList;
         this.createdBy = createdBy;
         this.createdOn = new Date();
-        countTasks++;
     }
     public void addTask(Task task) {
         taskList.add(task);
@@ -26,7 +24,9 @@ public class TaskCatagory {
     public ArrayList<Task> getTaskList() {
         return this.taskList;
     }
-    public void setSubtasks(ArrayList<Task> newTaskList) { this.taskList = newTaskList; }
+    public void setTaskList(ArrayList<Task> newTaskList) {
+        this.taskList = newTaskList;
+    }
     public String getName() {
         return this.name;
     }
@@ -45,5 +45,10 @@ public class TaskCatagory {
     public Date getCreatedOn() {
         return this.createdOn;
     }
-    public static int getCountTasks() { return countTasks; }
+    public int getTaskListSize(){
+        return taskList.size();
+    }
+    public void removeTaskCatagory(Task task) {
+        task = null;
+    }
 }

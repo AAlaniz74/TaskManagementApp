@@ -18,12 +18,20 @@ public class Team implements Assignable {
 		return users;
 	}
 
-	public int getTeamSize() { return users.size(); }
+	public int getTeamSize() {
+		return users.size();
+	}
 
-	public void addMember(User newMember) { users.add(newMember); }
+	public void addMember(User newMember) {
+		users.add(newMember);
+	}
 
 	public void removeMember(User memberToRemove) {
 		users.remove(memberToRemove);
+	}
+
+	public void removeTeam(Team team){
+		team = null;
 	}
 
 }
