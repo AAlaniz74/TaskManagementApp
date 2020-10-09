@@ -11,7 +11,7 @@ public class TaskCategory {
     private User createdBy;
     private Date createdOn;
 
-    TaskCategory(String name, String description, ArrayList<Task> taskList, User createdBy) {
+    public TaskCategory(String name, String description, ArrayList<Task> taskList, User createdBy) {
         this.name = name;
         this.description = description;
         this.taskList = taskList;

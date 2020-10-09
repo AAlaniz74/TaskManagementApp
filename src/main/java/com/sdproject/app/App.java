@@ -34,13 +34,11 @@ public class App
       User createdByAI = new User("AI", UserType.NORMAL);
 
       Task task = new Task(
-                 "Finish F1",
-                 "Implement object creation for entities including User, Team, Task, and Task Category.",
-                 dueDate,
-                 createdByAI
-              );
-
-
+		      "Finish F1", 
+		      "Implement object creation for entities including User, Team, Task, and Task Category.", 
+		      dueDate, 
+		      createdByAI
+		  );
 
       // *******************************  Task Category creation *******************************
       Task task1 = new Task(
@@ -61,7 +59,7 @@ public class App
       taskList.add(task1);
       taskList.add(task2);
 
-      TaskCatagory toDo = new TaskCatagory("TO-DO",
+      TaskCategory toDo = new TaskCategory("TO-DO",
                                           "Tasks to completed by October 9th",
                                           taskList,
                                           createdByAI

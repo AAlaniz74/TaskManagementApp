@@ -20,7 +20,7 @@ public class Task {
 	private Date createdOn;
 	private static int countTasks;
 
-	Task(String name, String description, Date dueDate, User createdBy) {
+	public Task(String name, String description, Date dueDate, User createdBy) {
 		this.name = name;
 		this.description = description;
 		this.dueDate = dueDate;
@@ -30,7 +30,7 @@ public class Task {
 		countTasks++;
 	}
 
-	Task(String name, String description, ArrayList<Task> subtasks, Date dueDate, User createdBy) {
+	public Task(String name, String description, ArrayList<Task> subtasks, Date dueDate, User createdBy) {
 		this.name = name;
 		this.description = description;
 		this.subtasks = subtasks;
