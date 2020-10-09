@@ -3,7 +3,7 @@ package com.sdproject.app.model;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TaskCatagory {
+public class TaskCategory {
 
     private String name;
     private String description;
@@ -11,7 +11,7 @@ public class TaskCatagory {
     private User createdBy;
     private Date createdOn;
 
-    TaskCatagory(String name, String description, ArrayList<Task> taskList, User createdBy) {
+    TaskCategory(String name, String description, ArrayList<Task> taskList, User createdBy) {
         this.name = name;
         this.description = description;
         this.taskList = taskList;
@@ -48,7 +48,7 @@ public class TaskCatagory {
     public int getTaskListSize(){
         return taskList.size();
     }
-    public void removeTaskCatagory(Task task) {
+    public void removeTaskCategory(Task task) {
         task = null;
     }
 }
