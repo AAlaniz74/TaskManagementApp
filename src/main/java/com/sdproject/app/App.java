@@ -1,17 +1,10 @@
 package com.sdproject.app;
 
-import com.sdproject.app.view.CreateUserView;
-
-public class App 
-{
-    public static void main( String[] args )
-    {
-//     	new CreateUserView();
-        
-        package com.sdproject.app;
-
-import com.sdproject.app.model.*;
-import java.util.Date;
+import com.sdproject.app.model.User;
+import com.sdproject.app.model.User.UserType;
+import com.sdproject.app.model.Team;
+import com.sdproject.app.model.Task;
+import com.sdproject.app.model.TaskCategory;
 
 public class App
 {
