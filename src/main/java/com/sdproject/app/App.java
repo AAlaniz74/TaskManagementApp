@@ -1,7 +1,7 @@
 package com.sdproject.app;
 
 import com.sdproject.app.model.User;
-import com.sdproject.app.model.User.UserType;
+import com.sdproject.app.model.UserType;
 import com.sdproject.app.model.Team;
 import com.sdproject.app.model.Task;
 import com.sdproject.app.model.TaskCategory;
@@ -13,10 +13,10 @@ public class App
     public static void main( String[] args )
     {
       // ******************************* User(s) creation *******************************
-      User alex = new User("Alex", UserType.ADMIN);
-      User alejandro = new User("Alejandro", UserType.ADMIN);
-      User ryan = new User("Ryan", UserType.NORMAL);
-      User vyda = new User("Vyda", UserType.NORMAL);
+      User alex = new User("Alex", "", UserType.ADMIN);
+      User alejandro = new User("Alejandro","", UserType.ADMIN);
+      User ryan = new User("Ryan", "", UserType.NORMAL);
+      User vyda = new User("Vyda", "", UserType.NORMAL);
 
       // *******************************  Team creation *******************************
       Team team = new Team();
@@ -31,7 +31,7 @@ public class App
       dueDate.setMonth(10);
       dueDate.setYear(2020);
 
-      User createdByAI = new User("AI", UserType.NORMAL);
+      User createdByAI = new User("AI","", UserType.NORMAL);
 
       Task task = new Task(
 		      "Finish F1", 

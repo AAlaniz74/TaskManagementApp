@@ -2,27 +2,28 @@ package com.sdproject.app.model;
 
 public class User implements Assignable {
 
-	public enum UserType {
-		NORMAL,
-		ADMIN
-	}
-
-	private String name;
-	private UserType type;
+	private String userName;
+	private String userPass;
+	private UserType userType;
 	private static int countUsers;
 
-	public User(String name, UserType type) {
-		this.name = name;
-		this.type = type;
+	public User(String name, String password, UserType type) {
+		this.userName = name;
+		this.userPass = password;
+		this.userType = type;
 		countUsers++;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getUserName() {
+		return this.userName;
 	}
 
-	public UserType getType() {
-		return this.type;
+	public String getUserPass() {
+		return this.userPass;
+	}
+
+	public UserType getUserType() {
+		return this.userType;
 	}
 
 	public static int getCountUsers(){

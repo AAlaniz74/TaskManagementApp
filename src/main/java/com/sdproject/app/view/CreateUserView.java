@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import com.sdproject.app.model.User;
-import com.sdproject.app.model.User.UserType;
+import com.sdproject.app.model.UserType;
 
 public class CreateUserView extends JFrame {
 
@@ -66,7 +66,7 @@ public class CreateUserView extends JFrame {
 
 				String newUserName = user_text.getText();
 				UserType newUserType = user_type.getSelectedItem().equals("ADMIN") ? UserType.ADMIN : UserType.NORMAL;
-				User newUser = new User(newUserName, newUserType);
+				User newUser = new User(newUserName, "", newUserType);
 				String message = "Name: " + newUserName +", Type: " + newUserType.name();
 				JOptionPane.showMessageDialog(null, message);
                         }

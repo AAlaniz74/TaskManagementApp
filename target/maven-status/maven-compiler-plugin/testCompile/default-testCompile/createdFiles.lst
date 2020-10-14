@@ -1,3 +1,6 @@
+com/sdproject/app/databasetest/DummyDatabaseTest.class
+com/sdproject/app/modeltest/TeamTest.class
+com/sdproject/app/databasetest/QueryTest.class
 com/sdproject/app/modeltest/UserTest.class
 com/sdproject/app/AppTest.class
-com/sdproject/app/modeltest/TeamTest.class
+com/sdproject/app/databasetest/DatabaseWrapperTest.class
