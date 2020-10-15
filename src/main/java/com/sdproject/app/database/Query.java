@@ -9,6 +9,9 @@ public class Query {
   //Specifies table
   private String table;
 
+  //To Modify
+  private Query toModify;
+
   //User attributes
   private String userName;
   private String userPass;
@@ -27,6 +30,24 @@ public class Query {
 
   public String getTable() {
     return this.table;
+  }
+
+  public Query modifyTo() {
+    Query modifyQuery = new Query(this.wrap);
+    return modifyQuery.tableIs(this.getTable()).toModifyIs(this);
+  }
+
+  private Query toModifyIs(Query toModify) {
+    this.toModify = toModify;
+    return this;
+  }
+
+  public Query getToModify() {
+    return this.toModify;
+  }
+
+  public boolean isTableSet() {
+    return (this.table != null);
   }
 
   //USER QUERY
@@ -58,14 +79,27 @@ public class Query {
     return this.userType;
   }
 
+  public boolean allUserFieldsSet() {
+    return (this.isTableSet()) && (this.getUserName() != null) && (this.getUserPass() != null) && (this.getUserType() != null);
+  }
+
   //TERMINATING METHODS
 
   public void insert() {
     this.wrap.insert(this);
   }
 
+  public void delete() {
+    this.wrap.delete(this);
+  }
+
   public <T> ArrayList<T> get() {
     return this.wrap.get(this);
   }
+
+  public void modify() {
+    this.wrap.modify(this);
+  }
+
 }
 

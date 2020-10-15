@@ -21,5 +21,13 @@ public class DatabaseWrapperTest {
     assertEquals(searchedUsers.get(0).getUserName(), "John");
   }
   
+  @Test
+  public void testDeleteUser() {
+    DatabaseWrapper db = new DatabaseWrapper(new DummyDatabase());
+    db.query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("NORMAL").insert();
+    db.query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("NORMAL").delete();
+    ArrayList<User> searchedUsers = db.query().tableIs("User").userTypeIs("NORMAL").get();
+    assertEquals(searchedUsers.size(), 0);
+  }
 }
 

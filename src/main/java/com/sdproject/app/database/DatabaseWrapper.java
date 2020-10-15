@@ -17,11 +17,24 @@ public class DatabaseWrapper {
   }
 
   public void insert(Query q) {
-    db.insert(q);
+    db.insert(q); 
+  }
+
+  public void delete(Query q) {
+    db.delete(q);
   }
 
   public <T> ArrayList<T> get(Query q) {
     return db.get(q);
   }
 
+  public void modify(Query q) {
+    db.modify(q);
+  }
+
+  //ERROR CHECKING METHODS
+
+  public boolean allUserFieldsSet(Query q) {
+    return q.allUserFieldsSet();
+  }
 }

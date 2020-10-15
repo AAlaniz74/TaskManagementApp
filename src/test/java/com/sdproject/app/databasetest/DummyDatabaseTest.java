@@ -51,6 +51,28 @@ public class DummyDatabaseTest {
     ArrayList<User> searchedUsers = db.get(searchUserQuery);
     assertEquals(searchedUsers.get(0).getUserName(), "John");
   }
-  
+
+  @Test
+  public void testDeleteUser() {
+    DummyDatabase db = new DummyDatabase();
+    Query insertUserQuery = new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN");
+    db.insert(insertUserQuery);
+    Query deleteUserQuery = new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN");
+    db.delete(deleteUserQuery);
+    assertEquals(db.getAllUsers().size(), 0);
+  }
+
+  @Test
+  public void testModifyUser() {
+    DummyDatabase db = new DummyDatabase();
+    Query insertUserQuery = new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN");
+    db.insert(insertUserQuery);
+    Query modifyUserQuery = new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN").modifyTo().userNameIs("Fred");
+    db.modify(modifyUserQuery);
+    Query searchUserQuery = new Query().tableIs("User").userTypeIs("ADMIN");
+    ArrayList<User> searchedUsers = db.get(searchUserQuery);
+    assertEquals(searchedUsers.get(0).getUserName(), "Fred");
+  }
+
 }
 

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.sdproject.app.databasetest.QueryTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in com.sdproject.app.databasetest.QueryTest
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in com.sdproject.app.databasetest.QueryTest
