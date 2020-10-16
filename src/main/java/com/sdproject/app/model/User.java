@@ -2,6 +2,9 @@ package com.sdproject.app.model;
 
 public class User implements Assignable {
 
+	private static int nextID = 101;
+
+	private int userID;
 	private String userName;
 	private String userPass;
 	private UserType userType;
@@ -10,6 +13,11 @@ public class User implements Assignable {
 		this.userName = name;
 		this.userPass = password;
 		this.userType = type;
+		this.userID = nextID++;
+	}
+
+	public int getUserID() {
+		return this.userID;
 	}
 
 	public String getUserName() {

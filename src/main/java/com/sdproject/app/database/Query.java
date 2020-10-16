@@ -13,6 +13,7 @@ public class Query {
   private Query toModify;
 
   //User attributes
+  private int userID;
   private String userName;
   private String userPass;
   private String userType;
@@ -59,6 +60,15 @@ public class Query {
 
   public String getUserName() {
     return this.userName;
+  }
+
+  public Query userIDIs(int userID) {
+    this.userID = userID;
+    return this;
+  }
+
+  public int getUserID() {
+    return this.userID;
   }
 
   public Query userPassIs(String pass) {

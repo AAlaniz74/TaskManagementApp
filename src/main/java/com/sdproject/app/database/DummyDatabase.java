@@ -72,8 +72,10 @@ public class DummyDatabase implements Database {
 
   private boolean verifyUserMatchesQuery(User user, Query q) {
     boolean testName = (q.getUserName() == null) || ((q.getUserName() != null) && user.getUserName().equals(q.getUserName()));
+    boolean testPass = (q.getUserPass() == null) || ((q.getUserPass() != null) && user.getUserPass().equals(q.getUserPass()));
     boolean testType = (q.getUserType() == null) || ((q.getUserType() != null) && user.getUserType().name().equals(q.getUserType()));
-    return (testName && testType);
+    boolean testID = (q.getUserID() == 0) || ((q.getUserID() != 0) && (user.getUserID() == q.getUserID()));
+    return (testName && testPass && testType && testID);
   }
 
   public boolean checkNoDuplicateUser(Query q) {

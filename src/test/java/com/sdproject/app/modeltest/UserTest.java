@@ -29,5 +29,10 @@ public class UserTest {
 	public void testPassword() {
 		assertEquals(basicUser.getUserPass(), "Password");
 	}
+
+	@Test
+	public void testUserID() {
+		assertEquals(adminUser.getUserID(), 102);
+	}
 }
 

@@ -8,10 +8,17 @@ import com.sdproject.app.model.TaskCategory;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.sdproject.app.database.DatabaseWrapper;
+import com.sdproject.app.database.DummyDatabase;
+import com.sdproject.app.database.Query;
+import com.sdproject.app.view.LoginView;
+
 public class App
 {
     public static void main( String[] args )
     {
+      
+      /*	    
       // ******************************* User(s) creation *******************************
       User alex = new User("Alex", "", UserType.ADMIN);
       User alejandro = new User("Alejandro","", UserType.ADMIN);
@@ -64,6 +71,12 @@ public class App
                                           taskList,
                                           createdByAI
                                           );
+
+      */
+
+      DatabaseWrapper db = new DatabaseWrapper(new DummyDatabase());
+      db.query().tableIs("User").userNameIs("Test").userPassIs("Pass").userTypeIs("NORMAL").insert();
+      LoginView login = new LoginView(db);
 
     }
 }
