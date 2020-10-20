@@ -1,7 +1,4 @@
 com/sdproject/app/database/DatabaseWrapper.class
-com/sdproject/app/model/Task$Status.class
-com/sdproject/app/model/Assignable.class
-com/sdproject/app/model/TaskCategory.class
 com/sdproject/app/view/CreateUserView$1.class
 com/sdproject/app/database/DummyDatabase.class
 com/sdproject/app/model/Task.class
@@ -13,5 +10,6 @@ com/sdproject/app/view/CreateUserView.class
 com/sdproject/app/view/LoginView.class
 com/sdproject/app/view/LoginView$1.class
 com/sdproject/app/database/Database.class
+com/sdproject/app/model/TaskStatus.class
 com/sdproject/app/model/User.class
 com/sdproject/app/App.class

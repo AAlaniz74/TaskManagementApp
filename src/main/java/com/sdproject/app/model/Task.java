@@ -5,81 +5,86 @@ import java.util.Date;
 
 public class Task {
 
-	enum Status {
-		FINISHED,
-		IN_PROGRESS
-	}
+	private static int nextID = 701;
 
-	private String name;
-	private String description;
-	private ArrayList<Task> subtasks;
-	private Assignable assignedTo;
-	private Date dueDate;
-	private Status status;
-	private User createdBy;
+	private int taskID;
+	private String taskName;
+	private String taskDesc;
+	private TaskStatus taskStatus;
+	private ArrayList<Integer> subtaskIDs;
+	private int assignedToID;
+	private int createdByID;
 	private Date createdOn;
-	private static int countTasks;
-
-	public Task(String name, String description, Date dueDate, User createdBy) {
-		this.name = name;
-		this.description = description;
-		this.dueDate = dueDate;
-		this.createdBy = createdBy;
-		this.status = Status.IN_PROGRESS;
+	private Date dueDate;
+	
+	public Task(String name, String description, int createdByID) {
+		this.taskName = name;
+		this.taskDesc = description;
+		this.createdByID = createdByID;
 		this.createdOn = new Date();
-		countTasks++;
+		this.taskStatus = TaskStatus.IN_PROGRESS;
+		this.taskID = nextID++;
 	}
 
-	public Task(String name, String description, ArrayList<Task> subtasks, Date dueDate, User createdBy) {
-		this.name = name;
-		this.description = description;
-		this.subtasks = subtasks;
-		this.dueDate = dueDate;
-		this.createdBy = createdBy;
-		this.status = Status.IN_PROGRESS;
-		this.createdOn = new Date();
-		countTasks++;
+	public int getTaskID() {
+		return this.taskID;
 	}
 
-	public void addSubTask(Task subtask) {
-		subtasks.add(subtask);
+	public String getTaskName() {
+		return this.taskName;
 	}
 
-	public ArrayList<Task> getSubtasks() {
-		return this.subtasks;
+	public void setTaskName(String newName) {
+		this.taskName = newName;
 	}
 
-	public void setSubtasks(ArrayList<Task> newSubtasks) {
-		this.subtasks = newSubtasks;
-	}
+	public String getTaskDesc() {
+                return this.taskDesc;
+        }
 
-	public void addAssignedTo(Assignable assignedTo) {
-		this.assignedTo = assignedTo;
-	}
+        public void setTaskDesc(String newDescription) {
+                this.taskDesc = newDescription;
+        }
 
-	public Assignable getAssignedTo() {
-		return this.assignedTo;
-	}
+	public TaskStatus getTaskStatus() {
+                return this.taskStatus;
+        }
 
-	public void setAssignedTo(Assignable newAssignedTo) {
-		this.assignedTo = newAssignedTo;
-	}
+        public void setTaskStatus(TaskStatus newStatus) {
+                this.taskStatus = newStatus;
+        }
 
-	public String getName() {
-		return this.name;
-	}
+	public void addSubTaskID(int subtaskID) {
+                subtaskIDs.add(subtaskID);
+        }
 
-	public void setName(String newName) {
-		this.name = newName;
-	}
+        public ArrayList<Integer> getSubtaskIDs() {
+                return this.subtaskIDs;
+        }
 
-	public String getDescription() {
-		return this.description;
-	}
+        public void removeSubtaskID(int subtaskToRemove) {
+                this.subtaskIDs.remove(subtaskToRemove);
+        }
 
-	public void setDescription(String newDescription) {
-		this.description = newDescription;
-	}
+	public int getSubTaskSize(){
+                return subtaskIDs.size();
+        }
+
+	public int getAssignedToID() {
+                return this.assignedToID;
+        }
+
+        public void setAssignedToID(int newAssignedToID) {
+                this.assignedToID = newAssignedToID;
+        }
+
+	public int getCreatedByID() {
+                return this.createdByID;
+        }
+
+	public Date getCreatedOn() {
+                return this.createdOn;
+        }
 
 	public Date getDueDate() {
 		return this.dueDate;
@@ -89,34 +94,4 @@ public class Task {
 		this.dueDate = newDate;
 	}
 
-	public User getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public Date getCreatedOn() {
-		return this.createdOn;
-	}
-
-	public Status getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(Status newStatus) {
-		this.status = newStatus;
-	}
-
-	public int getSubTaskSize(){
-		return subtasks.size();
-	}
-
-	public static int getCountTasks() { return countTasks; }
-
-	public void removeTask(Task task) {
-		task = null;
-		countTasks--;
-	}
-
-	public void removeSubTask(Task subtask){
-		subtasks.remove(subtask);
-	}
 }

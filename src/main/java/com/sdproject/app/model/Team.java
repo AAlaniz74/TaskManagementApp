@@ -2,7 +2,7 @@ package com.sdproject.app.model;
 
 import java.util.ArrayList;
 
-public class Team implements Assignable {
+public class Team {
 
 	private ArrayList<User> users;
 

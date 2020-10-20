@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QueryTest {
 
+  //USER QUERY TESTS
+
   private Query insertUserQuery = new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("NORMAL");
   private Query searchUserQuery = new Query().tableIs("User").userTypeIs("ADMIN");
   private Query modifyUserQuery = new Query().tableIs("User").userNameIs("John").modifyTo().userNameIs("Fred");
@@ -60,6 +62,6 @@ public class QueryTest {
     assertEquals(modifyUserQuery.getUserName(), "Fred");
   }
 
-	
+
 }
 

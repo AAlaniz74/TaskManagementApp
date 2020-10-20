@@ -1,6 +1,6 @@
 package com.sdproject.app.model;
 
-public class User implements Assignable {
+public class User {
 
 	private static int nextID = 101;
 

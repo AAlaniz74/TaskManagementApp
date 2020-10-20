@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/local/Cellar/openjdk/14.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/surefire/surefirebooter6039731607831054810.jar /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/surefire 2020-10-16T13-27-01_296-jvmRun1 surefire12625223494218430246tmp surefire_03385240650565876433tmp"/>
+    <property name="sun.java.command" value="/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/surefire/surefirebooter7355123550290874685.jar /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/surefire 2020-10-20T13-29-22_300-jvmRun1 surefire18083681654782240680tmp surefire_06630309810609626421tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/test-classes:/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/classes:/Users/alexbennett/.m2/repository/junit/junit/4.11/junit-4.11.jar:/Users/alexbennett/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/alexbennett/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.4.2/junit-jupiter-api-5.4.2.jar:/Users/alexbennett/.m2/repository/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar:/Users/alexbennett/.m2/repository/org/opentest4j/opentest4j/1.1.1/opentest4j-1.1.1.jar:/Users/alexbennett/.m2/repository/org/junit/platform/junit-platform-commons/1.4.2/junit-platform-commons-1.4.2.jar:/Users/alexbennett/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.4.2/junit-jupiter-engine-5.4.2.jar:/Users/alexbennett/.m2/repository/org/junit/platform/junit-platform-engine/1.4.2/junit-platform-engine-1.4.2.jar:"/>
@@ -28,7 +28,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/surefire/surefirebooter6039731607831054810.jar"/>
+    <property name="surefire.real.class.path" value="/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/target/surefire/surefirebooter7355123550290874685.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="14.0.1+14"/>
@@ -59,7 +59,7 @@
   <testcase name="testUserTable" classname="com.sdproject.app.databasetest.QueryTest" time="0"/>
   <testcase name="testGetUserName" classname="com.sdproject.app.databasetest.QueryTest" time="0"/>
   <testcase name="testGetUserPass" classname="com.sdproject.app.databasetest.QueryTest" time="0"/>
-  <testcase name="testGetUserType" classname="com.sdproject.app.databasetest.QueryTest" time="0"/>
+  <testcase name="testGetUserType" classname="com.sdproject.app.databasetest.QueryTest" time="0.001"/>
   <testcase name="testModifyToName" classname="com.sdproject.app.databasetest.QueryTest" time="0"/>
   <testcase name="testNullField" classname="com.sdproject.app.databasetest.QueryTest" time="0"/>
   <testcase name="testIsTableSet" classname="com.sdproject.app.databasetest.QueryTest" time="0"/>
