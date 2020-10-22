@@ -4,7 +4,7 @@ public class User {
 
 	private static int nextID = 101;
 
-	private int userID;
+	private int userId;
 	private String userName;
 	private String userPass;
 	private UserType userType;
@@ -13,11 +13,11 @@ public class User {
 		this.userName = name;
 		this.userPass = password;
 		this.userType = type;
-		this.userID = nextID++;
+		this.userId = nextID++;
 	}
 
-	public int getUserID() {
-		return this.userID;
+	public int getUserId() {
+		return this.userId;
 	}
 
 	public String getUserName() {

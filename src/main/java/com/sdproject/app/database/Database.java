@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 public interface Database {
 
-  public void insert(Query q);
-  public void delete(Query q);
+  public int insert(Query q);
+  public int delete(Query q);
   public <T> ArrayList<T> get(Query q);
-  public void modify(Query q);
+  public <T> T getOne(Query q);
+  public int modify(Query q);
 }

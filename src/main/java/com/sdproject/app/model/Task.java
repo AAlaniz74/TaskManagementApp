@@ -7,27 +7,29 @@ public class Task {
 
 	private static int nextID = 701;
 
-	private int taskID;
+	private int taskId;
 	private String taskName;
 	private String taskDesc;
 	private TaskStatus taskStatus;
 	private ArrayList<Integer> subtaskIDs;
-	private int assignedToID;
-	private int createdByID;
+	private int assignedToId;
+	private int createdById;
 	private Date createdOn;
 	private Date dueDate;
-	
-	public Task(String name, String description, int createdByID) {
+	private String colorHex;
+
+	public Task(String name, String description, int createdById) {
 		this.taskName = name;
 		this.taskDesc = description;
-		this.createdByID = createdByID;
+		this.createdById = createdById;
 		this.createdOn = new Date();
+		this.subtaskIDs = new ArrayList<Integer>();
 		this.taskStatus = TaskStatus.IN_PROGRESS;
-		this.taskID = nextID++;
+		this.taskId = nextID++;
 	}
 
-	public int getTaskID() {
-		return this.taskID;
+	public int getTaskId() {
+		return this.taskId;
 	}
 
 	public String getTaskName() {
@@ -54,15 +56,15 @@ public class Task {
                 this.taskStatus = newStatus;
         }
 
-	public void addSubTaskID(int subtaskID) {
-                subtaskIDs.add(subtaskID);
+	public void addSubTaskId(int subtaskId) {
+                subtaskIDs.add(subtaskId);
         }
 
         public ArrayList<Integer> getSubtaskIDs() {
                 return this.subtaskIDs;
         }
 
-        public void removeSubtaskID(int subtaskToRemove) {
+        public void removeSubtaskId(int subtaskToRemove) {
                 this.subtaskIDs.remove(subtaskToRemove);
         }
 
@@ -70,16 +72,16 @@ public class Task {
                 return subtaskIDs.size();
         }
 
-	public int getAssignedToID() {
-                return this.assignedToID;
+	public int getAssignedToId() {
+                return this.assignedToId;
         }
 
-        public void setAssignedToID(int newAssignedToID) {
-                this.assignedToID = newAssignedToID;
+        public void setAssignedToId(int newAssignedToId) {
+                this.assignedToId = newAssignedToId;
         }
 
-	public int getCreatedByID() {
-                return this.createdByID;
+	public int getCreatedById() {
+                return this.createdById;
         }
 
 	public Date getCreatedOn() {
@@ -92,6 +94,14 @@ public class Task {
 
 	public void setDueDate(Date newDate) {
 		this.dueDate = newDate;
+	}
+
+	public void setColorHex(String colorHex) {
+		this.colorHex = colorHex;
+	}
+
+	public String getColorHex() {
+		return this.colorHex;
 	}
 
 }

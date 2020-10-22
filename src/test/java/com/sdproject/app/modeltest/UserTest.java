@@ -32,7 +32,7 @@ public class UserTest {
 
 	@Test
 	public void testUserID() {
-		assertEquals(adminUser.getUserID(), 102);
+		assertEquals(adminUser.getUserId(), 102);
 	}
 }
 

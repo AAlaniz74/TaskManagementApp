@@ -16,20 +16,24 @@ public class DatabaseWrapper {
     return q;
   }
 
-  public void insert(Query q) {
-    db.insert(q); 
+  public int insert(Query q) {
+    return db.insert(q); 
   }
 
-  public void delete(Query q) {
-    db.delete(q);
+  public int delete(Query q) {
+    return db.delete(q);
   }
 
   public <T> ArrayList<T> get(Query q) {
     return db.get(q);
   }
 
-  public void modify(Query q) {
-    db.modify(q);
+  public <T> T getOne(Query q) {
+    return db.getOne(q);
+  }
+
+  public int modify(Query q) {
+    return db.modify(q);
   }
 
   //ERROR CHECKING METHODS

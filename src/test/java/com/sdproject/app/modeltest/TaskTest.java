@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TaskTest {
 
 	private static User basicUser = new User("Name", "Password", UserType.NORMAL);
-	private Task testTask = new Task("Test Task", "Test", basicUser.getUserID());
+	private Task testTask = new Task("Test Task", "Test", basicUser.getUserId());
 
 	@Test
 	public void testGetTaskName() {

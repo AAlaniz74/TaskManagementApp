@@ -13,10 +13,19 @@ public class Query {
   private Query toModify;
 
   //User attributes
-  private int userID;
+  private int userId;
   private String userName;
   private String userPass;
   private String userType;
+
+  //Task attributes
+  private int taskId;
+  private String taskName;
+  private String taskDesc;
+  private String taskStatus;
+  private int assignedToId;
+  private int createdById;
+  private String colorHex;
 
   public Query() {}
 
@@ -51,6 +60,71 @@ public class Query {
     return (this.table != null);
   }
 
+  //TASK QUERY
+  
+  public Query taskIdIs(int taskId) {
+    this.taskId = taskId;
+    return this;
+  }
+
+  public int getTaskId() {
+    return this.taskId;
+  }
+
+  public Query taskNameIs(String taskName) {
+    this.taskName = taskName;
+    return this;
+  }
+
+  public String getTaskName() {
+    return this.taskName;
+  }
+
+  public Query taskDescIs(String taskDesc) {
+    this.taskDesc = taskDesc;
+    return this;
+  }
+
+  public String getTaskDesc() {
+    return this.taskDesc;
+  }
+
+  public Query taskStatusIs(String taskStatus) {
+    this.taskStatus = taskStatus;
+    return this;
+  }
+
+  public String getTaskStatus() {
+    return this.taskStatus;
+  }
+
+  public Query assignedToIdIs(int assignedToId) {
+    this.assignedToId = assignedToId;
+    return this;
+  }
+
+  public int getAssignedToId() {
+    return this.assignedToId;
+  }
+
+  public Query createdByIdIs(int createdById) {
+    this.createdById = createdById;
+    return this;
+  }
+
+  public int getCreatedById() {
+    return this.createdById;
+  }
+
+  public Query colorHexIs(String colorHex) {
+    this.colorHex = colorHex;
+    return this;
+  }
+
+  public String getColorHex() {
+    return this.colorHex;
+  }
+
   //USER QUERY
 
   public Query userNameIs(String name) {
@@ -62,13 +136,13 @@ public class Query {
     return this.userName;
   }
 
-  public Query userIDIs(int userID) {
-    this.userID = userID;
+  public Query userIdIs(int userId) {
+    this.userId = userId;
     return this;
   }
 
-  public int getUserID() {
-    return this.userID;
+  public int getUserId() {
+    return this.userId;
   }
 
   public Query userPassIs(String pass) {
@@ -95,20 +169,24 @@ public class Query {
 
   //TERMINATING METHODS
 
-  public void insert() {
-    this.wrap.insert(this);
+  public int insert() {
+    return this.wrap.insert(this);
   }
 
-  public void delete() {
-    this.wrap.delete(this);
+  public int delete() {
+    return this.wrap.delete(this);
   }
 
   public <T> ArrayList<T> get() {
     return this.wrap.get(this);
   }
 
-  public void modify() {
-    this.wrap.modify(this);
+  public <T> T getOne() {
+    return this.wrap.getOne(this);
+  }
+
+  public int modify() {
+    return this.wrap.modify(this);
   }
 
 }
