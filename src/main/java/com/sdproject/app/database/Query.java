@@ -1,5 +1,7 @@
 package com.sdproject.app.database;
 
+import com.sdproject.app.model.User;
+
 import java.util.ArrayList;
 
 public class Query {
@@ -26,6 +28,10 @@ public class Query {
   private int assignedToId;
   private int createdById;
   private String colorHex;
+    
+  // Team attributes
+  private String teamName;
+  private ArrayList<User> teamMembers;
 
   public Query() {}
 
@@ -59,6 +65,26 @@ public class Query {
   public boolean isTableSet() {
     return (this.table != null);
   }
+   
+    // TEAM QUERY
+    public Query teamNameIs(String name) {
+        this.teamName = name;
+        return this;
+    }
+
+    public String getTeamName() {
+        return this.teamName;
+    }
+
+    public Query teamMembersAre(ArrayList<User> users) {
+        this.teamMembers = users;
+        return this;
+    }
+
+    public ArrayList<User> getTeamMembers() {
+        return this.teamMembers;
+    }
+
 
   //USER QUERY
 
