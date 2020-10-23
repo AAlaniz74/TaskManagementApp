@@ -53,7 +53,7 @@ public class DummyDatabase implements Database {
   public <T> ArrayList<T> get(Query q) {
     if (q.getTable().equals("User")) {
       return (ArrayList<T>) getUsers(q);
-    } else if (q.getTable().equals("Tasks")) {
+    } else if (q.getTable().equals("Task")) {
       return (ArrayList<T>) getTasks(q);
     } else if (q.getTable().equals("Team")) {
       return (ArrayList<T>) getTeams(q);
