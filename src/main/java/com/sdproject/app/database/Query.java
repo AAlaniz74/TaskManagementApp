@@ -60,6 +60,48 @@ public class Query {
     return (this.table != null);
   }
 
+  //USER QUERY
+
+  public Query userNameIs(String name) {
+    this.userName = name;
+    return this;
+  }
+
+  public String getUserName() {
+    return this.userName;
+  }
+
+  public Query userIdIs(int userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  public int getUserId() {
+    return this.userId;
+  }
+
+  public Query userPassIs(String pass) {
+    this.userPass = pass;
+    return this;
+  }
+
+  public String getUserPass() {
+    return this.userPass;
+  }
+
+  public Query userTypeIs(String type) {
+    this.userType = type;
+    return this;
+  }
+
+  public String getUserType() {
+    return this.userType;
+  }
+
+  public boolean allUserFieldsSet() {
+    return (this.isTableSet()) && (this.getUserName() != null) && (this.getUserPass() != null) && (this.getUserType() != null);
+  }
+
   //TASK QUERY
   
   public Query taskIdIs(int taskId) {
@@ -125,48 +167,6 @@ public class Query {
     return this.colorHex;
   }
 
-  //USER QUERY
-
-  public Query userNameIs(String name) {
-    this.userName = name;
-    return this;
-  }
-
-  public String getUserName() {
-    return this.userName;
-  }
-
-  public Query userIdIs(int userId) {
-    this.userId = userId;
-    return this;
-  }
-
-  public int getUserId() {
-    return this.userId;
-  }
-
-  public Query userPassIs(String pass) {
-    this.userPass = pass;
-    return this;
-  }
-
-  public String getUserPass() {
-    return this.userPass;
-  }
-
-  public Query userTypeIs(String type) {
-    this.userType = type;
-    return this;
-  }
-
-  public String getUserType() {
-    return this.userType;
-  }
-
-  public boolean allUserFieldsSet() {
-    return (this.isTableSet()) && (this.getUserName() != null) && (this.getUserPass() != null) && (this.getUserType() != null);
-  }
-
   //TERMINATING METHODS
 
   public int insert() {
@@ -177,16 +177,16 @@ public class Query {
     return this.wrap.delete(this);
   }
 
+  public int modify() {
+    return this.wrap.modify(this);
+  }
+
   public <T> ArrayList<T> get() {
-    return this.wrap.get(this);
+    return (ArrayList<T>) this.wrap.get(this);
   }
 
   public <T> T getOne() {
-    return this.wrap.getOne(this);
-  }
-
-  public int modify() {
-    return this.wrap.modify(this);
+    return (T) this.wrap.getOne(this);
   }
 
 }

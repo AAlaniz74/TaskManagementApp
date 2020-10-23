@@ -48,7 +48,7 @@ public class DummyDatabase implements Database {
   public <T> ArrayList<T> get(Query q) {
     if (q.getTable().equals("User")) {
       return (ArrayList<T>) getUsers(q);
-    } else if (q.getTable().equals("Tasks")) {
+    } else if (q.getTable().equals("Task")) {
       return (ArrayList<T>) getTasks(q);
     }
     return null;
@@ -61,8 +61,7 @@ public class DummyDatabase implements Database {
   //USER METHODS
 
   public int insertUser(Query q) {
-    UserType type = UserType.valueOf(q.getUserType());
-    User newUser = new User(q.getUserName(), q.getUserPass(), type);
+    User newUser = new User(q.getUserName(), q.getUserPass(), UserType.valueOf(q.getUserType()));
     allUsers.add(newUser);
     return newUser.getUserId();
   }
@@ -74,6 +73,24 @@ public class DummyDatabase implements Database {
     return retval;
   }
 
+  public int modifyUser(Query q) {
+    User modifiedUser = getOne(q.getToModify());
+
+    if (q.getUserName() != null)
+	    modifiedUser.setUserName(q.getUserName());
+    if (q.getUserPass() != null)
+            modifiedUser.setUserPass(q.getUserPass());
+    if (q.getUserType() != null)
+            modifiedUser.setUserType(UserType.valueOf(q.getUserType()));
+    return modifiedUser.getUserId();
+  }
+
+  public boolean checkNoDuplicateUser(Query q) {
+    Query dupeCheck = new Query().tableIs(q.getTable()).userNameIs(q.getUserName());
+    ArrayList<User> searchedUser = getUsers(dupeCheck);
+    return (searchedUser.size() == 0);
+  }
+
   public ArrayList<User> getUsers(Query q) {
     ArrayList<User> res = new ArrayList<User>();
     for (User user : allUsers) {
@@ -83,35 +100,12 @@ public class DummyDatabase implements Database {
     return res;
   }
 
-  public int modifyUser(Query q) {
-    User modifiedUser = getOne(q);
-	  
-    if (q.getUserName() != null)
-	    allUsers.get(allUsers.indexOf(modifiedUser)).setUserName(q.getUserName());
-    if (q.getUserPass() != null)
-            allUsers.get(allUsers.indexOf(modifiedUser)).setUserPass(q.getUserPass());
-    if (q.getUserType() != null)
-            allUsers.get(allUsers.indexOf(modifiedUser)).setUserType(UserType.valueOf(q.getUserType()));
-    return modifiedUser.getUserId();
-  }
-
   private boolean verifyUserMatchesQuery(User user, Query q) {
     boolean testName = (q.getUserName() == null) || ((q.getUserName() != null) && user.getUserName().equals(q.getUserName()));
     boolean testPass = (q.getUserPass() == null) || ((q.getUserPass() != null) && user.getUserPass().equals(q.getUserPass()));
     boolean testType = (q.getUserType() == null) || ((q.getUserType() != null) && user.getUserType().name().equals(q.getUserType()));
     boolean testID = (q.getUserId() == 0) || ((q.getUserId() != 0) && (user.getUserId() == q.getUserId()));
     return (testName && testPass && testType && testID);
-  }
-
-  public boolean checkNoDuplicateUser(Query q) {
-    Query dupeCheck = new Query().tableIs(q.getTable()).userNameIs(q.getUserName());
-    ArrayList<User> searchedUser = getUsers(dupeCheck);
-    return (searchedUser.size() == 0);
-  }
-
-  public boolean checkReturnsOneUser(Query q) {
-    ArrayList<User> searchedUser = getUsers(q);
-    return (searchedUser.size() == 1);
   }
 
   //TASK METHODS
@@ -140,7 +134,7 @@ public class DummyDatabase implements Database {
   }
 
   public int modifyTask(Query q) {
-    Task modifiedTask = getOne(q);
+    Task modifiedTask = getOne(q.getToModify());
 
     if (q.getTaskName() != null)
       modifiedTask.setTaskName(q.getTaskName());
@@ -174,6 +168,10 @@ public class DummyDatabase implements Database {
 
   public ArrayList<User> getAllUsers() {
     return this.allUsers;
+  }
+
+  public ArrayList<Task> getAllTasks() {
+    return this.allTasks;
   }
 
 }

@@ -1,16 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.sdproject.app.databasetest.DatabaseWrapperTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! - in com.sdproject.app.databasetest.DatabaseWrapperTest
-testInsertTask  Time elapsed: 0.001 s  <<< ERROR!
-java.lang.NullPointerException
-	at com.sdproject.app.databasetest.DatabaseWrapperTest.testInsertTask(DatabaseWrapperTest.java:39)
-
-testModifyTask  Time elapsed: 0 s  <<< ERROR!
-java.lang.NullPointerException
-	at com.sdproject.app.databasetest.DatabaseWrapperTest.testModifyTask(DatabaseWrapperTest.java:49)
-
-testDeleteTask  Time elapsed: 0 s  <<< ERROR!
-java.lang.NullPointerException
-	at com.sdproject.app.databasetest.DatabaseWrapperTest.testDeleteTask(DatabaseWrapperTest.java:59)
-
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in com.sdproject.app.databasetest.DatabaseWrapperTest

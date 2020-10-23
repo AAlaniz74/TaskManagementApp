@@ -65,13 +65,10 @@ public class DummyDatabaseTest {
   @Test
   public void testModifyUser() {
     DummyDatabase db = new DummyDatabase();
-    Query insertUserQuery = new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN");
-    db.insert(insertUserQuery);
-    Query modifyUserQuery = new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN").modifyTo().userNameIs("Fred");
-    db.modify(modifyUserQuery);
-    Query searchUserQuery = new Query().tableIs("User").userTypeIs("ADMIN");
-    ArrayList<User> searchedUsers = db.get(searchUserQuery);
-    assertEquals(searchedUsers.get(0).getUserName(), "Fred");
+    int userID = db.insert(new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN"));
+    db.modify(new Query().tableIs("User").userIdIs(userID).modifyTo().userNameIs("Fred"));
+    User searchedUser = db.getOne(new Query().tableIs("User").userIdIs(userID));
+    assertEquals(searchedUser.getUserName(), "Fred");
   }
 
 }
