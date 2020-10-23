@@ -1,25 +1,26 @@
 package com.sdproject.app.database;
 
-import com.sdproject.app.model.User;
-import com.sdproject.app.model.UserType;
-import com.sdproject.app.model.Task;
-import com.sdproject.app.model.TaskStatus;
+import com.sdproject.app.model.*;
+
 import java.util.ArrayList;
 
 public class DummyDatabase implements Database {
   private ArrayList<User> allUsers;
   private ArrayList<Task> allTasks;
+  private ArrayList<Team> allTeams;
 
   public DummyDatabase() {
     this.allUsers = new ArrayList<User>();
     this.allTasks = new ArrayList<Task>();
-  }
+    this.allTeams = new ArrayList<Team>();  }
 
   public int insert(Query q) {
     if (q.getTable().equals("User")) {
       return insertUser(q);
     } else if (q.getTable().equals("Task")) {
       return insertTask(q);
+    } else if (q.getTable().equals("Team")) {
+      return insertTeam(q);
     } else {
       return -1;
     }
@@ -30,6 +31,8 @@ public class DummyDatabase implements Database {
       return deleteUser(q);
     } else if (q.getTable().equals("Task")) {
       return deleteTask(q);
+    } else if (q.getTable().equals("Team")) {
+      return deleteTeam(q);
     } else {
       return -1;
     }
@@ -40,6 +43,8 @@ public class DummyDatabase implements Database {
       return modifyUser(q);
     } else if (q.getTable().equals("Task")) {
       return modifyTask(q);
+    } else if (q.getTable().equals("Team")) {
+      return modifyTeam(q);
     } else {
       return -1;
     }
@@ -48,8 +53,10 @@ public class DummyDatabase implements Database {
   public <T> ArrayList<T> get(Query q) {
     if (q.getTable().equals("User")) {
       return (ArrayList<T>) getUsers(q);
-    } else if (q.getTable().equals("Task")) {
+    } else if (q.getTable().equals("Tasks")) {
       return (ArrayList<T>) getTasks(q);
+    } else if (q.getTable().equals("Team")) {
+      return (ArrayList<T>) getTeams(q);
     }
     return null;
   }
@@ -164,6 +171,53 @@ public class DummyDatabase implements Database {
     return (testID && testName && testCreatedBy && testStatus && testAssignedTo && testColor);
   }
 
+  // TEAM METHODS
+  public int insertTeam(Query q) {
+    Team newTeam = new Team(q.getTeamName(), q.getTeamMembers());
+    allTeams.add(newTeam);
+    return 10;
+  }
+
+  public ArrayList<Team> getTeams(Query q) {
+    ArrayList<Team> res = new ArrayList<Team>();
+    for (Team team : allTeams) {
+      if (verifyTeamMatchesQuery(team, q))
+        res.add(team);
+    }
+    return res;
+  }
+
+  public int deleteTeam(Query q) {
+    Team deletedTeam = getOne(q);
+    allTeams.remove(deletedTeam);
+    return -10;
+  }
+
+  public int modifyTeam(Query q) {
+    Team unmodifiedTeam = getOne(q);
+    Team modifiedTeam = getOne(q);
+    if (q.getTeamName() != null)
+      modifiedTeam.setTeamName(q.getTeamName());
+    if (q.getTeamMembers().size() > 0) {
+      modifiedTeam.setMembers(q.getTeamMembers());
+    }
+    allTeams.remove(unmodifiedTeam);
+    allTeams.add(modifiedTeam);
+    return 10;
+  }
+
+  private boolean verifyTeamMatchesQuery(Team team, Query q) {
+    if(team.getTeamName() != q.getTeamName())
+      return false;
+    for(int i = 0; i < team.getTeamSize(); i++) {
+      if( team.getTeamMembers().get(i).getUserId() != q.getTeamMembers().get(i).getUserId()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
   //AUXILIARY METHODS
 
   public ArrayList<User> getAllUsers() {
@@ -172,6 +226,10 @@ public class DummyDatabase implements Database {
 
   public ArrayList<Task> getAllTasks() {
     return this.allTasks;
+  }
+
+  public ArrayList<Team> getAllTeams() {
+    return this.allTeams;
   }
 
 }
