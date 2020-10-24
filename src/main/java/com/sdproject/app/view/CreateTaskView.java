@@ -33,9 +33,6 @@ public class CreateTaskView extends JFrame{
 
         add(panel, BorderLayout.CENTER);
 
-
-
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("CreateTask");
         setSize(500, 300);
