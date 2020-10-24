@@ -1,5 +1,7 @@
 package com.sdproject.app.view;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
 import java.util.ArrayList;
 import com.sdproject.app.model.*;
@@ -40,7 +42,7 @@ class mainView extends JFrame
         currentDisplay.setBounds(115, 10, 120 , 20);
         panel.add(currentDisplay);
 
-        addButton = new JButton(new AbstractAction("Add New"){
+        /*addButton = new JButton(new AbstractAction("Add New"){
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -58,12 +60,14 @@ class mainView extends JFrame
                 }
                 if(actions.getItemAt(actions.getSelectedIndex()).equals("Team"))
                 {
-                    //open createTeam panel
+                    CreateTeamView t = new CreateTeamView(db);
+                    dispose();
                 }
             }
         });
         addButton.setBounds(230, 400, 90, 20);
-        panel.add(addButton);
+        panel.add(addButton);*/
+        addNewButton();
 
         display = new JButton(new AbstractAction("Display"){
             @Override
@@ -125,10 +129,13 @@ class mainView extends JFrame
         //createUserList();
         list.setBounds(10, 40, 250, 340);
         panel.add(list);
-        list.getSelectionModel().addListSelectionListener(e -> {
-            select = list.getSelectedValue();
-            //displayText();
-        });
+        list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                select = list.getSelectedValue();
+                //displayText();
+            }
+        } );
 
         textBox = new JTextArea();
         textBox.setBounds(280, 40, 390, 340);
@@ -137,6 +144,40 @@ class mainView extends JFrame
 
         setVisible(true);
     }
+
+    public void addNewButton(){
+        addButton = new JButton(new AbstractAction("Add New"){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(actions.getItemAt(actions.getSelectedIndex()).equals("Task Catagory"))
+                {
+                    //open create Task catagory panel
+                }
+                if(actions.getItemAt(actions.getSelectedIndex()).equals("Task"))
+                {
+                    CreateTaskView t = new CreateTaskView(db);
+                    dispose();
+                }
+                if(actions.getItemAt(actions.getSelectedIndex()).equals("User"))
+                {
+                    //open createUser panel
+                }
+                if(actions.getItemAt(actions.getSelectedIndex()).equals("Team"))
+                {
+
+                    //System.out.println("hello?");
+                    CreateTeamView t = new CreateTeamView(db);
+                    dispose();
+                }
+            }
+        });
+        addButton.setBounds(230, 400, 90, 20);
+        panel.add(addButton);
+
+    }
+
+
     // creation funtions for each object for the JList
     /*public void createTaskCatagoryList()
     {
