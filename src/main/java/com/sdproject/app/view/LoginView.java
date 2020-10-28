@@ -69,6 +69,8 @@ public class LoginView extends JFrame {
           JOptionPane.showMessageDialog(null, "Invalid username/password");
         } else {
           JOptionPane.showMessageDialog(null, "Logged in\nUser: " + user.get(0).getUserName() + "\nPass: " + user.get(0).getUserPass());
+          mainView view = new mainView(db);
+          dispose();
         }		
       }
     });

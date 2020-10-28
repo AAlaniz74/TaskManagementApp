@@ -13,6 +13,7 @@ public class mainView extends JFrame
     private JButton addButton;
     private JButton deleteButton;
     private JButton display;
+    private JButton modifyButton;
     private JPanel panel;
     private JComboBox actions;
     private JComboBox currentDisplay;
@@ -36,6 +37,7 @@ public class mainView extends JFrame
         addNewButton();
         displayButton();
         deleteButton();
+        modifyButton();
         createJList();
         createTextArea();
 
@@ -43,10 +45,10 @@ public class mainView extends JFrame
     }
 
     public void comboBoxes(){
-        String[] actionList = {"Task Catagory", "Task", "User", "Team"};
+        String[] actionList = {"User", "Team", "Task"};
 
         actions = new JComboBox<String>(actionList);
-        actions.setBounds(325, 400, 120 , 20);
+        actions.setBounds(110, 420, 120 , 20);
         panel.add(actions);
 
         currentDisplay = new JComboBox<String>(actionList);
@@ -75,7 +77,7 @@ public class mainView extends JFrame
                 }
             }
         });
-        addButton.setBounds(230, 400, 90, 20);
+        addButton.setBounds(10, 420, 90, 20);
         panel.add(addButton);
 
     }
@@ -85,19 +87,16 @@ public class mainView extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                model.clear();
                 if(currentDisplay.getItemAt(currentDisplay.getSelectedIndex()).equals("Task"))
-                {
-                    createTaskList();
-                }
+                    currentJList = "Task";
                 if(currentDisplay.getItemAt(currentDisplay.getSelectedIndex()).equals("User"))
-                {
-                    createUserList();
-                }
+                    currentJList = "User";
                 if(currentDisplay.getItemAt(currentDisplay.getSelectedIndex()).equals("Team"))
-                {
-                    createTeamList();
-                }
+                    currentJList = "Team";
+
+                model.clear();
+                fillJList();
+                textBox.setText("");
             }
         });
         display.setBounds(15, 10, 90, 20);
@@ -109,38 +108,53 @@ public class mainView extends JFrame
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                model.clear();
                 if(currentJList.equals("User"))
-                {
-                    //delete user query
-                    //createUserList();
-                }
+                    db.query().tableIs(currentJList).userNameIs(select).delete();
                 if(currentJList.equals("Team"))
-                {
-                    //delete team query
-                    //createTeamList();
-                }
+                    db.query().tableIs(currentJList).teamNameIs(select).delete();
                 if(currentJList.equals("Task"))
-                {
-                    //delete task query
-                    //createTaskList();
-                }
+                    db.query().tableIs(currentJList).taskNameIs(select).delete();
+
+                model.clear();
+                fillJList();
+                textBox.setText("");
             }
         });
-        deleteButton.setBounds(40, 400, 130, 20);
+        deleteButton.setBounds(10, 390, 125, 20);
         panel.add(deleteButton);
+    }
+
+    public void modifyButton(){
+        modifyButton = new JButton(new AbstractAction("Modify Selected"){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(currentJList.equals("User"))
+                {}
+                if(currentJList.equals("Team"))
+                {}
+                if(currentJList.equals("Task"))
+                {}
+
+                model.clear();
+                fillJList();
+                textBox.setText("");
+            }
+        });
+        modifyButton.setBounds(140, 390, 125, 20);
+        panel.add(modifyButton);
     }
 
     public void createJList(){
         list.setModel(model);
-        createUserList();
+        fillJList();
         list.setBounds(10, 40, 250, 340);
         panel.add(list);
         list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 select = list.getSelectedValue();
-                //displayText();
+                displayText();
             }
         } );
     }
@@ -152,32 +166,22 @@ public class mainView extends JFrame
         panel.add(textBox);
     }
 
-    // creation funtions for each object for the JList
-    public void createTaskList()
+    public void fillJList()
     {
-        ArrayList<Task> taskList = db.query().tableIs("Task").get();
-        currentJList = "Task";
-        for(int i = 0; i < taskList.size(); i++)
-        {
-            model.addElement(taskList.get(i).getTaskName());
+        if(currentJList.equals("Task")) {
+            ArrayList<Task> taskList = db.query().tableIs("Task").get();
+            for (int i = 0; i < taskList.size(); i++)
+                model.addElement(taskList.get(i).getTaskName());
         }
-    }
-    public void createUserList()
-    {
-        ArrayList<User> userList = db.query().tableIs("User").get();
-        currentJList = "User";
-        for(int i = 0; i < userList.size(); i++)
-        {
-            model.addElement(userList.get(i).getUserName());
+        if(currentJList.equals("User")) {
+            ArrayList<User> userList = db.query().tableIs("User").get();
+            for (int i = 0; i < userList.size(); i++)
+                model.addElement(userList.get(i).getUserName());
         }
-    }
-    public void createTeamList()
-    {
-        ArrayList<Team> teamList = db.query().tableIs("Team").get();
-        currentJList = "Team";
-        for(int i = 0; i < teamList.size(); i++)
-        {
-            model.addElement(teamList.get(i).getTeamName());
+        if(currentJList.equals("Team")) {
+            ArrayList<Team> teamList = db.query().tableIs("Team").get();
+            for (int i = 0; i < teamList.size(); i++)
+                model.addElement(teamList.get(i).getTeamName());
         }
     }
 
@@ -214,9 +218,9 @@ public class mainView extends JFrame
                 Task task = db.query().tableIs("Task").taskIdIs(subTaskIDs.get(i)).getOne();
                 textBox.append(task.getTaskName() + " ");
             }
-
+            User user = db.query().tableIs("User").userIdIs(temp.getCreatedById()).getOne();
             textBox.append("\nassignedToID: " + temp.getAssignedToId() +
-            "\nCreated BY: " + db.query().tableIs("User").userIdIs(temp.getCreatedById()).getOne() +
+            "\nCreated BY: " + user.getUserName() +
             "\nCreated On: " + temp.getCreatedOn() +
             "\nDue Date: " + temp.getDueDate() +
             "\nDescription: " + temp.getTaskDesc());

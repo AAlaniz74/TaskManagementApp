@@ -12,7 +12,7 @@ public class TeamTest {
 	public static User user1 = new User("t1", "", UserType.NORMAL);
 	public static User user2 = new User("t2", "", UserType.NORMAL);
 	public ArrayList<User> list = new ArrayList<User>(Arrays.asList(user1, user2));
-	public Team team = new Team(list);
+	public Team team = new Team("Team", list);
 	public static User newUser = new User("t3", "", UserType.NORMAL);
 
 	@Test
