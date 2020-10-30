@@ -2,5 +2,6 @@ package com.sdproject.app.model;
 
 public enum TaskStatus {
   FINISHED,
-  IN_PROGRESS;
+  IN_PROGRESS,
+  PAST_DUE;
 }

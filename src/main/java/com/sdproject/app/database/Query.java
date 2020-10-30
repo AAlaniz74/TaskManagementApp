@@ -28,10 +28,13 @@ public class Query {
   private int assignedToId;
   private int createdById;
   private String colorHex;
-    
+  private String dueDate; //Use format "yyyy-MM-dd"
+  private int recurringDays  
+
   // Team attributes
+  private int teamId;
   private String teamName;
-  private ArrayList<User> teamMembers;
+  private ArrayList<Integer> teamMembers = new ArrayList<Integer>();
 
   public Query() {}
 
@@ -67,24 +70,38 @@ public class Query {
   }
    
     // TEAM QUERY
-    public Query teamNameIs(String name) {
-        this.teamName = name;
-        return this;
-    }
+  
+  public Query teamIdIs(int teamId) {
+    this.teamId = teamId;
+    return this;
+  }
 
-    public String getTeamName() {
-        return this.teamName;
-    }
+  public int getTeamId() {
+    return this.teamId;
+  }
+  
+  public Query teamNameIs(String name) {
+    this.teamName = name;
+    return this;
+  }
 
-    public Query teamMembersAre(ArrayList<User> users) {
-        this.teamMembers = users;
-        return this;
-    }
+  public String getTeamName() {
+    return this.teamName;
+  }
 
-    public ArrayList<User> getTeamMembers() {
-        return this.teamMembers;
-    }
+  public Query teamMemberIs(int userID) {
+    this.teamMembers.add(userID);
+    return this;
+  } 
 
+  public Query allTeamMembersAre(ArrayList<Integer> users) {
+    this.teamMembers = users;
+    return this;
+  }
+
+  public ArrayList<Integer> getTeamMembers() {
+    return this.teamMembers;
+  }
 
   //USER QUERY
 
@@ -191,6 +208,24 @@ public class Query {
 
   public String getColorHex() {
     return this.colorHex;
+  }
+
+  public Query dueDateIs(String dateString) {
+    this.dueDate = dateString;
+    return this;
+  }
+
+  public String getDueDate() {
+    return this.dueDate;
+  }
+
+  public Query recurringDaysIs(int days) {
+    this.recurringDays = days;
+    return this;
+  }
+
+  public int getRecurringDays() {
+    return this.recurringDays;
   }
 
   //TERMINATING METHODS

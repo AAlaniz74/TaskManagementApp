@@ -3,6 +3,7 @@ package com.sdproject.app.database;
 import com.sdproject.app.model.*;
 
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 
 public class DummyDatabase implements Database {
   private ArrayList<User> allUsers;
@@ -12,7 +13,8 @@ public class DummyDatabase implements Database {
   public DummyDatabase() {
     this.allUsers = new ArrayList<User>();
     this.allTasks = new ArrayList<Task>();
-    this.allTeams = new ArrayList<Team>();  }
+    this.allTeams = new ArrayList<Team>();  
+  }
 
   public int insert(Query q) {
     if (q.getTable().equals("User")) {
@@ -125,12 +127,17 @@ public class DummyDatabase implements Database {
   }
 
   private void optionalTaskFields(Query q, Task t) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     if (q.getTaskStatus() != null)
 	    t.setTaskStatus(TaskStatus.valueOf(q.getTaskStatus()));
     if (q.getAssignedToId() != 0)
 	    t.setAssignedToId(q.getAssignedToId());
     if (q.getColorHex() != null)
 	    t.setColorHex(q.getColorHex());
+    if (q.getDueDate() != null)
+      t.setDueDate(LocalDateTime.parse(q.getDueDate(), formatter));
+    if (q.recurringDays != 0)
+      t.setRecurringDays(q.recurringDays);
   }
 
   public int deleteTask(Query q) {
@@ -172,10 +179,15 @@ public class DummyDatabase implements Database {
   }
 
   // TEAM METHODS
+  
+/*
+ 
+   ||Reworking these methods -Alex||
+
   public int insertTeam(Query q) {
     Team newTeam = new Team(q.getTeamName(), q.getTeamMembers());
     allTeams.add(newTeam);
-    return 10;
+    return newTeam.getTeamId();
   }
 
   public ArrayList<Team> getTeams(Query q) {
@@ -189,21 +201,22 @@ public class DummyDatabase implements Database {
 
   public int deleteTeam(Query q) {
     Team deletedTeam = getOne(q);
+    int retval = deletedTeam.getTeamId();
     allTeams.remove(deletedTeam);
-    return -10;
+    return retval;
   }
 
   public int modifyTeam(Query q) {
-    Team unmodifiedTeam = getOne(q);
-    Team modifiedTeam = getOne(q);
+    Team modifiedTeam = getOne(q.getToModify());
+    
     if (q.getTeamName() != null)
       modifiedTeam.setTeamName(q.getTeamName());
     if (q.getTeamMembers().size() > 0) {
       modifiedTeam.setMembers(q.getTeamMembers());
     }
-    allTeams.remove(unmodifiedTeam);
+
     allTeams.add(modifiedTeam);
-    return 10;
+    return modifiedTeam.getTeamId();
   }
 
   private boolean verifyTeamMatchesQuery(Team team, Query q) {
@@ -217,6 +230,11 @@ public class DummyDatabase implements Database {
     return true;
   }
 
+  public ArrayList<Team> getTeams(Query q) {
+
+  }
+
+*/
 
   //AUXILIARY METHODS
 

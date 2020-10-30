@@ -3,43 +3,44 @@ package com.sdproject.app.model;
 import java.util.ArrayList;
 
 public class Team {
+
+  private static int nextID = 501;
+
+  private int teamId;
+  private String teamName;
+  private ArrayList<Integer> users;
     
-    private String teamName;
-    private ArrayList<User> users;
+  public Team(String teamName) {
+    this.teamName = teamName;
+    this.users = new ArrayList<Integer>();
+    this.teamId = nextID++;
+  }
+  
+  public int getTeamId() {
+    return this.teamId;
+  }
+
+  public String getTeamName() { return this.teamName; }
     
-    public Team(String newTeamName, ArrayList<User> users) {
-        this.teamName = newTeamName;
-        this.users = users;
-    }
+  public void setTeamName(String name) { this.teamName = name; }
     
-    public Team() {
-        this.teamName = "";
-        this.users = new ArrayList<User>();
-    }
+  public ArrayList<Integer> getTeamMembers() {
+    return this.users;
+  }
     
-    public String getTeamName() { return this.teamName; }
+  public int getTeamSize() {
+    return users.size();
+  }
     
-    public void setTeamName(String name) { this.teamName = name; }
+  public void setMembers(ArrayList<Integer> users) { this.users = users; }
     
-    public ArrayList<User> getTeamMembers() {
-        return users;
-    }
+  public void addMember(int newMember) {
+    users.add(newMember);
+  }
     
-    public int getTeamSize() {
-        return users.size();
-    }
-    
-    public void setMembers(ArrayList<User> users) { this.users = users; }
-    
-    public void addMember(User newMember) {
-        users.add(newMember);
-    }
-    
-    public void removeMember(User memberToRemove) {
-        users.remove(memberToRemove);
-    }
-    
-    public void removeTeam(Team team) { team = null; }
+  public void removeMember(int memberToRemove) {
+    users.remove(memberToRemove);
+  }
     
 }
 

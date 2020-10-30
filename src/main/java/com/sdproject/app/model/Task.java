@@ -1,7 +1,7 @@
 package com.sdproject.app.model;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Task {
 
@@ -14,19 +14,32 @@ public class Task {
 	private ArrayList<Integer> subtaskIDs;
 	private int assignedToId;
 	private int createdById;
-	private Date createdOn;
-	private Date dueDate;
+	private LocalDateTime createdOn;
+	private LocalDateTime dueDate;
+  private int recurringDays;
 	private String colorHex;
 
 	public Task(String name, String description, int createdById) {
 		this.taskName = name;
 		this.taskDesc = description;
 		this.createdById = createdById;
-		this.createdOn = new Date();
+		this.createdOn = LocalDateTime.now();
 		this.subtaskIDs = new ArrayList<Integer>();
 		this.taskStatus = TaskStatus.IN_PROGRESS;
 		this.taskId = nextID++;
 	}
+
+  public void updateDueDate() {
+    if (this.dueDate.isAfter(LocalDateTime.now())) {
+    
+      if (recurringDays != 0) {
+        this.dueDate = this.dueDate.plusDays(recurringDays);
+      } else if (this.taskStatus != TaskStatus.FINISHED) {
+        this.taskStatus = TaskStatus.PAST_DUE;
+      }
+
+    }
+  }
 
 	public int getTaskId() {
 		return this.taskId;
@@ -41,60 +54,68 @@ public class Task {
 	}
 
 	public String getTaskDesc() {
-                return this.taskDesc;
-        }
+    return this.taskDesc;
+  }
 
-        public void setTaskDesc(String newDescription) {
-                this.taskDesc = newDescription;
-        }
+  public void setTaskDesc(String newDescription) {
+    this.taskDesc = newDescription;
+  }
 
 	public TaskStatus getTaskStatus() {
-                return this.taskStatus;
-        }
+    return this.taskStatus;
+  }
 
-        public void setTaskStatus(TaskStatus newStatus) {
-                this.taskStatus = newStatus;
-        }
+  public void setTaskStatus(TaskStatus newStatus) {
+    this.taskStatus = newStatus;
+  }
 
 	public void addSubTaskId(int subtaskId) {
-                subtaskIDs.add(subtaskId);
-        }
+    subtaskIDs.add(subtaskId);
+  }
 
-        public ArrayList<Integer> getSubtaskIDs() {
-                return this.subtaskIDs;
-        }
+  public ArrayList<Integer> getSubtaskIDs() {
+    return this.subtaskIDs;
+  }
 
-        public void removeSubtaskId(int subtaskToRemove) {
-                this.subtaskIDs.remove(subtaskToRemove);
-        }
+  public void removeSubtaskId(int subtaskToRemove) {
+    this.subtaskIDs.remove(subtaskToRemove);
+  }
 
 	public int getSubTaskSize(){
-                return subtaskIDs.size();
-        }
+    return subtaskIDs.size();
+  }
 
 	public int getAssignedToId() {
-                return this.assignedToId;
-        }
+    return this.assignedToId;
+  }
 
-        public void setAssignedToId(int newAssignedToId) {
-                this.assignedToId = newAssignedToId;
-        }
+  public void setAssignedToId(int newAssignedToId) {
+    this.assignedToId = newAssignedToId;
+  }
 
 	public int getCreatedById() {
-                return this.createdById;
-        }
+    return this.createdById;
+  }
 
-	public Date getCreatedOn() {
-                return this.createdOn;
-        }
+	public LocalDateTime getCreatedOn() {
+    return this.createdOn;
+  }
 
-	public Date getDueDate() {
+	public LocalDateTime getDueDate() {
 		return this.dueDate;
 	}
 
-	public void setDueDate(Date newDate) {
+	public void setDueDate(LocalDateTime newDate) {
 		this.dueDate = newDate;
 	}
+
+  public void setRecurringDays(int days) {
+    this.recurringDays = days;
+  }
+
+  public int getRecurringDays() {
+    return this.recurringDays;
+  }
 
 	public void setColorHex(String colorHex) {
 		this.colorHex = colorHex;
