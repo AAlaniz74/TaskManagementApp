@@ -4,6 +4,7 @@ import com.sdproject.app.model.*;
 
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class DummyDatabase implements Database {
   private ArrayList<User> allUsers;
@@ -136,8 +137,10 @@ public class DummyDatabase implements Database {
 	    t.setColorHex(q.getColorHex());
     if (q.getDueDate() != null)
       t.setDueDate(LocalDateTime.parse(q.getDueDate(), formatter));
-    if (q.recurringDays != 0)
-      t.setRecurringDays(q.recurringDays);
+    if (q.getRecurringDays() != 0)
+      t.setRecurringDays(q.getRecurringDays());
+    if (q.getSubtasks().size() > 0)
+      t.setSubtaskIDs(q.getSubtasks());
   }
 
   public int deleteTask(Query q) {
@@ -179,13 +182,14 @@ public class DummyDatabase implements Database {
   }
 
   // TEAM METHODS
-  
-/*
- 
-   ||Reworking these methods -Alex||
 
   public int insertTeam(Query q) {
-    Team newTeam = new Team(q.getTeamName(), q.getTeamMembers());
+    Team newTeam = new Team(q.getTeamName());
+    
+    if (q.getTeamMembers().size() != 0) {
+      newTeam.setMembers(q.getTeamMembers());
+    }
+
     allTeams.add(newTeam);
     return newTeam.getTeamId();
   }
@@ -229,12 +233,6 @@ public class DummyDatabase implements Database {
     }
     return true;
   }
-
-  public ArrayList<Team> getTeams(Query q) {
-
-  }
-
-*/
 
   //AUXILIARY METHODS
 

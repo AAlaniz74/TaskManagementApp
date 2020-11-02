@@ -71,5 +71,17 @@ public class DummyDatabaseTest {
     assertEquals(searchedUser.getUserName(), "Fred");
   }
 
+  @Test
+  public void testInsertTaskWithSubtasks() {
+    DummyDatabase db = new DummyDatabase();
+    int userID = db.insert(new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN"));
+    int taskAID = db.insert(new Query().tableIs("Task").taskNameIs("Task A").taskDescIs("aaaaa").createdByIdIs(userID));
+    int taskBID = db.insert(new Query().tableIs("Task").taskNameIs("Task B").taskDescIs("bbbbb").createdByIdIs(userID));
+    ArrayList<Integer> subtasks = new ArrayList<Integer>( Arrays.asList(taskAID, taskBID));
+    int superTaskID = db.insert(new Query().tableIs("Task").taskNameIs("SuperTask").taskDescIs("cccccc").createdByIdIs(userID).allSubtasksAre(subtasks));
+    Task searchedTask = db.getOne(new Query().tableIs("Task").taskIdIs(superTaskID));
+    assertEqual(searchedTask.getSubtaskIDs().size(), 2);
+  }
+
 }
 

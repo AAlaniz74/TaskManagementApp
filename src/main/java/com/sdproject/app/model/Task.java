@@ -73,6 +73,10 @@ public class Task {
     subtaskIDs.add(subtaskId);
   }
 
+  public void setSubtaskIDs(ArrayList<Integer> subtasks) {
+    this.subtaskIDs = subtasks;
+  }
+
   public ArrayList<Integer> getSubtaskIDs() {
     return this.subtaskIDs;
   }

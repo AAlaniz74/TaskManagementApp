@@ -29,7 +29,8 @@ public class Query {
   private int createdById;
   private String colorHex;
   private String dueDate; //Use format "yyyy-MM-dd"
-  private int recurringDays  
+  private int recurringDays; 
+  private ArrayList<Integer> subtasks = new ArrayList<Integer>();
 
   // Team attributes
   private int teamId;
@@ -181,6 +182,15 @@ public class Query {
 
   public String getTaskStatus() {
     return this.taskStatus;
+  }
+
+  public Query allSubtasksAre(ArrayList<Integer> subtasks) {
+    this.subtasks = subtasks;
+    return this;
+  }
+
+  public ArrayList<Integer> getSubtasks() {
+    return this.subtasks;
   }
 
   public Query assignedToIdIs(int assignedToId) {
