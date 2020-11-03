@@ -68,6 +68,30 @@ public class DummyDatabase implements Database {
     return (T) get(q).get(0);
   }
 
+  public ArrayList<Task> getSubtasks(Query q) {
+    Task searchedTask = getOne(q);
+    ArrayList<Integer> subtaskIDs = searchedTask.getSubtaskIDs();
+    ArrayList<Task> subtasks = new ArrayList<Task>();
+    for (Integer id : subtaskIDs) {
+      Task toAdd = getOne(new Query().tableIs("Task").taskIdIs(id));
+      subtasks.add(toAdd);
+    }
+
+    return subtasks;
+  }
+
+  public ArrayList<User> getTeamMembers(Query q) {
+    Team searchedTeam = getOne(q);
+    ArrayList<Integer> userIDs = searchedTeam.getTeamMemberIDs();
+    ArrayList<User> teamMembers = new ArrayList<User>();
+    for (Integer id : userIDs) {
+      User toAdd = getOne(new Query().tableIs("User").userIdIs(id));
+      teamMembers.add(toAdd);
+    }
+
+    return teamMembers;
+  }
+
   //USER METHODS
 
   public int insertUser(Query q) {
@@ -123,7 +147,7 @@ public class DummyDatabase implements Database {
   public int insertTask(Query q) {
     Task newTask = new Task(q.getTaskName(), q.getTaskDesc(), q.getCreatedById());
     optionalTaskFields(q, newTask);
-    allTasks.add(newTask);
+    this.allTasks.add(newTask);
     return newTask.getTaskId();
   }
 
@@ -139,8 +163,8 @@ public class DummyDatabase implements Database {
       t.setDueDate(LocalDateTime.parse(q.getDueDate(), formatter));
     if (q.getRecurringDays() != 0)
       t.setRecurringDays(q.getRecurringDays());
-    if (q.getSubtasks().size() > 0)
-      t.setSubtaskIDs(q.getSubtasks());
+    if (q.getSubtaskIDs().size() > 0)
+      t.setSubtaskIDs(q.getSubtaskIDs());
   }
 
   public int deleteTask(Query q) {
@@ -165,8 +189,10 @@ public class DummyDatabase implements Database {
   public ArrayList<Task> getTasks(Query q) {
     ArrayList<Task> res = new ArrayList<Task>();
     for (Task task : allTasks) {
-      if (verifyTaskMatchesQuery(task, q))
+      if (verifyTaskMatchesQuery(task, q)) {
+        task.updateDueDate();
         res.add(task);
+      }
     }
     return res;
   }
@@ -187,7 +213,7 @@ public class DummyDatabase implements Database {
     Team newTeam = new Team(q.getTeamName());
     
     if (q.getTeamMembers().size() != 0) {
-      newTeam.setMembers(q.getTeamMembers());
+      newTeam.setTeamMemberIDs(q.getTeamMemberIDs());
     }
 
     allTeams.add(newTeam);
@@ -216,22 +242,17 @@ public class DummyDatabase implements Database {
     if (q.getTeamName() != null)
       modifiedTeam.setTeamName(q.getTeamName());
     if (q.getTeamMembers().size() > 0) {
-      modifiedTeam.setMembers(q.getTeamMembers());
+      modifiedTeam.setTeamMemberIDs(q.getTeamMemberIDs());
     }
 
     allTeams.add(modifiedTeam);
     return modifiedTeam.getTeamId();
   }
 
-  private boolean verifyTeamMatchesQuery(Team team, Query q) {
-    if(team.getTeamName() != q.getTeamName())
-      return false;
-    for(int i = 0; i < team.getTeamSize(); i++) {
-      if( team.getTeamMembers().get(i).getUserId() != q.getTeamMembers().get(i).getUserId()) {
-        return false;
-      }
-    }
-    return true;
+  private boolean verifyTeamMatchesQuery(Team t, Query q) {
+    boolean testID = (q.getTeamId() == 0) || ((q.getTeamId() != 0) && (t.getTeamId() == q.getTeamId()));
+    boolean testName = (q.getTeamName() == null) || ((q.getTeamName() != null) && (t.getTeamName().equals(q.getTeamName())));
+    return (testID && testName);
   }
 
   //AUXILIARY METHODS

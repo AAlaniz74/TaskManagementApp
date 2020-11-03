@@ -24,7 +24,7 @@ public class Team {
     
   public void setTeamName(String name) { this.teamName = name; }
     
-  public ArrayList<Integer> getTeamMembers() {
+  public ArrayList<Integer> getTeamMemberIDs() {
     return this.users;
   }
     
@@ -32,7 +32,7 @@ public class Team {
     return users.size();
   }
     
-  public void setMembers(ArrayList<Integer> users) { this.users = users; }
+  public void setTeamMemberIDs(ArrayList<Integer> users) { this.users = users; }
     
   public void addMember(int newMember) {
     users.add(newMember);

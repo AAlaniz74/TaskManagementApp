@@ -17,9 +17,9 @@ public class DatabaseWrapperTest {
   public void testInsertUser() {
     Database dummy = new DummyDatabase();
     DatabaseWrapper db = new DatabaseWrapper(dummy);
-    db.query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("NORMAL").insert();
-    ArrayList<User> searchedUsers = db.query().tableIs("User").userTypeIs("NORMAL").get();
-    assertEquals(searchedUsers.get(0).getUserName(), "John");
+    int userID = db.query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("NORMAL").insert();
+    User searchedUser = db.query().tableIs("User").userIdIs(userID).getOne();
+    assertEquals(searchedUser.getUserName(), "John"); 
   }
   
   @Test

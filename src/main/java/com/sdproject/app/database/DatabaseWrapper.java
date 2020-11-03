@@ -1,6 +1,8 @@
 package com.sdproject.app.database;
 
 import java.util.ArrayList;
+import com.sdproject.app.model.Task;
+import com.sdproject.app.model.User;
 
 public class DatabaseWrapper {
 
@@ -34,6 +36,14 @@ public class DatabaseWrapper {
 
   public <T> T getOne(Query q) {
     return (T) db.getOne(q);
+  }
+
+  public ArrayList<Task> getSubtasks(Query q) {
+    return db.getSubtasks(q);
+  }
+
+  public ArrayList<User> getTeamMembers(Query q) {
+    return db.getTeamMembers(q);
   }
 
   //ERROR CHECKING METHODS

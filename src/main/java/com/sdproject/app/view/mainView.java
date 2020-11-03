@@ -197,8 +197,7 @@ public class mainView extends JFrame
         if(currentJList.equals("Team"))
         {
             String text = "Team Members";
-            Team temp = db.query().tableIs("Team").teamNameIs(select).getOne();
-            ArrayList<User> userlist = temp.getTeamMembers();
+            ArrayList<User> userlist = db.query().tableIs("Team").teamNameIs(select).getTeamMembers();
             for(int i = 0; i < userlist.size(); i++)
                 text = text + "\n" + userlist.get(i);
             textBox.setText(text);

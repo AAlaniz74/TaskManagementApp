@@ -5,29 +5,29 @@ import java.time.LocalDateTime;
 
 public class Task {
 
-	private static int nextID = 701;
+  private static int nextID = 701;
 
-	private int taskId;
-	private String taskName;
-	private String taskDesc;
-	private TaskStatus taskStatus;
-	private ArrayList<Integer> subtaskIDs;
-	private int assignedToId;
-	private int createdById;
-	private LocalDateTime createdOn;
-	private LocalDateTime dueDate;
+  private int taskId;
+  private String taskName;
+  private String taskDesc;
+  private TaskStatus taskStatus;
+  private ArrayList<Integer> subtaskIDs;
+  private int assignedToId;
+  private int createdById;
+  private LocalDateTime createdOn;
+  private LocalDateTime dueDate;
   private int recurringDays;
-	private String colorHex;
+  private String colorHex;
 
-	public Task(String name, String description, int createdById) {
-		this.taskName = name;
-		this.taskDesc = description;
-		this.createdById = createdById;
-		this.createdOn = LocalDateTime.now();
-		this.subtaskIDs = new ArrayList<Integer>();
-		this.taskStatus = TaskStatus.IN_PROGRESS;
-		this.taskId = nextID++;
-	}
+  public Task(String name, String description, int createdById) {
+   this.taskName = name;
+   this.taskDesc = description;
+   this.createdById = createdById;
+   this.createdOn = LocalDateTime.now();
+   this.subtaskIDs = new ArrayList<Integer>();
+   this.taskStatus = TaskStatus.IN_PROGRESS;
+   this.taskId = nextID++;
+  }
 
   public void updateDueDate() {
     if (this.dueDate.isAfter(LocalDateTime.now())) {
@@ -41,19 +41,19 @@ public class Task {
     }
   }
 
-	public int getTaskId() {
-		return this.taskId;
-	}
+  public int getTaskId() {
+    return this.taskId;
+  }
 
-	public String getTaskName() {
-		return this.taskName;
-	}
+  public String getTaskName() {
+    return this.taskName;
+  }
 
-	public void setTaskName(String newName) {
-		this.taskName = newName;
-	}
+  public void setTaskName(String newName) {
+    this.taskName = newName;
+  }
 
-	public String getTaskDesc() {
+  public String getTaskDesc() {
     return this.taskDesc;
   }
 
@@ -61,7 +61,7 @@ public class Task {
     this.taskDesc = newDescription;
   }
 
-	public TaskStatus getTaskStatus() {
+  public TaskStatus getTaskStatus() {
     return this.taskStatus;
   }
 
@@ -69,7 +69,7 @@ public class Task {
     this.taskStatus = newStatus;
   }
 
-	public void addSubTaskId(int subtaskId) {
+  public void addSubTaskId(int subtaskId) {
     subtaskIDs.add(subtaskId);
   }
 
@@ -85,11 +85,11 @@ public class Task {
     this.subtaskIDs.remove(subtaskToRemove);
   }
 
-	public int getSubTaskSize(){
+  public int getSubTaskSize(){
     return subtaskIDs.size();
   }
 
-	public int getAssignedToId() {
+  public int getAssignedToId() {
     return this.assignedToId;
   }
 
@@ -97,21 +97,21 @@ public class Task {
     this.assignedToId = newAssignedToId;
   }
 
-	public int getCreatedById() {
+  public int getCreatedById() {
     return this.createdById;
   }
 
-	public LocalDateTime getCreatedOn() {
+  public LocalDateTime getCreatedOn() {
     return this.createdOn;
   }
 
-	public LocalDateTime getDueDate() {
-		return this.dueDate;
-	}
+  public LocalDateTime getDueDate() {
+    return this.dueDate;
+  }
 
-	public void setDueDate(LocalDateTime newDate) {
-		this.dueDate = newDate;
-	}
+  public void setDueDate(LocalDateTime newDate) {
+    this.dueDate = newDate;
+  }
 
   public void setRecurringDays(int days) {
     this.recurringDays = days;
@@ -121,12 +121,12 @@ public class Task {
     return this.recurringDays;
   }
 
-	public void setColorHex(String colorHex) {
-		this.colorHex = colorHex;
-	}
+  public void setColorHex(String colorHex) {
+    this.colorHex = colorHex;
+  }
 
-	public String getColorHex() {
-		return this.colorHex;
-	}
+  public String getColorHex() {
+    return this.colorHex;
+  }
 
 }

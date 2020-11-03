@@ -3,10 +3,12 @@ package com.sdproject.app.databasetest;
 import com.sdproject.app.database.Query;
 import com.sdproject.app.database.DummyDatabase;
 import com.sdproject.app.model.User;
+import com.sdproject.app.model.Task;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DummyDatabaseTest {
 
@@ -77,10 +79,12 @@ public class DummyDatabaseTest {
     int userID = db.insert(new Query().tableIs("User").userNameIs("John").userPassIs("Password").userTypeIs("ADMIN"));
     int taskAID = db.insert(new Query().tableIs("Task").taskNameIs("Task A").taskDescIs("aaaaa").createdByIdIs(userID));
     int taskBID = db.insert(new Query().tableIs("Task").taskNameIs("Task B").taskDescIs("bbbbb").createdByIdIs(userID));
-    ArrayList<Integer> subtasks = new ArrayList<Integer>( Arrays.asList(taskAID, taskBID));
+    ArrayList<Integer> subtasks = new ArrayList<Integer>();
+    subtasks.add(taskAID);
+    subtasks.add(taskBID);
     int superTaskID = db.insert(new Query().tableIs("Task").taskNameIs("SuperTask").taskDescIs("cccccc").createdByIdIs(userID).allSubtasksAre(subtasks));
     Task searchedTask = db.getOne(new Query().tableIs("Task").taskIdIs(superTaskID));
-    assertEqual(searchedTask.getSubtaskIDs().size(), 2);
+    assertEquals(searchedTask.getSubtaskIDs().size(), 2);
   }
 
 }

@@ -1,6 +1,7 @@
 package com.sdproject.app.database;
 
 import com.sdproject.app.model.User;
+import com.sdproject.app.model.Task;
 
 import java.util.ArrayList;
 
@@ -70,40 +71,6 @@ public class Query {
     return (this.table != null);
   }
    
-    // TEAM QUERY
-  
-  public Query teamIdIs(int teamId) {
-    this.teamId = teamId;
-    return this;
-  }
-
-  public int getTeamId() {
-    return this.teamId;
-  }
-  
-  public Query teamNameIs(String name) {
-    this.teamName = name;
-    return this;
-  }
-
-  public String getTeamName() {
-    return this.teamName;
-  }
-
-  public Query teamMemberIs(int userID) {
-    this.teamMembers.add(userID);
-    return this;
-  } 
-
-  public Query allTeamMembersAre(ArrayList<Integer> users) {
-    this.teamMembers = users;
-    return this;
-  }
-
-  public ArrayList<Integer> getTeamMembers() {
-    return this.teamMembers;
-  }
-
   //USER QUERY
 
   public Query userNameIs(String name) {
@@ -189,7 +156,7 @@ public class Query {
     return this;
   }
 
-  public ArrayList<Integer> getSubtasks() {
+  public ArrayList<Integer> getSubtaskIDs() {
     return this.subtasks;
   }
 
@@ -238,6 +205,41 @@ public class Query {
     return this.recurringDays;
   }
 
+  // TEAM QUERY
+  
+  public Query teamIdIs(int teamId) {
+    this.teamId = teamId;
+    return this;
+  }
+
+  public int getTeamId() {
+    return this.teamId;
+  }
+  
+  public Query teamNameIs(String name) {
+    this.teamName = name;
+    return this;
+  }
+
+  public String getTeamName() {
+    return this.teamName;
+  }
+
+  public Query teamMemberIs(int userID) {
+    this.teamMembers.add(userID);
+    return this;
+  } 
+
+  public Query allTeamMembersAre(ArrayList<Integer> users) {
+    this.teamMembers = users;
+    return this;
+  }
+
+  public ArrayList<Integer> getTeamMemberIDs() {
+    return this.teamMembers;
+  }
+
+
   //TERMINATING METHODS
 
   public int insert() {
@@ -260,5 +262,12 @@ public class Query {
     return (T) this.wrap.getOne(this);
   }
 
+  public ArrayList<Task> getSubtasks() {
+    return this.wrap.getSubtasks(this);
+  }
+
+  public ArrayList<User> getTeamMembers() {
+    return this.wrap.getTeamMembers(this);
+  }
 }
 
