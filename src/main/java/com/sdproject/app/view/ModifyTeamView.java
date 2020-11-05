@@ -11,9 +11,8 @@ import java.util.ArrayList;
 
 import com.sdproject.app.database.DatabaseWrapper;
 import com.sdproject.app.model.Task;
-import com.sdproject.app.model.User;
 
-public class CreateTeamView extends JFrame{
+public class ModifyTeamView extends JFrame{
 
     private DatabaseWrapper db;
     private JPanel panel;
@@ -23,11 +22,10 @@ public class CreateTeamView extends JFrame{
     private JCheckBoxList teamlist;
     private JButton submit,cancel;
 
-    public CreateTeamView(DatabaseWrapper db){
+    public ModifyTeamView(DatabaseWrapper db){
         this.db = db;
-        panel = new JPanel(new GridLayout(3,1));
+        panel = new JPanel(new GridLayout(2,1));
 
-        addNameTextBox();
         addTeamList();
 
         addSubmitButton();
@@ -46,21 +44,13 @@ public class CreateTeamView extends JFrame{
     }
 
 
-    public void addNameTextBox(){
-        name_label = new JLabel("Enter Name:");
-        name = new JTextField("Name",100);
 
-        panel.add(name_label);
-        panel.add(name);
-    }
 
     public void addTeamList(){
         teamlist_label = new JLabel("Select All Team Members to add to team");
         teamlist = new JCheckBoxList();
-        ArrayList<User> userList = db.query().tableIs("User").get();
-        for (int i = 0; i < userList.size(); i++)
-            teamlist.addCheckbox(new JCheckBox( userList.get(i).getUserName()));
-
+        teamlist.addCheckbox(new JCheckBox("Test1"));
+        // use getOne to access the team and check that have been checked
         panel.add(teamlist_label);
         panel.add(teamlist);
 
@@ -81,6 +71,7 @@ public class CreateTeamView extends JFrame{
 
 
     }
+
     public void addCancelButton(){
 
         cancel = new JButton("Cancel");
@@ -102,6 +93,7 @@ public class CreateTeamView extends JFrame{
 
 
     }
+
 
 
 }
