@@ -15,8 +15,8 @@ public class mainView extends JFrame
     private JButton display;
     private JButton modifyButton;
     private JPanel panel;
-    private JComboBox actions;
-    private JComboBox currentDisplay;
+    private JComboBox<String> actions;
+    private JComboBox<String> currentDisplay;
     private JTextArea textBox;
     private String currentJList;
     private String select;
@@ -64,7 +64,6 @@ public class mainView extends JFrame
                 if(actions.getItemAt(actions.getSelectedIndex()).equals("Task"))
                 {
                     CreateTaskView t = new CreateTaskView(db);
-                    dispose();
                 }
                 if(actions.getItemAt(actions.getSelectedIndex()).equals("User"))
                 {
@@ -73,7 +72,6 @@ public class mainView extends JFrame
                 if(actions.getItemAt(actions.getSelectedIndex()).equals("Team"))
                 {
                     CreateTeamView t = new CreateTeamView(db);
-                    dispose();
                 }
             }
         });
@@ -94,7 +92,7 @@ public class mainView extends JFrame
                 if(currentDisplay.getItemAt(currentDisplay.getSelectedIndex()).equals("Team"))
                     currentJList = "Team";
 
-                model.clear();
+                clearJList();
                 fillJList();
                 textBox.setText("");
             }
@@ -115,7 +113,7 @@ public class mainView extends JFrame
                 if(currentJList.equals("Task"))
                     db.query().tableIs(currentJList).taskNameIs(select).delete();
 
-                model.clear();
+                clearJList();
                 fillJList();
                 textBox.setText("");
             }
@@ -130,13 +128,16 @@ public class mainView extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 if(currentJList.equals("User"))
-                {}
+                {
+                    User user = db.query().tableIs("User").userNameIs(select).getOne();
+                    ModifyUserView view = new ModifyUserView(db, user, mainView.this);
+                }
                 if(currentJList.equals("Team"))
                 {}
                 if(currentJList.equals("Task"))
                 {}
 
-                model.clear();
+                clearJList();
                 fillJList();
                 textBox.setText("");
             }
@@ -225,6 +226,10 @@ public class mainView extends JFrame
             "\nDescription: " + temp.getTaskDesc());
 
         }
+    }
+
+    public void clearJList(){
+        model.clear();
     }
 
 }
