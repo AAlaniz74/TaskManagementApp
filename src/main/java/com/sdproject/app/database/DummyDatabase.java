@@ -212,7 +212,7 @@ public class DummyDatabase implements Database {
   public int insertTeam(Query q) {
     Team newTeam = new Team(q.getTeamName());
     
-    if (q.getTeamMembers() != null) {
+    if (q.getTeamMemberIDs() != null && q.getTeamMemberIDs().size() > 0) {
       newTeam.setTeamMemberIDs(q.getTeamMemberIDs());
     }
 
@@ -241,7 +241,7 @@ public class DummyDatabase implements Database {
     
     if (q.getTeamName() != null)
       modifiedTeam.setTeamName(q.getTeamName());
-    if (q.getTeamMembers().size() > 0) {
+    if (q.getTeamMemberIDs() != null && q.getTeamMemberIDs().size() > 0) {
       modifiedTeam.setTeamMemberIDs(q.getTeamMemberIDs());
     }
 

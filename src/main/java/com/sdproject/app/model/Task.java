@@ -30,7 +30,7 @@ public class Task {
   }
 
   public void updateDueDate() {
-    if (this.dueDate.isAfter(LocalDateTime.now())) {
+    if (this.dueDate != null && this.dueDate.isAfter(LocalDateTime.now())) {
     
       if (recurringDays != 0) {
         this.dueDate = this.dueDate.plusDays(recurringDays);
