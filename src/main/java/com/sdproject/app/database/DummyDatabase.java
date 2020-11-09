@@ -134,7 +134,7 @@ public class DummyDatabase implements Database {
     return res;
   }
 
-  private boolean verifyUserMatchesQuery(User user, Query q) {
+  public boolean verifyUserMatchesQuery(User user, Query q) {
     boolean testName = (q.getUserName() == null) || ((q.getUserName() != null) && user.getUserName().equals(q.getUserName()));
     boolean testPass = (q.getUserPass() == null) || ((q.getUserPass() != null) && user.getUserPass().equals(q.getUserPass()));
     boolean testType = (q.getUserType() == null) || ((q.getUserType() != null) && user.getUserType().name().equals(q.getUserType()));
@@ -212,7 +212,7 @@ public class DummyDatabase implements Database {
   public int insertTeam(Query q) {
     Team newTeam = new Team(q.getTeamName());
     
-    if (q.getTeamMembers().size() != 0) {
+    if (q.getTeamMembers() != null) {
       newTeam.setTeamMemberIDs(q.getTeamMemberIDs());
     }
 
@@ -249,7 +249,7 @@ public class DummyDatabase implements Database {
     return modifiedTeam.getTeamId();
   }
 
-  private boolean verifyTeamMatchesQuery(Team t, Query q) {
+  public boolean verifyTeamMatchesQuery(Team t, Query q) {
     boolean testID = (q.getTeamId() == 0) || ((q.getTeamId() != 0) && (t.getTeamId() == q.getTeamId()));
     boolean testName = (q.getTeamName() == null) || ((q.getTeamName() != null) && (t.getTeamName().equals(q.getTeamName())));
     return (testID && testName);
