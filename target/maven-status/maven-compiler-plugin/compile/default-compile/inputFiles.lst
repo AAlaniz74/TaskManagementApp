@@ -1,8 +1,11 @@
+/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/view/ModifyUserView.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/view/mainView.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/view/CreateUserView.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/App.java
+/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/view/ModifyTaskView.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/model/UserType.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/database/Query.java
+/Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/view/ModifyTeamView.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/database/DatabaseWrapper.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/view/CreateTaskView.java
 /Users/alexbennett/Documents/Fall 2020/SoftwareDesign/Project/TaskManagementApp/src/main/java/com/sdproject/app/model/Team.java

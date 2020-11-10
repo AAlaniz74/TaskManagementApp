@@ -10,6 +10,7 @@ import com.sdproject.app.database.*;
 public class mainView extends JFrame
 {
     private DatabaseWrapper db;
+    
     private JButton addButton;
     private JButton deleteButton;
     private JButton display;

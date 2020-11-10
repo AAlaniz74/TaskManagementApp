@@ -12,6 +12,9 @@ public class App
     {
       DatabaseWrapper db = new DatabaseWrapper(new DummyDatabase());
       db.query().tableIs("User").userNameIs("Test").userPassIs("Pass").userTypeIs("NORMAL").insert();
+      /*
       LoginView login = new LoginView(db);
+      */
+      mainView mainv = new mainView(db);
     }
 }

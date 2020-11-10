@@ -64,11 +64,12 @@ public class LoginView extends JFrame {
       public void actionPerformed(ActionEvent e) {
         String username = user_text.getText();
         String password = pass_text.getText();
-        ArrayList<User> user = db.query().tableIs("User").userNameIs(username).userPassIs(password).get();
-	if (user.size() != 1) {
+        User user = db.query().tableIs("User").userNameIs(username).userPassIs(password).getOne();
+	      
+        if (user == null) {
           JOptionPane.showMessageDialog(null, "Invalid username/password");
         } else {
-          JOptionPane.showMessageDialog(null, "Logged in\nUser: " + user.get(0).getUserName() + "\nPass: " + user.get(0).getUserPass());
+          JOptionPane.showMessageDialog(null, "Logged in\nUser: " + user.getUserName());
           mainView view = new mainView(db);
           dispose();
         }		

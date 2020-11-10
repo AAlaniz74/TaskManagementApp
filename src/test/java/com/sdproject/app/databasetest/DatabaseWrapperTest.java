@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class DatabaseWrapperTest {
 
-  /*
   @Test
   public void testInsertUser() {
     Database dummy = new DummyDatabase();
@@ -60,6 +59,6 @@ public class DatabaseWrapperTest {
     ArrayList<Task> searchedTasks = db.query().tableIs("Task").get();
     assertEquals(searchedTasks.size(), 0);
   }
-  */
+  
 }
 
