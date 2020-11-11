@@ -23,6 +23,7 @@ public class Task {
    this.taskName = name;
    this.taskDesc = description;
    this.createdById = createdById;
+   this.assignedToId = createdById;
    this.createdOn = LocalDateTime.now();
    this.subtaskIDs = new ArrayList<Integer>();
    this.taskStatus = TaskStatus.IN_PROGRESS;
