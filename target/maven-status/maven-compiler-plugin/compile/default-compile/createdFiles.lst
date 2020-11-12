@@ -9,6 +9,7 @@ com/sdproject/app/view/AdminUserView$4.class
 com/sdproject/app/view/CreateUserView.class
 com/sdproject/app/view/LoginView.class
 com/sdproject/app/App.class
+com/sdproject/app/view/CreateTeamView$3.class
 com/sdproject/app/database/DatabaseWrapper.class
 com/sdproject/app/view/AdminUserView$2.class
 com/sdproject/app/database/DummyDatabase.class

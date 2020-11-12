@@ -25,7 +25,6 @@ public class AdminUserView extends JFrame {
     }
   }
 
-
   private DatabaseWrapper db;
   private int currentUserID;
   
@@ -76,10 +75,10 @@ public class AdminUserView extends JFrame {
     addButton = new JButton(new AbstractAction("Add New"){
       @Override
       public void actionPerformed(ActionEvent e) {
-        if (currentTable.equals("Task")) {
-          CreateTaskView t = new CreateTaskView(db);
-        } else if (currentTable.equals("User")){
+        if (currentTable.equals("User")) {
           CreateUserView t = new CreateUserView(db);
+        } else if (currentTable.equals("Task")) {
+          CreateTaskView t = new CreateTaskView(db);
         } else if (currentTable.equals("Team")) {
           CreateTeamView t = new CreateTeamView(db);
         }
@@ -109,27 +108,32 @@ public class AdminUserView extends JFrame {
     panel.add(displayButton);
   }
 
-  public void deleteButton(){
+  public void deleteButton() {
     deleteButton = new JButton(new AbstractAction("Delete Selected"){
       @Override
       public void actionPerformed(ActionEvent e) {
-        if (currentTable.equals("User")) {
-          db.query().tableIs(currentTable).userIdIs(selectedID).delete();
-        } else if (currentTable.equals("Team")) {
-          db.query().tableIs(currentTable).teamIdIs(selectedID).delete();
-        } else if (currentTable.equals("Task")) {
-          db.query().tableIs(currentTable).taskIdIs(selectedID).delete();
+        int confirm = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+
+          if (currentTable.equals("User")) {
+            db.query().tableIs(currentTable).userIdIs(selectedID).delete();
+          } else if (currentTable.equals("Team")) {
+            db.query().tableIs(currentTable).teamIdIs(selectedID).delete();
+          } else if (currentTable.equals("Task")) {
+            db.query().tableIs(currentTable).taskIdIs(selectedID).delete();
+          }
+          clearJList();
+          fillJList();
+          textBox.setText("");
         }
-        clearJList();
-        fillJList();
-        textBox.setText("");
       }
     });
     deleteButton.setBounds(10, 390, 125, 20);
     panel.add(deleteButton);
   }
 
-  public void modifyButton(){
+  public void modifyButton() {
     modifyButton = new JButton("Modify Selected");
     /*
     modifyButton = new JButton(new AbstractAction("Modify Selected"){
@@ -154,7 +158,7 @@ public class AdminUserView extends JFrame {
     panel.add(modifyButton);
   }
 
-  public void createJList(){
+  public void createJList() {
     list.setModel(model);
     fillJList();
     list.setBounds(10, 40, 250, 340);
@@ -162,13 +166,13 @@ public class AdminUserView extends JFrame {
     list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
-        selectedID = list.getSelectedValue().ID;
+        selectedID = (list.getSelectedValue() == null) ? 0 : list.getSelectedValue().ID;
         displayText();
       }
     });
   }
 
-  public void createTextArea(){
+  public void createTextArea() {
     textBox = new JTextArea();
     textBox.setBounds(280, 40, 390, 340);
     textBox.setEditable(false);
@@ -199,7 +203,9 @@ public class AdminUserView extends JFrame {
 
   public void displayText() {
     
-    if (currentTable.equals("User")) {
+    if (selectedID == 0) {
+      return;
+    } else if (currentTable.equals("User")) {
       User selectedUser = db.query().tableIs("User").userIdIs(selectedID).getOne();
       textBox.setText("Name: " + selectedUser.getUserName() +
                       "\nID: " + selectedUser.getUserId() +
@@ -243,7 +249,7 @@ public class AdminUserView extends JFrame {
       Team selectedTeam = db.query().tableIs("Team").teamIdIs(selectedID).getOne();
       
       String text = "Team Name: " + selectedTeam.getTeamName() + 
-                    "\nTeam Members:\n";
+                    "\nTeam Members:";
       ArrayList<User> userlist = db.query().tableIs("Team").teamIdIs(selectedID).getTeamMembers();
       
       for (User user : userlist)
@@ -255,6 +261,7 @@ public class AdminUserView extends JFrame {
   }
 
   public void clearJList(){
+    selectedID = 0;
     model.clear();
   }
 

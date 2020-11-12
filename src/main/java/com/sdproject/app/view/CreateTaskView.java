@@ -14,26 +14,26 @@ import com.sdproject.app.database.Query;
 import com.sdproject.app.model.Task;
 import com.sdproject.app.model.TaskStatus;
 
-public class CreateTaskView extends JFrame{
+public class CreateTaskView extends JFrame {
 
-    private DatabaseWrapper db;
-    private JPanel panel;
-    private JLabel name_label,des_label,duedate_label, subtask_label;
-    private JTextField name, duedate;
-    private JTextArea description;
-    private JCheckBoxList subtask;
-    private JButton submit, cancel;
-    //private int Task
+  private DatabaseWrapper db;
 
-    public CreateTaskView(DatabaseWrapper db){
-        this.db = db;
-        panel = new JPanel(new GridLayout(6,1));
-        addNameTextBox();
-        addDescription();
-        addSubtask();
-        addDueDate();
-        addSubmitButton();
-        addCancelButton();
+  private JPanel panel;
+  private JLabel name_label,des_label,duedate_label, subtask_label;
+  private JTextField name, duedate;
+  private JTextArea description;
+  private JCheckBoxList subtask;
+  private JButton submit, cancel;
+
+  public CreateTaskView(DatabaseWrapper db){
+    this.db = db;
+    panel = new JPanel(new GridLayout(6,1));
+    addNameTextBox();
+    addDescription();
+    addSubtask();
+    addDueDate();
+    addSubmitButton();
+    addCancelButton();
 
         add(panel, BorderLayout.CENTER);
 

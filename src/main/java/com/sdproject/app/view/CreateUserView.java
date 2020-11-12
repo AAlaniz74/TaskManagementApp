@@ -43,7 +43,7 @@ public class CreateUserView extends JFrame {
     addTypeLabel();
     addSubmitButton();
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     add(panel, BorderLayout.CENTER);
     setTitle("New User creation");
     setSize(600, 600);
@@ -81,18 +81,17 @@ public class CreateUserView extends JFrame {
     submit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         String newUserName = user_text.getText();
-	String newUserPass = pass_text.getText();
+	      String newUserPass = pass_text.getText();
         String newUserType = (String) user_type.getSelectedItem();
-        ArrayList<User> searched = db.query().tableIs("User").userNameIs(newUserName).get();
+        boolean nameTest = db.query().tableIs("User").userNameIs(newUserName).get() != null;
 
-	if (searched.size() != 0) {
+	      if (nameTest) {
           JOptionPane.showMessageDialog(null, "User name already taken.");
-	} else {
+	      } else {
           db.query().tableIs("User").userNameIs(newUserName).userPassIs(newUserPass).userTypeIs(newUserType).insert();
-	  JOptionPane.showMessageDialog(null, "New user created.");
-	  LoginView login = new LoginView(db);
-	  dispose();
-	}
+	        JOptionPane.showMessageDialog(null, "New user created.");
+	        dispose();
+	      }
       }
     });
     panel.add(submit);

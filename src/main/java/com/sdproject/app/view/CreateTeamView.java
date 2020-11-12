@@ -15,93 +15,101 @@ import com.sdproject.app.model.User;
 
 public class CreateTeamView extends JFrame{
 
-    private DatabaseWrapper db;
-    private JPanel panel;
-    private JLabel name_label,des_label,duedate_label, teamlist_label;
-    private JTextField name, duedate;
-    private JTextArea description;
-    private JCheckBoxList teamlist;
-    private JButton submit,cancel;
+  private DatabaseWrapper db;
+  
+  private ArrayList<Integer> teamMembers;
+  
+  private JPanel panel, teamlistPanel;
+  private JLabel nameLabel, teamlistLabel;
+  private JTextField nameField;
+  private JButton submitButton, cancelButton;
+  private JScrollPane checkBoxScroll;
 
-    public CreateTeamView(DatabaseWrapper db){
-        this.db = db;
-        panel = new JPanel(new GridLayout(3,1));
+  public CreateTeamView(DatabaseWrapper db) {
+    this.db = db;
+    teamMembers = new ArrayList<Integer>();
+    panel = new JPanel(new GridLayout(3,1));
 
-        addNameTextBox();
-        addTeamList();
+    addNameTextBox();
+    addTeamList();
 
-        addSubmitButton();
-        addCancelButton();
+    addSubmitButton();
+    addCancelButton();
+    add(panel, BorderLayout.CENTER);
 
-        add(panel, BorderLayout.CENTER);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setTitle("Create Task");
+    setSize(500, 300);
+    setVisible(true);
+  }
 
 
+  public void addNameTextBox(){
+    nameLabel = new JLabel("Enter Name:");
+    nameField = new JTextField("Name",100);
+    panel.add(nameLabel);
+    panel.add(nameField);
+  }
 
+  public void addTeamList(){
+    teamlistLabel = new JLabel("Select All Team Members to add to team");
+    teamlistPanel = new JPanel();
+    checkBoxScroll = new JScrollPane(teamlistPanel);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("CreateTask");
-        setSize(500, 300);
-        setVisible(true);
+    ActionListener actionListener = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        JCheckBox checkBox = (JCheckBox) e.getSource();
+        int userID = (int) checkBox.getClientProperty("ID");
+        if (checkBox.isSelected()) {
+          teamMembers.add(userID);
+        } else if (teamMembers.contains(userID)) {
+          teamMembers.remove(userID);
+        }
+      }
+    };
 
+    ArrayList<User> userList = db.query().tableIs("User").get();
+    for (User user : userList) {
+      JCheckBox newCheckBox = new JCheckBox(user.getUserName());
+      newCheckBox.addActionListener(actionListener);
+      newCheckBox.putClientProperty("ID", user.getUserId());
+      teamlistPanel.add(newCheckBox);
     }
 
-
-    public void addNameTextBox(){
-        name_label = new JLabel("Enter Name:");
-        name = new JTextField("Name",100);
-
-        panel.add(name_label);
-        panel.add(name);
-    }
-
-    public void addTeamList(){
-        teamlist_label = new JLabel("Select All Team Members to add to team");
-        teamlist = new JCheckBoxList();
-        ArrayList<User> userList = db.query().tableIs("User").get();
-        for (int i = 0; i < userList.size(); i++)
-            teamlist.addCheckbox(new JCheckBox( userList.get(i).getUserName()));
-
-        panel.add(teamlist_label);
-        panel.add(teamlist);
-
-    }
+    panel.add(teamlistLabel);
+    panel.add(checkBoxScroll);
+  }
 
 
-    public void addSubmitButton(){
-        submit = new JButton("Submit");
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainView t = new mainView(db);
-                dispose();
-            }
-        });
-
-        panel.add(submit);
-
-
-    }
-    public void addCancelButton(){
-
-        cancel = new JButton("Cancel");
-        cancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //System.out.println(duedate.getText());
-                //db.query().tableIs("User").userNameIs(newUserName).userPassIs(newUserPass).userTypeIs(newUserType).insert();
-
-                JOptionPane.showMessageDialog(null, "Creation Cancled");
-                mainView t = new mainView(db);
-                dispose();
-            }
-        });
-
-        panel.add(cancel);
-
-
-
-    }
-
+  public void addSubmitButton() {
+    submitButton = new JButton("Submit");
+    submitButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (nameField.getText().equals("")) {
+          JOptionPane.showMessageDialog(null, "Team must have a name");
+        } else if (teamMembers.size() < 2) {
+          JOptionPane.showMessageDialog(null, "Team must have at least 2 members");
+        } else {
+          db.query().tableIs("Team").teamNameIs(nameField.getText()).allTeamMembersAre(teamMembers).insert();
+          dispose();
+        }
+        
+      }
+    });
+    panel.add(submitButton);
+  }
+    
+  public void addCancelButton() {
+    cancelButton = new JButton("Cancel");
+    cancelButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        dispose();
+      }
+    });
+    panel.add(cancelButton);
+  }
 
 }
