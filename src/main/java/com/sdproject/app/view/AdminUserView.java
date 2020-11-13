@@ -78,7 +78,7 @@ public class AdminUserView extends JFrame {
         if (currentTable.equals("User")) {
           CreateUserView t = new CreateUserView(db);
         } else if (currentTable.equals("Task")) {
-          CreateTaskView t = new CreateTaskView(db);
+          CreateTaskView t = new CreateTaskView(db, currentUserID);
         } else if (currentTable.equals("Team")) {
           CreateTeamView t = new CreateTeamView(db);
         }

@@ -83,9 +83,13 @@ public class CreateUserView extends JFrame {
         String newUserName = user_text.getText();
 	      String newUserPass = pass_text.getText();
         String newUserType = (String) user_type.getSelectedItem();
-        boolean nameTest = db.query().tableIs("User").userNameIs(newUserName).get() != null;
+        boolean nameTest = db.query().tableIs("User").userNameIs(newUserName).get().size() != 0;
 
-	      if (nameTest) {
+        if (newUserName.equals("")) {
+          JOptionPane.showMessageDialog(null, "User must have a user name");
+        } else if (newUserPass.equals("")) {
+          JOptionPane.showMessageDialog(null, "User must have a password");
+        } else if (nameTest) {
           JOptionPane.showMessageDialog(null, "User name already taken.");
 	      } else {
           db.query().tableIs("User").userNameIs(newUserName).userPassIs(newUserPass).userTypeIs(newUserType).insert();

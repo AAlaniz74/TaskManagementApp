@@ -17,127 +17,137 @@ import com.sdproject.app.model.TaskStatus;
 public class CreateTaskView extends JFrame {
 
   private DatabaseWrapper db;
+  private int currentUserID;
+
+  private ArrayList<Integer> subtaskIDs;
 
   private JPanel panel;
-  private JLabel name_label,des_label,duedate_label, subtask_label;
-  private JTextField name, duedate;
-  private JTextArea description;
-  private JCheckBoxList subtask;
-  private JButton submit, cancel;
+  private JLabel nameLabel,descLabel, dueDateLabel, subtaskLabel, recurringLabel;
+  private JTextField nameField;
+  private JTextArea descField;
+  private JFormattedTextField recurringField, dueDateField;
+  private JButton submitButton, cancelButton;
 
-  public CreateTaskView(DatabaseWrapper db){
+  public CreateTaskView(DatabaseWrapper db, int currentUserID){
     this.db = db;
-    panel = new JPanel(new GridLayout(6,1));
+    this.currentUserID = currentUserID;
+    subtaskIDs = new ArrayList<Integer>();
+    panel = new JPanel(new GridLayout(8,1));
     addNameTextBox();
     addDescription();
     addSubtask();
+    addAssignedTo();
     addDueDate();
+    addRecurringDays();
+    addColorHex();
     addSubmitButton();
     addCancelButton();
 
-        add(panel, BorderLayout.CENTER);
+    add(panel, BorderLayout.CENTER);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setTitle("CreateTask");
+    setSize(500, 700);
+    setVisible(true);
+  }
 
+  public void addNameTextBox(){
+    nameLabel = new JLabel("Enter Name:");
+    nameField = new JTextField("Name",100);
+    panel.add(nameLabel);
+    panel.add(nameField);
+  }
 
+  public void addDescription(){
+    descLabel = new JLabel("Enter Description:");
+    descField = new JTextArea(10,100 );
+    panel.add(descLabel);
+    panel.add(descField);
+  }
+    
+  public void addSubtask(){
+    subtaskLabel = new JLabel("Select SubTasks");
+    subtaskPanel = new JPanel();
+    checkBoxScroll = new JScrollPane(subtaskPanel);
 
+    ActionListener actionListener = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        JCheckBox checkBox = (JCheckBox) e.getSource();
+        int taskID = (int) checkBox.getClientProperty("ID");
+        if (checkBox.isSelected()) {
+          subtaskIDs.add(taskID);
+        } else if (subtaskIDs.contains(taskID)) {
+          subtaskIDs.remove(taskID);
+        }
+      }
+    };
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("CreateTask");
-        setSize(500, 700);
-        setVisible(true);
-
+    ArrayList<Task> taskList = db.query().tableIs("Task").get();
+    for (Task task : taskList) {
+      JCheckBox newCheckBox = new JCheckBox(task.getTaskName());
+      newCheckBox.addActionListener(actionListener);
+      newCheckBox.putClientProperty("ID", task.getTaskId());
+      subtaskPanel.add(newCheckBox);
     }
 
-    public void addNameTextBox(){
-        name_label = new JLabel("Enter Name:");
-        name = new JTextField("Name",100);
+    panel.add(subtaskLabel);
+    panel.add(checkBoxScroll);
+  }
 
-        panel.add(name_label);
-        panel.add(name);
-    }
+  public void addAssignedTo() {
 
-    public void addDescription(){
-        des_label = new JLabel("Enter Description:");
-        description = new JTextArea(10,100 );
+  }
 
-        panel.add(des_label);
-        panel.add(description);
+  public void addDueDate(){
+    dueDateLabel = new JLabel("Due date:");
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    dueDateField = new JFormattedTextField(format);
+    panel.add(dueDateLabel);
+    panel.add(dueDateField);  
+  }
 
-    }
-    public void addSubtask(){
-        subtask_label = new JLabel("Select SubTasks");
-        subtask = new JCheckBoxList();
+  public void addRecurringDays() {
+    recurringLabel = new JLabel("If recurring task, how many days should it recur? (Zero means non-recurring)");
+    NumberFormat format = NumberFormat.getInstance();
+    format.setGroupingUsed(false);
+    NumberFormatter dayFormatter = new NumberFormatter(format);
+    dayFormatter.setValueClass(Integer.class);
+    dayFormatter.setMinimum(0);
+    dayFormatter.setMaximum(Integer.MAX_VALUE);
+    dayFormatter.setAllowsInvalid(false);
+    dayFormatter.setCommitsOnValidEdit(true);
 
-        System.out.println("Hello");
-        ArrayList<Task> taskList = db.query().tableIs("Task").get();
-        for (int i = 0; i < taskList.size(); i++)
-            subtask.addCheckbox(new JCheckBox( taskList.get(i).getTaskName()));
-        //for(int i = 701; i < 706; i++){
-            //System.out.println("InFor");
-            //Task send = db.query().tableIs("Task").taskIdIs(i).getOne();
+    recurringField = new JFormattedTextField(dayFormatter);
+    recurringField.setText("0");
+    panel.add(recurringLabel);
+    panel.add(recurringField);
+  }
 
-            //subtask.addCheckbox(new JCheckBox(send.getTaskName()));
-            //System.out.println(send);
-        //}
+  public void addColorHex() {
 
+  }
 
-        panel.add(subtask_label);
-        panel.add(subtask);
+  public void addSubmitButton(){
+    submitButton = new JButton("Submit");
+    submitButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
 
-    }
+      }
+    });
 
-    public void addDueDate(){
-        duedate_label = new JLabel("Due Date: ");
-        duedate = new JTextField("MM/DD/YYYY");
-        panel.add(duedate_label);
-        panel.add(duedate);
-    }
-
-    public void addSubmitButton(){
-
-        submit = new JButton("Submit");
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //System.out.println(duedate.getText());
-                //db.query().tableIs("User").userNameIs(newUserName).userPassIs(newUserPass).userTypeIs(newUserType).insert();
-                db.query().tableIs("Task").taskNameIs(name.getText()).taskDescIs(description.getText()).taskStatusIs("IN_PROGRESS").insert();
-                ListModel test = subtask.getModel();
-                for(int i = 0; i < test.getSize(); i++){
-                    System.out.println(test.getElementAt(i) + " ");
-                }
-                JOptionPane.showMessageDialog(null, "New Task Created.");
-                mainView t = new mainView(db);
-                dispose();
-            }
-        });
-
-        panel.add(submit);
-
-
-
-    }
-    public void addCancelButton(){
-
-        cancel = new JButton("Cancel");
-        cancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                //System.out.println(duedate.getText());
-                //db.query().tableIs("User").userNameIs(newUserName).userPassIs(newUserPass).userTypeIs(newUserType).insert();
-
-                JOptionPane.showMessageDialog(null, "Creation Cancled");
-                mainView t = new mainView(db);
-                dispose();
-            }
-        });
-
-        panel.add(cancel);
-
-
-
-    }
-
+    panel.add(submitButton);
+  }
+    
+  public void addCancelButton(){
+    cancelButton = new JButton("Cancel");
+    cancelButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        dispose();
+      }
+    });
+    panel.add(cancelButton);
+  }
 
 }
