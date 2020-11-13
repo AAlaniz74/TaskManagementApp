@@ -116,7 +116,7 @@ public class NormalUserView extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
         
         if (confirm == JOptionPane.YES_OPTION) {
-            db.query().tableIs(currentTable).taskIdIs(selectedID).delete();
+            db.query().tableIs("Task").taskIdIs(selectedID).delete();
           }
           clearJList();
           fillJList();
