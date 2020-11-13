@@ -9,7 +9,7 @@ public class ModifyUserView extends JFrame{
     private static final long serialVersionUID = 1L;
     private JPanel panel;
     private DatabaseWrapper db;
-    private mainView view;
+    private AdminUserView view;
     private JLabel name, password, userType;
     private JTextField nameField;
     private JPasswordField passField;
@@ -18,7 +18,7 @@ public class ModifyUserView extends JFrame{
     private JButton cancel;
     private User user;
 
-    public ModifyUserView(DatabaseWrapper db, User user, mainView main)
+    public ModifyUserView(DatabaseWrapper db, User user, AdminUserView main)
     {
         this.db = db;
         this.user = user;
