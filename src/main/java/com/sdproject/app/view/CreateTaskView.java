@@ -16,16 +16,33 @@ import com.sdproject.app.model.TaskStatus;
 
 public class CreateTaskView extends JFrame {
 
+  class ColorItem {
+    String colorName;
+    String colorHex;
+
+    ColorItem(String colorName, String colorHex) {
+      this.colorName = colorName;
+      this.colorHex = colorHex;
+    }
+
+    @Override
+    public String toString() {
+      return this.colorName;
+    }
+  }
+
   private DatabaseWrapper db;
   private int currentUserID;
 
   private ArrayList<Integer> subtaskIDs;
+  private int assignedToID;
 
   private JPanel panel;
-  private JLabel nameLabel,descLabel, dueDateLabel, subtaskLabel, recurringLabel;
+  private JLabel nameLabel, descLabel, dueDateLabel, subtaskLabel, recurringLabel, colorLabel;
   private JTextField nameField;
   private JTextArea descField;
   private JFormattedTextField recurringField, dueDateField;
+  private JComboBox<ColorItem> colorType;
   private JButton submitButton, cancelButton;
 
   public CreateTaskView(DatabaseWrapper db, int currentUserID){
@@ -95,6 +112,37 @@ public class CreateTaskView extends JFrame {
   }
 
   public void addAssignedTo() {
+    assignedToLabel = new JLabel("Assigned to:");
+    assignedToPanel = new JPanel();
+    assignedButtonGroup = new ButtonGroup();
+    assignedScroll = new JScrollPane(assignedToPanel);
+
+    ActionListener actionListener = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        JRadioButton selected = (JRadioButton) e.getSource();
+        int selectedID = selected.getClientProperty("ID");
+        assignedToID = selectedID; 
+      }
+    }
+
+    ArrayList<User> userList = db.query().tableIs("User").get();
+    for (User user : userList) {
+      JRadioButton newButton = new JRadioButton(user.getUserName());
+      newButton.addActionListener(actionListener);
+      newButton.putClientProperty("ID", user.getUserId());
+      assignedButtonGroup.add(newButton);
+    }
+
+    ArrayList<Team> teamList = db.query().tableIs("Team").get();
+    for (Team team : teamList) {
+      JRadioButton newButton = new JRadioButton(user.getTeamName());
+      newButton.addActionListener(actionListener);
+      newButton.putClientProperty("ID", user.getTeamId());
+      assignedButtonGroup.add(newButton);
+    }
+
+    //TODO: Finish this method
 
   }
 
@@ -124,7 +172,11 @@ public class CreateTaskView extends JFrame {
   }
 
   public void addColorHex() {
-
+    colorLabel = new JLabel("Add color:");
+    ColorItem[] colorList = new ColorItem[] { new ColorItem("None", null), new ColorItem("Blue", "#0000ff"), new ColorItem("Red", "#ff0000"), new ColorItem("Green", "#00ff00") };
+    colorType = new JComboBox<ColorItem>(colorList);
+    panel.add(colorLabel);
+    panel.add(colorType);
   }
 
   public void addSubmitButton(){
@@ -132,6 +184,8 @@ public class CreateTaskView extends JFrame {
     submitButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+
+        //TODO: Finish this action listener
 
       }
     });
