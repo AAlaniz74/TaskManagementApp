@@ -76,7 +76,7 @@ public class NormalUserView extends JFrame {
     addButton = new JButton(new AbstractAction("New Task"){
       @Override
       public void actionPerformed(ActionEvent e) {
-          CreateTaskView t = new CreateTaskView(db);
+          CreateTaskView t = new CreateTaskView(db, currentUserID);
       }
     });
     addButton.setBounds(10, 420, 90, 20);

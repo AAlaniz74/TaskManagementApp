@@ -9,10 +9,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
+import javax.swing.text.MaskFormatter;
+import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
+import javax.swing.text.NumberFormatter;
+import java.text.ParseException;
+
 import com.sdproject.app.database.DatabaseWrapper;
 import com.sdproject.app.database.Query;
 import com.sdproject.app.model.Task;
 import com.sdproject.app.model.TaskStatus;
+import com.sdproject.app.model.User;
+import com.sdproject.app.model.Team;
 
 public class CreateTaskView extends JFrame {
 
@@ -37,17 +45,20 @@ public class CreateTaskView extends JFrame {
   private ArrayList<Integer> subtaskIDs;
   private int assignedToID;
 
-  private JPanel panel;
-  private JLabel nameLabel, descLabel, dueDateLabel, subtaskLabel, recurringLabel, colorLabel;
+  private JPanel panel, subtaskPanel, assignedToPanel;
+  private JLabel nameLabel, descLabel, dueDateLabel, subtaskLabel, recurringLabel, colorLabel, assignedToLabel;
   private JTextField nameField;
   private JTextArea descField;
   private JFormattedTextField recurringField, dueDateField;
   private JComboBox<ColorItem> colorType;
   private JButton submitButton, cancelButton;
+  private JScrollPane checkBoxScroll;
+  private ButtonGroup assignedButtonGroup;
 
   public CreateTaskView(DatabaseWrapper db, int currentUserID){
     this.db = db;
     this.currentUserID = currentUserID;
+    this.assignedToID = currentUserID;
     subtaskIDs = new ArrayList<Integer>();
     panel = new JPanel(new GridLayout(8,1));
     addNameTextBox();
@@ -115,16 +126,15 @@ public class CreateTaskView extends JFrame {
     assignedToLabel = new JLabel("Assigned to:");
     assignedToPanel = new JPanel();
     assignedButtonGroup = new ButtonGroup();
-    assignedScroll = new JScrollPane(assignedToPanel);
 
     ActionListener actionListener = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         JRadioButton selected = (JRadioButton) e.getSource();
-        int selectedID = selected.getClientProperty("ID");
+        int selectedID = (int) selected.getClientProperty("ID");
         assignedToID = selectedID; 
       }
-    }
+    };
 
     ArrayList<User> userList = db.query().tableIs("User").get();
     for (User user : userList) {
@@ -132,24 +142,34 @@ public class CreateTaskView extends JFrame {
       newButton.addActionListener(actionListener);
       newButton.putClientProperty("ID", user.getUserId());
       assignedButtonGroup.add(newButton);
+      assignedToPanel.add(newButton);
     }
 
     ArrayList<Team> teamList = db.query().tableIs("Team").get();
     for (Team team : teamList) {
-      JRadioButton newButton = new JRadioButton(user.getTeamName());
+      JRadioButton newButton = new JRadioButton(team.getTeamName());
       newButton.addActionListener(actionListener);
-      newButton.putClientProperty("ID", user.getTeamId());
+      newButton.putClientProperty("ID", team.getTeamId());
       assignedButtonGroup.add(newButton);
+      assignedToPanel.add(newButton);
     }
 
-    //TODO: Finish this method
+    panel.add(assignedToLabel);
+    panel.add(new JScrollPane(assignedToPanel));
 
   }
 
   public void addDueDate(){
-    dueDateLabel = new JLabel("Due date:");
-    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    dueDateField = new JFormattedTextField(format);
+    dueDateLabel = new JLabel("Due date (use format 'yyyy-mm-dd'):");
+    try {
+      MaskFormatter formatter = new MaskFormatter("####-##-##");
+      formatter.setValidCharacters("0123456789");
+      formatter.setPlaceholderCharacter('_');
+      dueDateField = new JFormattedTextField(formatter);
+    } catch (ParseException e) {
+      System.err.println("Mask formatter error: " + e.getMessage());
+    }
+
     panel.add(dueDateLabel);
     panel.add(dueDateField);  
   }
@@ -185,8 +205,29 @@ public class CreateTaskView extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
 
-        //TODO: Finish this action listener
+        Query q = new Query().tableIs("Task");
 
+        if (nameField.getText().equals("")) {
+          JOptionPane.showMessageDialog(null, "Task must have name");
+          return;
+        } 
+        
+        q = q.taskNameIs(nameField.getText()).taskDescIs(descField.getText()).createdByIdIs(currentUserID);
+
+        if (subtaskIDs.size() != 0)
+          q = q.allSubtasksAre(subtaskIDs);
+        
+        ColorItem colorItem = (ColorItem) colorType.getSelectedItem();
+        q = q.colorHexIs(colorItem.colorHex);
+
+        if (!dueDateField.getText().equals(""))
+          q = q.dueDateIs(dueDateField.getText());
+
+        q.recurringDaysIs(Integer.parseInt(recurringField.getText()));
+
+        db.insert(q);
+        JOptionPane.showMessageDialog(null, "New task created!");
+        dispose();        
       }
     });
 

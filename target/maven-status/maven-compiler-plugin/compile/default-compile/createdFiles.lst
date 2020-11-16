@@ -2,7 +2,9 @@ com/sdproject/app/view/AdminUserView$1.class
 com/sdproject/app/view/CreateUserView$1.class
 com/sdproject/app/model/Task.class
 com/sdproject/app/model/UserType.class
+com/sdproject/app/view/SearchView$2.class
 com/sdproject/app/view/AdminUserView$4.class
+com/sdproject/app/view/SearchView.class
 com/sdproject/app/view/AdminUserView$2.class
 com/sdproject/app/database/Query.class
 com/sdproject/app/database/Database.class
@@ -10,11 +12,15 @@ com/sdproject/app/model/TaskStatus.class
 com/sdproject/app/view/AdminUserView$ListElement.class
 com/sdproject/app/view/AdminUserView$3.class
 com/sdproject/app/view/AdminUserView.class
+com/sdproject/app/view/CreateTaskView$4.class
 com/sdproject/app/view/LoginView$2.class
 com/sdproject/app/view/CreateUserView.class
+com/sdproject/app/view/SearchView$1.class
 com/sdproject/app/view/LoginView.class
 com/sdproject/app/App.class
 com/sdproject/app/view/CreateTeamView$3.class
+com/sdproject/app/view/CreateTaskView$ColorItem.class
+com/sdproject/app/view/CreateTaskView$3.class
 com/sdproject/app/database/DatabaseWrapper.class
 com/sdproject/app/database/DummyDatabase.class
 com/sdproject/app/model/Team.class
