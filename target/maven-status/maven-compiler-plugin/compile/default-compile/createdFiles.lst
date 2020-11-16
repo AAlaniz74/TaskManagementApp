@@ -24,5 +24,6 @@ com/sdproject/app/view/CreateTaskView$3.class
 com/sdproject/app/database/DatabaseWrapper.class
 com/sdproject/app/database/DummyDatabase.class
 com/sdproject/app/model/Team.class
+com/sdproject/app/view/AdminUserView$1SelectedListCellRenderer.class
 com/sdproject/app/view/LoginView$1.class
 com/sdproject/app/model/User.class

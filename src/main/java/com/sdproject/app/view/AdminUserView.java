@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import com.sdproject.app.model.*;
 import com.sdproject.app.database.*;
 import java.time.format.DateTimeFormatter;
+import java.awt.Component;
+import java.awt.Color;
 
 public class AdminUserView extends JFrame {
 
@@ -170,6 +172,23 @@ public class AdminUserView extends JFrame {
         displayText();
       }
     });
+
+    class SelectedListCellRenderer extends DefaultListCellRenderer {
+      @Override
+      public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+         if (currentTable.equals("Task")) {
+           Task selectedTask = db.query().tableIs(currentTable).taskIdIs(selectedID).getOne();
+           String colorHex = selectedTask.getColorHex();
+           if (colorHex != null) {  
+             c.setBackground(Color.decode(colorHex));
+           }
+         }
+         return c;
+     }
+    };
+
+    list.setCellRenderer(new SelectedListCellRenderer());
   }
 
   public void createTextArea() {

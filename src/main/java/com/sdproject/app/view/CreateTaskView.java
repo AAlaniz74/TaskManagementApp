@@ -8,6 +8,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import java.util.List;
+import java.util.Arrays;
 
 import javax.swing.text.MaskFormatter;
 import java.text.SimpleDateFormat;
@@ -220,8 +225,20 @@ public class CreateTaskView extends JFrame {
         ColorItem colorItem = (ColorItem) colorType.getSelectedItem();
         q = q.colorHexIs(colorItem.colorHex);
 
-        if (!dueDateField.getText().equals(""))
-          q = q.dueDateIs(dueDateField.getText());
+        if (dueDateField.isEditValid()) {
+          if (!verifyDate(dueDateField.getText())) {
+            return;
+          }
+          
+          LocalDate compare = LocalDate.parse(dueDateField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+          if (LocalDate.now().isAfter(compare)) {
+            JOptionPane.showMessageDialog(null, "Due date must be in the future");
+            return;
+          } else {
+            q = q.dueDateIs(dueDateField.getText());
+          }
+        }
 
         q.recurringDaysIs(Integer.parseInt(recurringField.getText()));
 
@@ -232,6 +249,50 @@ public class CreateTaskView extends JFrame {
     });
 
     panel.add(submitButton);
+  }
+
+  public boolean verifyDate(String dateStr) {
+    String dateVal[] = dateStr.split("-");
+    int[] date = new int[] { Integer.parseInt(dateVal[0]), Integer.parseInt(dateVal[1]), Integer.parseInt(dateVal[2]) }; 
+
+    if (date[1] < 1 || date[1] > 12) {
+      JOptionPane.showMessageDialog(null, "Invalid month value");
+      return false;
+    }
+
+    if (date[2] < 0) {
+      JOptionPane.showMessageDialog(null, "Day value must be greater than 1");
+      return false;
+    }
+
+    Integer[] thirtyArr = new Integer[] { 4, 6, 9, 11 };
+    Integer[] thirtyOneArr = new Integer[] { 1, 3, 5, 7, 8, 10, 12 };
+    List<Integer> thirtyDays = Arrays.asList(thirtyArr);
+    List<Integer> thirtyOneDays = Arrays.asList(thirtyOneArr);
+
+    if (thirtyDays.contains(date[1]) && date[2] > 30) {
+      JOptionPane.showMessageDialog(null, "This month has only 30 days");
+      return false;
+    }
+
+    if (thirtyOneDays.contains(date[1]) && date[2] > 31) {
+      JOptionPane.showMessageDialog(null, "This month has only 31 days");
+      return false;
+    }
+
+    boolean leapYear = (((date[0] % 4 == 0) && (date[0] % 100 != 0)) || (date[0] % 400 == 0));
+
+    if (date[1] == 2 && !leapYear && date[2] > 28) {
+      JOptionPane.showMessageDialog(null, "This month has only 28 days");
+      return false;
+    }
+
+    if (date[1] == 2 && leapYear && date[2] > 29) {
+      JOptionPane.showMessageDialog(null, "This month has only 29 days");
+      return false;
+    }
+
+    return true;
   }
     
   public void addCancelButton(){

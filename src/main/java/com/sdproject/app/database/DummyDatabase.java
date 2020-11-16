@@ -4,7 +4,7 @@ import com.sdproject.app.model.*;
 
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class DummyDatabase implements Database {
   private ArrayList<User> allUsers;
@@ -160,7 +160,7 @@ public class DummyDatabase implements Database {
     if (q.getColorHex() != null)
 	    t.setColorHex(q.getColorHex());
     if (q.getDueDate() != null)
-      t.setDueDate(LocalDateTime.parse(q.getDueDate(), formatter));
+      t.setDueDate(LocalDate.parse(q.getDueDate(), formatter));  
     if (q.getRecurringDays() != 0)
       t.setRecurringDays(q.getRecurringDays());
     if (q.getSubtaskIDs().size() > 0)

@@ -1,7 +1,7 @@
 package com.sdproject.app.model;
 
 import java.util.ArrayList;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Task {
 
@@ -14,8 +14,8 @@ public class Task {
   private ArrayList<Integer> subtaskIDs;
   private int assignedToId;
   private int createdById;
-  private LocalDateTime createdOn;
-  private LocalDateTime dueDate;
+  private LocalDate createdOn;
+  private LocalDate dueDate;
   private int recurringDays;
   private String colorHex;
 
@@ -24,14 +24,14 @@ public class Task {
    this.taskDesc = description;
    this.createdById = createdById;
    this.assignedToId = createdById;
-   this.createdOn = LocalDateTime.now();
+   this.createdOn = LocalDate.now();
    this.subtaskIDs = new ArrayList<Integer>();
    this.taskStatus = TaskStatus.IN_PROGRESS;
    this.taskId = nextID++;
   }
 
   public void updateDueDate() {
-    if (this.dueDate != null && this.dueDate.isAfter(LocalDateTime.now())) {
+    if (this.dueDate != null && LocalDate.now().isAfter(this.dueDate)) {
     
       if (recurringDays != 0) {
         this.dueDate = this.dueDate.plusDays(recurringDays);
@@ -102,15 +102,15 @@ public class Task {
     return this.createdById;
   }
 
-  public LocalDateTime getCreatedOn() {
+  public LocalDate getCreatedOn() {
     return this.createdOn;
   }
 
-  public LocalDateTime getDueDate() {
+  public LocalDate getDueDate() {
     return this.dueDate;
   }
 
-  public void setDueDate(LocalDateTime newDate) {
+  public void setDueDate(LocalDate newDate) {
     this.dueDate = newDate;
   }
 
