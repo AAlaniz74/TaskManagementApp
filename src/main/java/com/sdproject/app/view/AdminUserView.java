@@ -21,7 +21,7 @@ public class AdminUserView extends JFrame {
 
   private JButton addButton;
   private JButton deleteButton;
-  private JButton displayButton;
+  private JButton searchButton;
   private JButton modifyButton;
   private JPanel panel;
   private JComboBox<String> tables;
@@ -44,6 +44,7 @@ public class AdminUserView extends JFrame {
     addNewButton();
     deleteButton();
     modifyButton();
+    searchButton();
     createJList();
     createTextArea();
 
@@ -134,6 +135,17 @@ public class AdminUserView extends JFrame {
     */
     modifyButton.setBounds(140, 390, 125, 20);
     panel.add(modifyButton);
+  }
+
+  public void searchButton() {
+    searchButton = new JButton(new AbstractAction("Search"){
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        SearchView t = new SearchView(db);
+      }
+    });
+    searchButton.setBounds(110, 420, 90, 20);
+    panel.add(searchButton);
   }
 
   public void createJList() {

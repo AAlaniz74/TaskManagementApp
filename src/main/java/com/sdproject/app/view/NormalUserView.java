@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import com.sdproject.app.model.*;
 import com.sdproject.app.database.*;
 import java.time.format.DateTimeFormatter;
+import java.awt.Component;
+import java.awt.Color;
 
 public class NormalUserView extends JFrame {
 
@@ -34,7 +36,7 @@ public class NormalUserView extends JFrame {
 
   private JButton addButton;
   private JButton deleteButton;
-  private JButton displayButton;
+  private JButton searchButton;
   private JButton modifyButton;
   private JPanel panel;
   private JComboBox<String> tables;
@@ -55,7 +57,7 @@ public class NormalUserView extends JFrame {
 
     comboBoxes();
     addNewButton();
-    displayButton();
+    searchButton();
     deleteButton();
     modifyButton();
     createJList();
@@ -68,49 +70,64 @@ public class NormalUserView extends JFrame {
     String[] tableList = {"Assigned Tasks", "Created Tasks", "Team"};
 
     tables = new JComboBox<String>(tableList);
-    tables.setBounds(115, 10, 120 , 20);
+    tables.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent event) {
+        if (event.getStateChange() == ItemEvent.SELECTED) {
+          currentTable = (String) event.getItem();
+          if(currentTable.equals("Created Tasks"))
+          {
+            deleteButton.setVisible(true);
+            modifyButton.setVisible(true);
+            addButton.setVisible(true);
+          }
+          else
+          {
+            deleteButton.setVisible(false);
+            modifyButton.setVisible(false);
+            addButton.setVisible(false);
+          }
+          clearJList();
+          fillJList();
+          textBox.setText("");
+        }
+      }
+    });
+    
+    tables.setBounds(15, 10, 120, 20);
     panel.add(tables);
   }
 
   public void addNewButton() {
-    addButton = new JButton(new AbstractAction("New Task"){
+    addButton = new JButton(new AbstractAction("Add"){
       @Override
       public void actionPerformed(ActionEvent e) {
+        if (currentTable.equals("User")) {
+          CreateUserView t = new CreateUserView(db);
+        } else if (currentTable.equals("Task")) {
           CreateTaskView t = new CreateTaskView(db, currentUserID);
+        } else if (currentTable.equals("Team")) {
+          CreateTeamView t = new CreateTeamView(db);
+        }
       }
     });
-    addButton.setBounds(10, 420, 90, 20);
+    addButton.setBounds(15, 390, 70, 20);
     panel.add(addButton);
+    addButton.setVisible(false);
   }
 
-  public void displayButton() {
-    displayButton = new JButton(new AbstractAction("Display"){
+  public void searchButton() {
+    searchButton = new JButton(new AbstractAction("Search"){
       @Override
       public void actionPerformed(ActionEvent e) {
-        if (tables.getItemAt(tables.getSelectedIndex()).equals("Assigned Tasks")) {
-          currentTable = "Assigned Tasks";
-          deleteButton.setVisible(false);
-          modifyButton.setVisible(false);
-        } else if (tables.getItemAt(tables.getSelectedIndex()).equals("Created Tasks")) {
-          currentTable = "Created Tasks";
-          deleteButton.setVisible(true);
-          modifyButton.setVisible(true);
-        } else if (tables.getItemAt(tables.getSelectedIndex()).equals("Team")) {
-          currentTable = "Team";
-          deleteButton.setVisible(false);
-          modifyButton.setVisible(false);
-        }
-          clearJList();
-          fillJList();
-          textBox.setText("");
+        SearchView t = new SearchView(db);
       }
     });
-    displayButton.setBounds(15, 10, 90, 20);
-    panel.add(displayButton);
+    searchButton.setBounds(290, 420, 80, 20);
+    panel.add(searchButton);
   }
 
   public void deleteButton() {
-    deleteButton = new JButton(new AbstractAction("Delete Task"){
+    deleteButton = new JButton(new AbstractAction("Delete"){
       @Override
       public void actionPerformed(ActionEvent e) {
         int confirm = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
@@ -123,14 +140,14 @@ public class NormalUserView extends JFrame {
           textBox.setText("");
         }
     });
-    deleteButton.setBounds(10, 390, 125, 20);
+    deleteButton.setBounds(95, 390, 70, 20);
     panel.add(deleteButton);
     deleteButton.setVisible(false);
   }
 
   public void modifyButton() {
 
-    modifyButton = new JButton(new AbstractAction("Modify Task"){
+    modifyButton = new JButton(new AbstractAction("Modify"){
       @Override
       public void actionPerformed(ActionEvent e) {
         //ModifyTaskView t = new ModifyTaskView(db, taskName);
@@ -140,7 +157,7 @@ public class NormalUserView extends JFrame {
       }
     });
 
-    modifyButton.setBounds(140, 390, 125, 20);
+    modifyButton.setBounds(175, 390, 75, 20);
     panel.add(modifyButton);
     modifyButton.setVisible(false);
   }
@@ -157,6 +174,23 @@ public class NormalUserView extends JFrame {
         displayText();
       }
     });
+
+    class SelectedListCellRenderer extends DefaultListCellRenderer {
+      @Override
+      public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+         if (currentTable.equals("Task")) {
+           Task selectedTask = db.query().tableIs(currentTable).taskIdIs(selectedID).getOne();
+           String colorHex = selectedTask.getColorHex();
+           if (isSelected && colorHex != null) {  
+             c.setBackground(Color.decode(colorHex));
+           }
+         }
+         return c;
+     }
+    };
+
+    list.setCellRenderer(new SelectedListCellRenderer());
   }
 
   public void createTextArea() {
