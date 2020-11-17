@@ -29,21 +29,6 @@ import com.sdproject.app.model.Team;
 
 public class CreateTaskView extends JFrame {
 
-  class ColorItem {
-    String colorName;
-    String colorHex;
-
-    ColorItem(String colorName, String colorHex) {
-      this.colorName = colorName;
-      this.colorHex = colorHex;
-    }
-
-    @Override
-    public String toString() {
-      return this.colorName;
-    }
-  }
-
   private DatabaseWrapper db;
   private int currentUserID;
 
@@ -57,7 +42,7 @@ public class CreateTaskView extends JFrame {
   private JFormattedTextField recurringField, dueDateField;
   private JComboBox<ColorItem> colorType;
   private JButton submitButton, cancelButton;
-  private JScrollPane checkBoxScroll;
+  private JScrollPane checkBoxScroll, radioBoxScroll;
   private ButtonGroup assignedButtonGroup;
 
   public CreateTaskView(DatabaseWrapper db, int currentUserID){
@@ -65,7 +50,9 @@ public class CreateTaskView extends JFrame {
     this.currentUserID = currentUserID;
     this.assignedToID = currentUserID;
     subtaskIDs = new ArrayList<Integer>();
-    panel = new JPanel(new GridLayout(8,1));
+    panel = new JPanel(new GridLayout(9,1));
+    panel.add(new JLabel("New task creation"));
+    panel.add(new JLabel(""));
     addNameTextBox();
     addDescription();
     addSubtask();
@@ -79,20 +66,20 @@ public class CreateTaskView extends JFrame {
     add(panel, BorderLayout.CENTER);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setTitle("CreateTask");
-    setSize(500, 700);
+    setSize(1000, 500);
     setVisible(true);
   }
 
   public void addNameTextBox(){
     nameLabel = new JLabel("Enter Name:");
-    nameField = new JTextField("Name",100);
+    nameField = new JTextField("", 100);
     panel.add(nameLabel);
     panel.add(nameField);
   }
 
   public void addDescription(){
     descLabel = new JLabel("Enter Description:");
-    descField = new JTextArea(10,100 );
+    descField = new JTextArea(10, 100);
     panel.add(descLabel);
     panel.add(descField);
   }
@@ -100,7 +87,7 @@ public class CreateTaskView extends JFrame {
   public void addSubtask(){
     subtaskLabel = new JLabel("Select SubTasks");
     subtaskPanel = new JPanel();
-    checkBoxScroll = new JScrollPane(subtaskPanel);
+    subtaskPanel.setLayout(new BoxLayout(subtaskPanel, BoxLayout.Y_AXIS));
 
     ActionListener actionListener = new ActionListener() {
       @Override
@@ -110,7 +97,7 @@ public class CreateTaskView extends JFrame {
         if (checkBox.isSelected()) {
           subtaskIDs.add(taskID);
         } else if (subtaskIDs.contains(taskID)) {
-          subtaskIDs.remove(taskID);
+          subtaskIDs.remove(Integer.valueOf(taskID));
         }
       }
     };
@@ -123,6 +110,9 @@ public class CreateTaskView extends JFrame {
       subtaskPanel.add(newCheckBox);
     }
 
+    checkBoxScroll = new JScrollPane(subtaskPanel);
+    checkBoxScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
     panel.add(subtaskLabel);
     panel.add(checkBoxScroll);
   }
@@ -130,6 +120,7 @@ public class CreateTaskView extends JFrame {
   public void addAssignedTo() {
     assignedToLabel = new JLabel("Assigned to:");
     assignedToPanel = new JPanel();
+    assignedToPanel.setLayout(new BoxLayout(assignedToPanel, BoxLayout.Y_AXIS));
     assignedButtonGroup = new ButtonGroup();
 
     ActionListener actionListener = new ActionListener() {
@@ -159,8 +150,11 @@ public class CreateTaskView extends JFrame {
       assignedToPanel.add(newButton);
     }
 
+    radioBoxScroll = new JScrollPane(assignedToPanel);
+    radioBoxScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
     panel.add(assignedToLabel);
-    panel.add(new JScrollPane(assignedToPanel));
+    panel.add(radioBoxScroll);
 
   }
 

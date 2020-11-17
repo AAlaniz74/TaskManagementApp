@@ -27,10 +27,10 @@ public class CreateUserView extends JFrame {
   private DatabaseWrapper db;
 
   private JPanel panel;
-  private JLabel user_label, pass_label, type_label;
-  private JTextField user_text;
-  private JPasswordField pass_text;
-  private JComboBox<String> user_type;
+  private JLabel userLabel, passLabel, typeLabel;
+  private JTextField userField;
+  private JPasswordField passField;
+  private JComboBox<String> userType;
   private JButton submit;
 
   public CreateUserView(DatabaseWrapper db) {
@@ -46,43 +46,43 @@ public class CreateUserView extends JFrame {
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     add(panel, BorderLayout.CENTER);
     setTitle("New User creation");
-    setSize(600, 600);
+    setSize(1000, 600);
     setVisible(true);
   }
 
   public void addUserLabel() {
-    user_label = new JLabel();
-    user_label.setText("Username: ");
-    user_text = new JTextField();
-    panel.add(user_label);
-    panel.add(user_text);
+    userLabel = new JLabel();
+    userLabel.setText("Username: ");
+    userField = new JTextField();
+    panel.add(userLabel);
+    panel.add(userField);
   }
 
   public void addPassLabel() {
-    pass_label = new JLabel();
-    pass_label.setText("Password: ");
-    pass_text = new JPasswordField();
-    panel.add(pass_label);
-    panel.add(pass_text);
+    passLabel = new JLabel();
+    passLabel.setText("Password: ");
+    passField = new JPasswordField();
+    panel.add(passLabel);
+    panel.add(passField);
   }  
 
   public void addTypeLabel() {
-    type_label = new JLabel();
-    type_label.setText("Select user type: ");
+    typeLabel = new JLabel();
+    typeLabel.setText("Select user type: ");
 		
     String[] typeList = new String[] {"NORMAL", "ADMIN"};
-    user_type = new JComboBox<String>(typeList);
-    panel.add(type_label);
-    panel.add(user_type);
+    userType = new JComboBox<String>(typeList);
+    panel.add(typeLabel);
+    panel.add(userType);
   }
 
   public void addSubmitButton() {
     submit = new JButton("SUBMIT");
     submit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        String newUserName = user_text.getText();
-	      String newUserPass = pass_text.getText();
-        String newUserType = (String) user_type.getSelectedItem();
+        String newUserName = userField.getText();
+	      String newUserPass = passField.getText();
+        String newUserType = (String) userType.getSelectedItem();
         boolean nameTest = db.query().tableIs("User").userNameIs(newUserName).get().size() != 0;
 
         if (newUserName.equals("")) {

@@ -28,21 +28,20 @@ public class CreateTeamView extends JFrame{
   public CreateTeamView(DatabaseWrapper db) {
     this.db = db;
     teamMembers = new ArrayList<Integer>();
-    panel = new JPanel(new GridLayout(3,1));
-
+    panel = new JPanel(new GridLayout(4,1));
+    panel.add(new JLabel("New team creation"));
+    panel.add(new JLabel(""));
     addNameTextBox();
     addTeamList();
-
     addSubmitButton();
     addCancelButton();
     add(panel, BorderLayout.CENTER);
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setTitle("Create Task");
-    setSize(500, 300);
+    setSize(1000, 300);
     setVisible(true);
   }
-
 
   public void addNameTextBox(){
     nameLabel = new JLabel("Enter Name:");
@@ -54,7 +53,7 @@ public class CreateTeamView extends JFrame{
   public void addTeamList(){
     teamlistLabel = new JLabel("Select All Team Members to add to team");
     teamlistPanel = new JPanel();
-    checkBoxScroll = new JScrollPane(teamlistPanel);
+    teamlistPanel.setLayout(new BoxLayout(teamlistPanel, BoxLayout.Y_AXIS));
 
     ActionListener actionListener = new ActionListener() {
       @Override
@@ -64,7 +63,7 @@ public class CreateTeamView extends JFrame{
         if (checkBox.isSelected()) {
           teamMembers.add(userID);
         } else if (teamMembers.contains(userID)) {
-          teamMembers.remove(userID);
+          teamMembers.remove(Integer.valueOf(userID));
         }
       }
     };
@@ -76,6 +75,9 @@ public class CreateTeamView extends JFrame{
       newCheckBox.putClientProperty("ID", user.getUserId());
       teamlistPanel.add(newCheckBox);
     }
+
+    checkBoxScroll = new JScrollPane(teamlistPanel);
+    checkBoxScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
     panel.add(teamlistLabel);
     panel.add(checkBoxScroll);

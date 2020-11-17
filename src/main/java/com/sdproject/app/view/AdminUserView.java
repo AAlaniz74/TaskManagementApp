@@ -1,4 +1,5 @@
 package com.sdproject.app.view;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -11,21 +12,6 @@ import java.awt.Component;
 import java.awt.Color;
 
 public class AdminUserView extends JFrame {
-
-  class ListElement {
-    String name;
-    int ID;
-
-    ListElement(String name, int ID) {
-      this.name = name;
-      this.ID = ID;
-    }
-
-    @Override
-    public String toString() {
-      return this.name;
-    }
-  }
 
   private DatabaseWrapper db;
   private int currentUserID;
@@ -56,7 +42,6 @@ public class AdminUserView extends JFrame {
 
     comboBoxes();
     addNewButton();
-    displayButton();
     deleteButton();
     modifyButton();
     createJList();
@@ -66,10 +51,21 @@ public class AdminUserView extends JFrame {
   }
 
   public void comboBoxes() {
-    String[] tableList = {"User", "Team", "Task"};
+    String[] tableList = {"User", "Task", "Team"};
 
     tables = new JComboBox<String>(tableList);
-    tables.setBounds(115, 10, 120 , 20);
+    tables.addItemListener(new ItemListener() {
+      public void itemStateChanged(ItemEvent event) {
+        if (event.getStateChange() == ItemEvent.SELECTED) {
+          currentTable = (String) event.getItem();
+          clearJList();
+          fillJList();
+          textBox.setText("");
+        }
+      }
+    });
+    
+    tables.setBounds(15, 10, 90, 20);
     panel.add(tables);
   }
 
@@ -89,27 +85,7 @@ public class AdminUserView extends JFrame {
     addButton.setBounds(10, 420, 90, 20);
     panel.add(addButton);
   }
-
-  public void displayButton() {
-    displayButton = new JButton(new AbstractAction("Display"){
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (tables.getItemAt(tables.getSelectedIndex()).equals("Task")) {
-          currentTable = "Task";
-        } else if (tables.getItemAt(tables.getSelectedIndex()).equals("User")) {
-          currentTable = "User";
-        } else if (tables.getItemAt(tables.getSelectedIndex()).equals("Team")) {
-          currentTable = "Team";
-        }
-          clearJList();
-          fillJList();
-          textBox.setText("");
-      }
-    });
-    displayButton.setBounds(15, 10, 90, 20);
-    panel.add(displayButton);
-  }
-
+    
   public void deleteButton() {
     deleteButton = new JButton(new AbstractAction("Delete Selected"){
       @Override
@@ -180,7 +156,7 @@ public class AdminUserView extends JFrame {
          if (currentTable.equals("Task")) {
            Task selectedTask = db.query().tableIs(currentTable).taskIdIs(selectedID).getOne();
            String colorHex = selectedTask.getColorHex();
-           if (colorHex != null) {  
+           if (isSelected && colorHex != null) {  
              c.setBackground(Color.decode(colorHex));
            }
          }
@@ -279,7 +255,7 @@ public class AdminUserView extends JFrame {
     }
   }
 
-  public void clearJList(){
+  public void clearJList() {
     selectedID = 0;
     model.clear();
   }
