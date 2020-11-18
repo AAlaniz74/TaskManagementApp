@@ -18,6 +18,7 @@ public class ModifyTeamView extends JFrame{
   private DatabaseWrapper db;
   private Team selectedTeam;
   private ArrayList<Integer> teamMembers;
+  private UserView view;
 
   private JPanel panel, teamlistPanel;
   private JLabel nameLabel, teamlistLabel;
@@ -25,8 +26,9 @@ public class ModifyTeamView extends JFrame{
   private JButton submitButton, cancelButton;
   private JScrollPane checkBoxScroll;
 
-  public ModifyTeamView(DatabaseWrapper db, int selectedID) {
+  public ModifyTeamView(DatabaseWrapper db, UserView view, int selectedID) {
     this.db = db;
+    this.view = view;
     this.selectedTeam = db.query().tableIs("Team").teamIdIs(selectedID).getOne();
     this.teamMembers = selectedTeam.getTeamMemberIDs();
     panel = new JPanel(new GridLayout(3,1));
@@ -99,6 +101,7 @@ public class ModifyTeamView extends JFrame{
         } else {
           db.query().tableIs("Team").teamIdIs(selectedTeam.getTeamId()).modifyTo().teamNameIs(nameField.getText()).allTeamMembersAre(teamMembers).modify();
           JOptionPane.showMessageDialog(null, "Team modified");
+          view.updateJList();
           dispose();
         }
       }

@@ -10,7 +10,9 @@ import com.sdproject.app.database.*;
 
 
 public class ModifyTaskView extends JFrame{
+    
     private DatabaseWrapper db;
+    
     private String taskName;
     private Task tempTask;
     private JPanel panel;

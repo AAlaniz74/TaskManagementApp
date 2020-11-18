@@ -10,6 +10,7 @@ public class ModifyUserView extends JFrame{
   private static final long serialVersionUID = 1L;
   private DatabaseWrapper db;
   private User selectedUser;
+  private UserView view;
 
   private JPanel panel;
   private JLabel nameLabel, passLabel, userType;
@@ -19,8 +20,9 @@ public class ModifyUserView extends JFrame{
   private JButton submitButton;
   private JButton cancelButton;
 
-  public ModifyUserView(DatabaseWrapper db, int selectedID) {
+  public ModifyUserView(DatabaseWrapper db, UserView view, int selectedID) {
     this.db = db;
+    this.view = view;
     this.selectedUser = db.query().tableIs("User").userIdIs(selectedID).getOne();
     panel = new JPanel();
     setSize(300, 250);
@@ -94,6 +96,7 @@ public class ModifyUserView extends JFrame{
         } else {
           db.query().tableIs("User").userIdIs(selectedUser.getUserId()).modifyTo().userNameIs(name).userPassIs(pass).userTypeIs(userType).modify();
           JOptionPane.showMessageDialog(null, "User modified!");
+          view.updateJList();
           dispose();
         }
         

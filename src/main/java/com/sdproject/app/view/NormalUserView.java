@@ -11,22 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.awt.Component;
 import java.awt.Color;
 
-public class NormalUserView extends JFrame {
-
-  class ListElement {
-    String name;
-    int ID;
-
-    ListElement(String name, int ID) {
-      this.name = name;
-      this.ID = ID;
-    }
-
-    @Override
-    public String toString() {
-      return this.name;
-    }
-  }
+public class NormalUserView extends JFrame implements UserView {
 
   private DatabaseWrapper db;
   private int currentUserID;
@@ -101,13 +86,7 @@ public class NormalUserView extends JFrame {
     addButton = new JButton(new AbstractAction("Add"){
       @Override
       public void actionPerformed(ActionEvent e) {
-        if (currentTable.equals("User")) {
-          CreateUserView t = new CreateUserView(db);
-        } else if (currentTable.equals("Task")) {
-          CreateTaskView t = new CreateTaskView(db, currentUserID);
-        } else if (currentTable.equals("Team")) {
-          CreateTeamView t = new CreateTeamView(db);
-        }
+        CreateTaskView t = new CreateTaskView(db, NormalUserView.this, currentUserID);
       }
     });
     addButton.setBounds(15, 390, 70, 20);
@@ -292,6 +271,12 @@ public class NormalUserView extends JFrame {
   public void clearJList(){
     selectedID = 0;
     model.clear();
+  }
+
+  public void updateJList() {
+    clearJList();
+    fillJList();
+    textBox.setText("");
   }
 
 }

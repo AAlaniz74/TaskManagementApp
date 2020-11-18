@@ -30,6 +30,7 @@ import com.sdproject.app.model.Team;
 public class CreateTaskView extends JFrame {
 
   private DatabaseWrapper db;
+  private UserView view;
   private int currentUserID;
 
   private ArrayList<Integer> subtaskIDs;
@@ -45,8 +46,9 @@ public class CreateTaskView extends JFrame {
   private JScrollPane checkBoxScroll, radioBoxScroll;
   private ButtonGroup assignedButtonGroup;
 
-  public CreateTaskView(DatabaseWrapper db, int currentUserID){
+  public CreateTaskView(DatabaseWrapper db, UserView view, int currentUserID){
     this.db = db;
+    this.view = view;
     this.currentUserID = currentUserID;
     this.assignedToID = currentUserID;
     subtaskIDs = new ArrayList<Integer>();
@@ -238,6 +240,7 @@ public class CreateTaskView extends JFrame {
 
         db.insert(q);
         JOptionPane.showMessageDialog(null, "New task created!");
+        view.updateJList();
         dispose();        
       }
     });

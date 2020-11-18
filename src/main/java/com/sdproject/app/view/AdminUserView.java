@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.awt.Component;
 import java.awt.Color;
 
-public class AdminUserView extends JFrame {
+public class AdminUserView extends JFrame implements UserView {
 
   private DatabaseWrapper db;
   private int currentUserID;
@@ -75,11 +75,11 @@ public class AdminUserView extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         if (currentTable.equals("User")) {
-          CreateUserView t = new CreateUserView(db);
+          CreateUserView t = new CreateUserView(db, AdminUserView.this);
         } else if (currentTable.equals("Task")) {
-          CreateTaskView t = new CreateTaskView(db, currentUserID);
+          CreateTaskView t = new CreateTaskView(db, AdminUserView.this, currentUserID);
         } else if (currentTable.equals("Team")) {
-          CreateTeamView t = new CreateTeamView(db);
+          CreateTeamView t = new CreateTeamView(db, AdminUserView.this);
         }
       }
     });
@@ -117,9 +117,9 @@ public class AdminUserView extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         if(currentTable.equals("User")) {
-          ModifyUserView view = new ModifyUserView(db, selectedID);
+          ModifyUserView view = new ModifyUserView(db, AdminUserView.this, selectedID);
         } else if(currentTable.equals("Team")) {
-          ModifyTeamView view = new ModifyTeamView(db, selectedID);          
+          ModifyTeamView view = new ModifyTeamView(db, AdminUserView.this, selectedID);          
         } else if(currentTable.equals("Task")) {
 
         }
@@ -268,4 +268,9 @@ public class AdminUserView extends JFrame {
     model.clear();
   }
 
+  public void updateJList() {
+    clearJList();
+    fillJList();
+    textBox.setText("");
+  }
 }

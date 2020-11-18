@@ -25,6 +25,7 @@ import com.sdproject.app.view.LoginView;
 public class CreateUserView extends JFrame {
 
   private DatabaseWrapper db;
+  private UserView view;
 
   private JPanel panel;
   private JLabel userLabel, passLabel, typeLabel;
@@ -33,8 +34,9 @@ public class CreateUserView extends JFrame {
   private JComboBox<String> userType;
   private JButton submit;
 
-  public CreateUserView(DatabaseWrapper db) {
+  public CreateUserView(DatabaseWrapper db, UserView view) {
     this.db = db;
+    this.view = view;
     panel = new JPanel(new GridLayout(5, 1));
     panel.add(new JLabel("New user creation"));
     panel.add(new JLabel(""));
@@ -94,7 +96,8 @@ public class CreateUserView extends JFrame {
 	      } else {
           db.query().tableIs("User").userNameIs(newUserName).userPassIs(newUserPass).userTypeIs(newUserType).insert();
 	        JOptionPane.showMessageDialog(null, "New user created.");
-	        dispose();
+	        view.updateJList();
+          dispose();
 	      }
       }
     });

@@ -16,7 +16,8 @@ import com.sdproject.app.model.User;
 public class CreateTeamView extends JFrame{
 
   private DatabaseWrapper db;
-  
+  private UserView view;
+
   private ArrayList<Integer> teamMembers;
   
   private JPanel panel, teamlistPanel;
@@ -25,8 +26,9 @@ public class CreateTeamView extends JFrame{
   private JButton submitButton, cancelButton;
   private JScrollPane checkBoxScroll;
 
-  public CreateTeamView(DatabaseWrapper db) {
+  public CreateTeamView(DatabaseWrapper db, UserView view) {
     this.db = db;
+    this.view = view;
     teamMembers = new ArrayList<Integer>();
     panel = new JPanel(new GridLayout(4,1));
     panel.add(new JLabel("New team creation"));
@@ -95,6 +97,7 @@ public class CreateTeamView extends JFrame{
           JOptionPane.showMessageDialog(null, "Team must have at least 2 members");
         } else {
           db.query().tableIs("Team").teamNameIs(nameField.getText()).allTeamMembersAre(teamMembers).insert();
+          view.updateJList();
           dispose();
         }
         

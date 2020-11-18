@@ -78,7 +78,9 @@ public class LoginView extends JFrame {
     panel.add(submit);
   }
 
+  
   private void addNewUserButton() {
+    /*
     newUserButton = new JButton("Create New User");
     newUserButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -87,6 +89,9 @@ public class LoginView extends JFrame {
       }
     });
     panel.add(newUserButton);
+    */
   }
+  //TODO: Needs a CreateUserView specific to LoginView
+
 
 }
