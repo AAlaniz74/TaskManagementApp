@@ -113,16 +113,13 @@ public class AdminUserView extends JFrame {
   }
 
   public void modifyButton() {
-    modifyButton = new JButton("Modify Selected");
-    /*
     modifyButton = new JButton(new AbstractAction("Modify Selected"){
       @Override
       public void actionPerformed(ActionEvent e) {
         if(currentTable.equals("User")) {
-          User user = db.query().tableIs("User").userNameIs(selectedID).getOne();
-          ModifyUserView view = new ModifyUserView(db, user, this);
+          ModifyUserView view = new ModifyUserView(db, selectedID);
         } else if(currentTable.equals("Team")) {
-        
+          ModifyTeamView view = new ModifyTeamView(db, selectedID);          
         } else if(currentTable.equals("Task")) {
 
         }
@@ -132,7 +129,6 @@ public class AdminUserView extends JFrame {
         textBox.setText("");
       }
     });
-    */
     modifyButton.setBounds(140, 390, 125, 20);
     panel.add(modifyButton);
   }

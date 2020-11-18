@@ -245,7 +245,6 @@ public class DummyDatabase implements Database {
       modifiedTeam.setTeamMemberIDs(q.getTeamMemberIDs());
     }
 
-    allTeams.add(modifiedTeam);
     return modifiedTeam.getTeamId();
   }
 
