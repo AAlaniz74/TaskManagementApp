@@ -121,7 +121,7 @@ public class AdminUserView extends JFrame implements UserView {
         } else if(currentTable.equals("Team")) {
           ModifyTeamView view = new ModifyTeamView(db, AdminUserView.this, selectedID);          
         } else if(currentTable.equals("Task")) {
-
+          ModifyTaskView view = new ModifyTaskView(db, AdminUserView.this, selectedID);
         }
 
         clearJList();

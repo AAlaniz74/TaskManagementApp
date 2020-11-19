@@ -139,6 +139,10 @@ public class CreateTaskView extends JFrame {
       JRadioButton newButton = new JRadioButton(user.getUserName());
       newButton.addActionListener(actionListener);
       newButton.putClientProperty("ID", user.getUserId());
+      
+      if (user.getUserId() == currentUserID)
+        newButton.setSelected(true);
+      
       assignedButtonGroup.add(newButton);
       assignedToPanel.add(newButton);
     }
