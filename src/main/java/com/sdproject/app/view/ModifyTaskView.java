@@ -28,11 +28,12 @@ public class ModifyTaskView extends JFrame {
   private UserView view;  
 
   private JPanel panel, subtaskPanel, assignedToPanel;
-  private JLabel nameLabel, descLabel, dueDateLabel, subtaskLabel, recurringLabel, colorLabel, assignedToLabel;
+  private JLabel nameLabel, descLabel, statusLabel, dueDateLabel, subtaskLabel, recurringLabel, colorLabel, assignedToLabel;
   private JTextField nameField;
   private JTextArea descField;
   private JFormattedTextField recurringField, dueDateField;
   private JComboBox<ColorItem> colorType;
+  private JComboBox<String> statusType;
   private JButton submitButton, cancelButton;
   private JScrollPane checkBoxScroll, radioBoxScroll;
   private ButtonGroup assignedButtonGroup; 
@@ -43,9 +44,10 @@ public class ModifyTaskView extends JFrame {
     this.selectedTask = db.query().tableIs("Task").taskIdIs(selectedID).getOne();
     this.subtaskIDs = selectedTask.getSubtaskIDs();    
     
-    panel = new JPanel(new GridLayout(9,1));
+    panel = new JPanel(new GridLayout(10,1));
     addNameTextBox();
     addDescription();
+    addTaskStatus();
     addSubtask();
     addAssignedTo();
     addDueDate();
@@ -68,13 +70,22 @@ public class ModifyTaskView extends JFrame {
     panel.add(nameField);
   }
 
-  public void addDescription(){
+  public void addDescription() {
     descLabel = new JLabel("Description:");
     descField = new JTextArea(selectedTask.getTaskDesc());
     panel.add(descLabel);
     panel.add(descField);
   }  
-  
+
+  public void addTaskStatus() {
+    statusLabel = new JLabel("Task status");
+    
+    String[] statusList = new String[] { "IN_PROGRESS", "FINISHED" };
+    statusType = new JComboBox<String>(statusList);
+    panel.add(statusLabel);
+    panel.add(statusType);
+  }
+
   public void addSubtask(){
     subtaskLabel = new JLabel("Select SubTasks");
     subtaskPanel = new JPanel();
@@ -216,8 +227,9 @@ public class ModifyTaskView extends JFrame {
           return;
         } 
        
-        int selectedID = selectedTask.getTaskId(); 
-        Query q = new Query().tableIs("Task").taskIdIs(selectedID).modifyTo().taskNameIs(nameField.getText()).taskDescIs(descField.getText());
+        int selectedID = selectedTask.getTaskId();
+        String newTaskStatus = (String) statusType.getSelectedItem(); 
+        Query q = new Query().tableIs("Task").taskIdIs(selectedID).modifyTo().taskNameIs(nameField.getText()).taskDescIs(descField.getText()).taskStatusIs(newTaskStatus);
 
         if (subtaskIDs.size() != 0)
           q = q.allSubtasksAre(subtaskIDs);

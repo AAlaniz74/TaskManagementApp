@@ -30,18 +30,6 @@ public class Task {
    this.taskId = nextID++;
   }
 
-  public void updateDueDate() {
-    if (this.dueDate != null && LocalDate.now().isAfter(this.dueDate)) {
-    
-      if (recurringDays != 0) {
-        this.dueDate = this.dueDate.plusDays(recurringDays);
-      } else if (this.taskStatus != TaskStatus.FINISHED) {
-        this.taskStatus = TaskStatus.PAST_DUE;
-      }
-
-    }
-  }
-
   public int getTaskId() {
     return this.taskId;
   }
@@ -130,4 +118,14 @@ public class Task {
     return this.colorHex;
   }
 
+  public Task copyTask() {
+    Task copy = new Task(this.taskName, this.taskDesc, this.createdById);
+    copy.setTaskStatus(this.taskStatus);
+    copy.setSubtaskIDs(this.subtaskIDs);
+    copy.setAssignedToId(this.assignedToId);
+    copy.setDueDate(this.dueDate);
+    copy.setRecurringDays(this.recurringDays);
+    copy.setColorHex(this.colorHex);
+    return copy;
+  }
 }

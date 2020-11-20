@@ -188,9 +188,9 @@ public class DummyDatabase implements Database {
 
   public ArrayList<Task> getTasks(Query q) {
     ArrayList<Task> res = new ArrayList<Task>();
+    updateRecurring();
     for (Task task : allTasks) {
       if (verifyTaskMatchesQuery(task, q)) {
-        task.updateDueDate();
         res.add(task);
       }
     }
@@ -268,4 +268,13 @@ public class DummyDatabase implements Database {
     return this.allTeams;
   }
 
+  public void updateRecurring() {
+    for (Task task : this.allTasks) {
+      if (task.getRecurringDays() != 0 && LocalDate.now().isAfter(task.getDueDate())) {
+        if (task.getTaskStatus() != TaskStatus.FINISHED)
+          task.setTaskStatus(TaskStatus.PAST_DUE);
+        allTasks.add(task.copyTask());        
+      }
+    }
+  }
 }
