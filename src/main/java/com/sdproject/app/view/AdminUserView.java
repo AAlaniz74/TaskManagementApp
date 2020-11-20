@@ -157,22 +157,27 @@ public class AdminUserView extends JFrame implements UserView {
       }
     });
 
-    class SelectedListCellRenderer extends DefaultListCellRenderer {
+    list.setCellRenderer(new DefaultListCellRenderer() {
       @Override
       public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-         if (currentTable.equals("Task")) {
-           Task selectedTask = db.query().tableIs(currentTable).taskIdIs(selectedID).getOne();
-           String colorHex = selectedTask.getColorHex();
-           if (isSelected && colorHex != null) {  
-             c.setBackground(Color.decode(colorHex));
-           }
-         }
-         return c;
-     }
-    };
+        Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        if (currentTable.equals("Task")) {
+          ListElement elem = (ListElement) value;
+          Task selectedTask = db.query().tableIs(currentTable).taskIdIs(elem.ID).getOne();
+          String colorHex = selectedTask.getColorHex();
+           
+          if (colorHex != null && !colorHex.equals("")) {  
+            c.setBackground(Color.decode(colorHex));
+          }
+             
+          if (isSelected) {
+            c.setBackground(c.getBackground().darker());
+          }
+        }
+        return c;
+      } 
+    });
 
-    list.setCellRenderer(new SelectedListCellRenderer());
   }
 
   public void createTextArea() {
