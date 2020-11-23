@@ -229,6 +229,10 @@ public class ModifyTaskView extends JFrame {
        
         int selectedID = selectedTask.getTaskId();
         String newTaskStatus = (String) statusType.getSelectedItem(); 
+
+        if (newTaskStatus.equals("FINISHED") && !selectedTask.getTaskStatus().equals("FINISHED"))
+          selectedTask.setCompletedOn(LocalDate.now());
+
         Query q = new Query().tableIs("Task").taskIdIs(selectedID).modifyTo().taskNameIs(nameField.getText()).taskDescIs(descField.getText()).taskStatusIs(newTaskStatus);
 
         if (subtaskIDs.size() != 0)

@@ -225,21 +225,20 @@ public class CreateTaskView extends JFrame {
         ColorItem colorItem = (ColorItem) colorType.getSelectedItem();
         q = q.colorHexIs(colorItem.colorHex);
 
-        if (dueDateField.isEditValid()) {
-          if (!verifyDate(dueDateField.getText())) {
-            return;
-          }
-          
-          LocalDate compare = LocalDate.parse(dueDateField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-          if (LocalDate.now().isAfter(compare)) {
-            JOptionPane.showMessageDialog(null, "Due date must be in the future");
-            return;
-          } else {
-            q = q.dueDateIs(dueDateField.getText());
-          }
+        if (!dueDateField.isEditValid() || !verifyDate(dueDateField.getText())) {
+          JOptionPane.showMessageDialog(null, "You must enter a valid due date");
+          return;
         }
+          
+        LocalDate compare = LocalDate.parse(dueDateField.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+        if (LocalDate.now().isAfter(compare)) {
+          JOptionPane.showMessageDialog(null, "Due date must be in the future");
+          return;
+        } else {
+          q = q.dueDateIs(dueDateField.getText());
+        }
+        
         q.recurringDaysIs(Integer.parseInt(recurringField.getText()));
 
         db.insert(q);

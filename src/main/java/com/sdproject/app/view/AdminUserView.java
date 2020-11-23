@@ -218,6 +218,7 @@ public class AdminUserView extends JFrame implements UserView {
       textBox.setText("Name: " + selectedUser.getUserName() +
                       "\nID: " + selectedUser.getUserId() +
                       "\nPassword: " + selectedUser.getUserPass() +
+                      "\nUser Productivity: " + selectedUser.getUserProductivity() +
                       "\nUser Type: " + selectedUser.getUserType());
     
     } else if (currentTable.equals("Task")) {
@@ -228,6 +229,7 @@ public class AdminUserView extends JFrame implements UserView {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
       String dueDate = (selectedTask.getDueDate() == null) ? "" : selectedTask.getDueDate().format(formatter);
       String recurringDays = (selectedTask.getRecurringDays() == 0) ? "" : Integer.toString(selectedTask.getRecurringDays());
+      String completeOnDate = (selectedTask.getCompletedOn() == null) ? "" : selectedTask.getCompletedOn().format(formatter);
 
       String text = "Name: " + selectedTask.getTaskName() +
                     "\nTask Description: " + selectedTask.getTaskDesc() +
@@ -237,6 +239,7 @@ public class AdminUserView extends JFrame implements UserView {
                     "\nAssigned To ID: " + selectedTask.getAssignedToId() + 
                     "\nCreated On: " + selectedTask.getCreatedOn().format(formatter) +
                     "\nDue Date: " + dueDate +
+                    "\nComplete On: " + completeOnDate +
                     "\nRecurring Interval: " + recurringDays;
 
       ArrayList<Integer> subtaskIDs = selectedTask.getSubtaskIDs();

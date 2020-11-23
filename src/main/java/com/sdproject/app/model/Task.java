@@ -16,6 +16,7 @@ public class Task {
   private int createdById;
   private LocalDate createdOn;
   private LocalDate dueDate;
+  private LocalDate completedOn;
   private int recurringDays;
   private String colorHex;
 
@@ -100,6 +101,14 @@ public class Task {
 
   public void setDueDate(LocalDate newDate) {
     this.dueDate = newDate;
+  }
+
+  public LocalDate getCompletedOn() {
+    return this.completedOn;
+  }
+
+  public void setCompletedOn(LocalDate newDate) {
+    this.completedOn = newDate;
   }
 
   public void setRecurringDays(int days) {

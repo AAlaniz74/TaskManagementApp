@@ -8,12 +8,14 @@ public class User {
 	private String userName;
 	private String userPass;
 	private UserType userType;
+  private double userProductivity;
 
 	public User(String name, String password, UserType type) {
 		this.userName = name;
 		this.userPass = password;
 		this.userType = type;
 		this.userId = nextID++;
+    this.userProductivity = 1.00;
 	}
 
 	public int getUserId() {
@@ -44,4 +46,11 @@ public class User {
 		this.userType = newType;
 	}
 
+  public double getUserProductivity() {
+    return this.userProductivity;
+  }
+
+  public void setUserProductivity(double prod) {
+    this.userProductivity = prod;
+  }
 }

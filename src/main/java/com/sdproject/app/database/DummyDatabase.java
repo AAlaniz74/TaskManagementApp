@@ -5,6 +5,7 @@ import com.sdproject.app.model.*;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class DummyDatabase implements Database {
   private ArrayList<User> allUsers;
@@ -127,6 +128,7 @@ public class DummyDatabase implements Database {
 
   public ArrayList<User> getUsers(Query q) {
     ArrayList<User> res = new ArrayList<User>();
+    updateAllUserProductivity();
     for (User user : allUsers) {
       if (verifyUserMatchesQuery(user, q))
         res.add(user);
@@ -161,6 +163,8 @@ public class DummyDatabase implements Database {
 	    t.setColorHex(q.getColorHex());
     if (q.getDueDate() != null)
       t.setDueDate(LocalDate.parse(q.getDueDate(), formatter));  
+    if (q.getCompletedOn() != null)
+      t.setCompletedOn(LocalDate.parse(q.getCompletedOn(), formatter));
     if (q.getRecurringDays() != 0)
       t.setRecurringDays(q.getRecurringDays());
     if (q.getSubtaskIDs().size() > 0)
@@ -275,6 +279,33 @@ public class DummyDatabase implements Database {
           task.setTaskStatus(TaskStatus.PAST_DUE);
         allTasks.add(task.copyTask());        
       }
+    }
+  }
+
+  public void updateUserProductivity(User user) {
+    int count = 0;
+    double newScore = 1.00;
+    ArrayList<Task> userTasks = get(new Query().tableIs("Task").assignedToIdIs(user.getUserId()).taskStatusIs("FINISHED"));
+
+    for (Task task : userTasks) {
+      if (task.getDueDate() != null) {
+        double possibleDays = (double) ChronoUnit.DAYS.between(task.getCreatedOn(), task.getDueDate());
+        double actualDays = (double) ChronoUnit.DAYS.between(task.getCompletedOn(), task.getDueDate());
+
+        if (possibleDays != 0) {
+          newScore += (actualDays/possibleDays);
+          count++;
+        }
+      }
+    }
+    
+    if (count > 0)
+      user.setUserProductivity(newScore/count);
+  }
+
+  public void updateAllUserProductivity() {
+    for (User user : allUsers) {
+      updateUserProductivity(user);
     }
   }
 }

@@ -30,6 +30,7 @@ public class Query {
   private int createdById;
   private String colorHex;
   private String dueDate; //Use format "yyyy-MM-dd"
+  private String completedOn; //Use format "yyyy-MM-dd"
   private int recurringDays; 
   private ArrayList<Integer> subtasks = new ArrayList<Integer>();
 
@@ -194,6 +195,15 @@ public class Query {
 
   public String getDueDate() {
     return this.dueDate;
+  }
+
+  public Query completedOnIs(String dateString) {
+    this.completedOn = dateString;
+    return this;
+  }
+
+  public String getCompletedOn() {
+    return this.completedOn;
   }
 
   public Query recurringDaysIs(int days) {
