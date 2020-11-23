@@ -16,6 +16,7 @@ com/sdproject/app/model/TaskStatus.class
 com/sdproject/app/view/AdminUserView$3.class
 com/sdproject/app/view/AdminUserView.class
 com/sdproject/app/view/CreateTaskView$4.class
+com/sdproject/app/view/LoginView$2.class
 com/sdproject/app/view/CreateUserView.class
 com/sdproject/app/view/ModifyTaskView$3.class
 com/sdproject/app/view/SearchView$1.class

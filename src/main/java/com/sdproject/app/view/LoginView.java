@@ -18,14 +18,14 @@ import com.sdproject.app.database.DatabaseWrapper;
 import com.sdproject.app.database.Query;
 import com.sdproject.app.model.User;
 
-public class LoginView extends JFrame {
+public class LoginView extends JFrame implements UserView {
 
   private DatabaseWrapper db;
 
   private JPanel panel;
-  private JLabel user_label, pass_label;
-  private JTextField user_text;
-  private JPasswordField pass_text;
+  private JLabel userLabel, passLabel;
+  private JTextField userText;
+  private JPasswordField passText;
   private JButton submit, newUserButton;
 
   public LoginView(DatabaseWrapper db) {
@@ -43,55 +43,57 @@ public class LoginView extends JFrame {
   }
 
   private void addUserLabel() {
-    user_label = new JLabel();
-    user_label.setText("User Name: ");
-    user_text = new JTextField();
-    panel.add(user_label);
-    panel.add(user_text);
+    userLabel = new JLabel();
+    userLabel.setText("User Name: ");
+    userText = new JTextField();
+    panel.add(userLabel);
+    panel.add(userText);
   }
 
   private void addPassLabel() {
-    pass_label = new JLabel();
-    pass_label.setText("Password: ");
-    pass_text = new JPasswordField();
-    panel.add(pass_label);
-    panel.add(pass_text);
+    passLabel = new JLabel();
+    passLabel.setText("Password: ");
+    passText = new JPasswordField();
+    panel.add(passLabel);
+    panel.add(passText);
   }
 
   private void addSubmitButton() {
     submit = new JButton("Submit");
     submit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        String username = user_text.getText();
-        String password = pass_text.getText();
+        String username = userText.getText();
+        String password = passText.getText();
         User user = db.query().tableIs("User").userNameIs(username).userPassIs(password).getOne();
 	      
         if (user == null) {
           JOptionPane.showMessageDialog(null, "Invalid username/password");
         } else {
           JOptionPane.showMessageDialog(null, "Logged in\nUser: " + user.getUserName());
-          mainView view = new mainView(db);
+          
+          if (user.getUserType().toString().equals("ADMIN")) {
+            AdminUserView adminView = new AdminUserView(db, user.getUserId());
+          } else {
+            NormalUserView normalView = new NormalUserView(db, user.getUserId());
+          }
           dispose();
         }		
       }
     });
     panel.add(submit);
   }
-
   
   private void addNewUserButton() {
-    /*
     newUserButton = new JButton("Create New User");
     newUserButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        CreateUserView createView = new CreateUserView(db);
+        CreateUserView createView = new CreateUserView(db, LoginView.this);
         dispose();	
       }
     });
     panel.add(newUserButton);
-    */
   }
-  //TODO: Needs a CreateUserView specific to LoginView
 
+  public void updateJList() {}
 
 }
