@@ -1,15 +1,19 @@
 package com.sdproject.app.view;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.FlowLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.awt.BorderLayout;
 import com.sdproject.app.model.*;
 import com.sdproject.app.database.*;
 import java.time.format.DateTimeFormatter;
 import java.awt.Component;
 import java.awt.Color;
+import java.awt.*;
 
 public class NormalUserView extends JFrame implements UserView {
 
@@ -23,22 +27,29 @@ public class NormalUserView extends JFrame implements UserView {
   private JButton deleteButton;
   private JButton searchButton;
   private JButton modifyButton;
-  private JPanel panel;
+  private JButton logoutButton;
+  private JPanel topPanel, bottomPanel;
   private JComboBox<String> tables;
   private JTextArea textBox;
   private JList<ListElement> list = new JList<>();
   private DefaultListModel<ListElement> model = new DefaultListModel<>();
+  private JScrollPane scrollPane = new JScrollPane();
 
   public NormalUserView(DatabaseWrapper db, int currentUserID) {
     this.db = db;
     this.currentUserID = currentUserID;
     this.currentTable = "Assigned Tasks";
         
-    panel = new JPanel();
-    setSize(700, 500);
+    setSize(900, 700);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    add(panel);
-    panel.setLayout(null);
+    
+    topPanel = new JPanel();
+    bottomPanel = new JPanel();
+    topPanel.setLayout(new FlowLayout());
+    bottomPanel.setLayout(new FlowLayout());
+    add(topPanel, BorderLayout.NORTH);
+    add(bottomPanel, BorderLayout.SOUTH);
+    pack();
 
     comboBoxes();
     addNewButton();
@@ -78,9 +89,7 @@ public class NormalUserView extends JFrame implements UserView {
         }
       }
     });
-    
-    tables.setBounds(15, 10, 120, 20);
-    panel.add(tables);
+    topPanel.add(tables);
   }
 
   public void addNewButton() {
@@ -90,8 +99,7 @@ public class NormalUserView extends JFrame implements UserView {
         CreateTaskView t = new CreateTaskView(db, NormalUserView.this, currentUserID);
       }
     });
-    addButton.setBounds(15, 390, 70, 20);
-    panel.add(addButton);
+    bottomPanel.add(addButton);
     addButton.setVisible(false);
   }
 
@@ -102,8 +110,7 @@ public class NormalUserView extends JFrame implements UserView {
         SearchView t = new SearchView(db);
       }
     });
-    searchButton.setBounds(290, 420, 80, 20);
-    panel.add(searchButton);
+    bottomPanel.add(searchButton);
   }
 
   public void deleteButton() {
@@ -120,8 +127,7 @@ public class NormalUserView extends JFrame implements UserView {
           textBox.setText("");
         }
     });
-    deleteButton.setBounds(95, 390, 70, 20);
-    panel.add(deleteButton);
+    bottomPanel.add(deleteButton);
     deleteButton.setVisible(false);
   }
 
@@ -136,9 +142,7 @@ public class NormalUserView extends JFrame implements UserView {
         textBox.setText("");
       }
     });
-
-    modifyButton.setBounds(175, 390, 75, 20);
-    panel.add(modifyButton);
+    bottomPanel.add(modifyButton);
     modifyButton.setVisible(false);
   }
 
@@ -154,15 +158,17 @@ public class NormalUserView extends JFrame implements UserView {
         }
       }
     });
-    logoutButton.setBounds(240, 420, 90, 20);
-    panel.add(logoutButton);
+    bottomPanel.add(logoutButton);
   }
 
   public void createJList() {
     list.setModel(model);
     fillJList();
-    list.setBounds(10, 40, 250, 340);
-    panel.add(list);
+    list.setFont(list.getFont().deriveFont(15.0f));
+    list.setLayoutOrientation(JList.VERTICAL);
+    scrollPane.setViewportView(list);
+    scrollPane.setBorder(new LineBorder(Color.black, 3));
+    add(scrollPane, BorderLayout.WEST);
     list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
@@ -191,9 +197,11 @@ public class NormalUserView extends JFrame implements UserView {
 
   public void createTextArea() {
     textBox = new JTextArea();
-    textBox.setBounds(280, 40, 390, 340);
+    Font font = new Font("Serif", Font.BOLD, 15);
+    textBox.setFont(font);
+    textBox.setBorder(new LineBorder(Color.black, 3));
     textBox.setEditable(false);
-    panel.add(textBox);
+    add(textBox, BorderLayout.CENTER);
   }
 
   public void fillJList() {
@@ -311,7 +319,6 @@ public class NormalUserView extends JFrame implements UserView {
         for (User user : userList)
           model.addElement(new ListElement(user.getUserName(), user.getUserId()));
       }
-  }
     } else if (currentTable.equals("Team")) {
       ArrayList<Team> teamList = db.get(q);
       if (teamList != null) {
