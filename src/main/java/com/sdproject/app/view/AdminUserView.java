@@ -1,15 +1,19 @@
 package com.sdproject.app.view;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.FlowLayout;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.awt.BorderLayout;
 import com.sdproject.app.model.*;
 import com.sdproject.app.database.*;
 import java.time.format.DateTimeFormatter;
 import java.awt.Component;
 import java.awt.Color;
+import java.awt.*;
 
 public class AdminUserView extends JFrame implements UserView {
 
@@ -20,22 +24,29 @@ public class AdminUserView extends JFrame implements UserView {
   private int selectedID;
 
   private JButton addButton, deleteButton, searchButton, modifyButton, logoutButton;
-  private JPanel panel;
+  private JPanel topPanel, bottomPanel;
   private JComboBox<String> tables;
   private JTextArea textBox;
   private JList<ListElement> list = new JList<>();
   private DefaultListModel<ListElement> model = new DefaultListModel<>();
+  private JScrollPane scrollPane = new JScrollPane();
 
   public AdminUserView(DatabaseWrapper db, int currentUserID) {
     this.db = db;
     this.currentUserID = currentUserID;
     this.currentTable = "User";
         
-    panel = new JPanel();
-    setSize(700, 500);
+    setTitle("Admin Menu");
+    setPreferredSize(new Dimension(800, 600));
+    getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    add(panel);
-    panel.setLayout(null);
+    
+    topPanel = new JPanel();
+    bottomPanel = new JPanel();
+    topPanel.setLayout(new FlowLayout());
+    bottomPanel.setLayout(new FlowLayout());
+    add(topPanel, BorderLayout.NORTH);
+    add(bottomPanel, BorderLayout.SOUTH);
 
     comboBoxes();
     addNewButton();
@@ -46,6 +57,7 @@ public class AdminUserView extends JFrame implements UserView {
     createJList();
     createTextArea();
 
+    pack();
     setVisible(true);
   }
 
@@ -57,19 +69,15 @@ public class AdminUserView extends JFrame implements UserView {
       public void itemStateChanged(ItemEvent event) {
         if (event.getStateChange() == ItemEvent.SELECTED) {
           currentTable = (String) event.getItem();
-          clearJList();
-          fillJList();
-          textBox.setText("");
+          updateJList();
         }
       }
     });
-    
-    tables.setBounds(15, 10, 90, 20);
-    panel.add(tables);
+    topPanel.add(tables);
   }
 
   public void addNewButton() {
-    addButton = new JButton(new AbstractAction("Add New"){
+    addButton = new JButton(new AbstractAction("Add"){
       @Override
       public void actionPerformed(ActionEvent e) {
         if (currentTable.equals("User")) {
@@ -81,12 +89,11 @@ public class AdminUserView extends JFrame implements UserView {
         }
       }
     });
-    addButton.setBounds(10, 420, 90, 20);
-    panel.add(addButton);
+    bottomPanel.add(addButton);
   }
     
   public void deleteButton() {
-    deleteButton = new JButton(new AbstractAction("Delete Selected"){
+    deleteButton = new JButton(new AbstractAction("Delete"){
       @Override
       public void actionPerformed(ActionEvent e) {
         int confirm = JOptionPane.showConfirmDialog(new JFrame(), "Are you sure?");
@@ -100,18 +107,15 @@ public class AdminUserView extends JFrame implements UserView {
           } else if (currentTable.equals("Task")) {
             db.query().tableIs(currentTable).taskIdIs(selectedID).delete();
           }
-          clearJList();
-          fillJList();
-          textBox.setText("");
+          updateJList();
         }
       }
     });
-    deleteButton.setBounds(10, 390, 125, 20);
-    panel.add(deleteButton);
+    bottomPanel.add(deleteButton);
   }
 
   public void modifyButton() {
-    modifyButton = new JButton(new AbstractAction("Modify Selected"){
+    modifyButton = new JButton(new AbstractAction("Modify"){
       @Override
       public void actionPerformed(ActionEvent e) {
         if(currentTable.equals("User")) {
@@ -121,14 +125,10 @@ public class AdminUserView extends JFrame implements UserView {
         } else if(currentTable.equals("Task")) {
           ModifyTaskView view = new ModifyTaskView(db, AdminUserView.this, selectedID);
         }
-
-        clearJList();
-        fillJList();
-        textBox.setText("");
+        updateJList();
       }
     });
-    modifyButton.setBounds(140, 390, 125, 20);
-    panel.add(modifyButton);
+    bottomPanel.add(modifyButton);
   }
 
   public void searchButton() {
@@ -144,8 +144,7 @@ public class AdminUserView extends JFrame implements UserView {
         }
       }
     });
-    searchButton.setBounds(110, 420, 90, 20);
-    panel.add(searchButton);
+    bottomPanel.add(searchButton);
   }
 
   public void addLogoutButton() {
@@ -160,15 +159,15 @@ public class AdminUserView extends JFrame implements UserView {
         }
       }
     });
-    logoutButton.setBounds(240, 420, 90, 20);
-    panel.add(logoutButton);
+    bottomPanel.add(logoutButton);
   }
 
   public void createJList() {
     list.setModel(model);
     fillJList();
-    list.setBounds(10, 40, 250, 340);
-    panel.add(list);
+    list.setFont(list.getFont().deriveFont(15.0f));
+    list.setLayoutOrientation(JList.VERTICAL);
+    list.setFixedCellWidth(250);
     list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
@@ -197,14 +196,18 @@ public class AdminUserView extends JFrame implements UserView {
         return c;
       } 
     });
-
+    scrollPane.setViewportView(list);
+    scrollPane.setBorder(new LineBorder(Color.black, 3));
+    add(scrollPane, BorderLayout.WEST);
   }
 
   public void createTextArea() {
     textBox = new JTextArea();
-    textBox.setBounds(280, 40, 390, 340);
+    Font font = new Font("Serif", Font.BOLD, 15);
+    textBox.setFont(font);
+    textBox.setBorder(new LineBorder(Color.black, 3));
     textBox.setEditable(false);
-    panel.add(textBox);
+    add(textBox, BorderLayout.CENTER);
   }
 
   public void fillJList() {

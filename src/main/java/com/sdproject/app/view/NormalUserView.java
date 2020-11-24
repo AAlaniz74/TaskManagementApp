@@ -39,8 +39,9 @@ public class NormalUserView extends JFrame implements UserView {
     this.db = db;
     this.currentUserID = currentUserID;
     this.currentTable = "Assigned Tasks";
-        
-    setSize(900, 700);
+    setTitle("User Menu");
+    setPreferredSize(new Dimension(800, 600));
+    getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     topPanel = new JPanel();
@@ -49,17 +50,17 @@ public class NormalUserView extends JFrame implements UserView {
     bottomPanel.setLayout(new FlowLayout());
     add(topPanel, BorderLayout.NORTH);
     add(bottomPanel, BorderLayout.SOUTH);
-    pack();
 
     comboBoxes();
     addNewButton();
-    searchButton();
     deleteButton();
     modifyButton();
+    searchButton();
     addLogoutButton();
     createJList();
     createTextArea();
 
+    pack();
     setVisible(true);
   }
 
@@ -83,9 +84,7 @@ public class NormalUserView extends JFrame implements UserView {
             modifyButton.setVisible(false);
             addButton.setVisible(false);
           }
-          clearJList();
-          fillJList();
-          textBox.setText("");
+          updateJList();
         }
       }
     });
@@ -128,9 +127,7 @@ public class NormalUserView extends JFrame implements UserView {
         if (confirm == JOptionPane.YES_OPTION) {
             db.query().tableIs("Task").taskIdIs(selectedID).delete();
           }
-          clearJList();
-          fillJList();
-          textBox.setText("");
+          updateJList();
         }
     });
     bottomPanel.add(deleteButton);
@@ -143,9 +140,7 @@ public class NormalUserView extends JFrame implements UserView {
       @Override
       public void actionPerformed(ActionEvent e) {
         //ModifyTaskView t = new ModifyTaskView(db, taskName);
-        clearJList();
-        fillJList();
-        textBox.setText("");
+        updateJList();
       }
     });
     bottomPanel.add(modifyButton);
@@ -172,9 +167,7 @@ public class NormalUserView extends JFrame implements UserView {
     fillJList();
     list.setFont(list.getFont().deriveFont(15.0f));
     list.setLayoutOrientation(JList.VERTICAL);
-    scrollPane.setViewportView(list);
-    scrollPane.setBorder(new LineBorder(Color.black, 3));
-    add(scrollPane, BorderLayout.WEST);
+    list.setFixedCellWidth(250);
     list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
@@ -197,8 +190,10 @@ public class NormalUserView extends JFrame implements UserView {
          return c;
      }
     };
-
     list.setCellRenderer(new SelectedListCellRenderer());
+    scrollPane.setViewportView(list);
+    scrollPane.setBorder(new LineBorder(Color.black, 3));
+    add(scrollPane, BorderLayout.WEST);
   }
 
   public void createTextArea() {
@@ -333,6 +328,6 @@ public class NormalUserView extends JFrame implements UserView {
       }
     }
     textBox.setText("");
-  }
+  } 
 }
 
