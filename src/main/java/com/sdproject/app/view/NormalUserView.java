@@ -45,6 +45,7 @@ public class NormalUserView extends JFrame implements UserView {
     searchButton();
     deleteButton();
     modifyButton();
+    addLogoutButton();
     createJList();
     createTextArea();
 
@@ -139,6 +140,22 @@ public class NormalUserView extends JFrame implements UserView {
     modifyButton.setBounds(175, 390, 75, 20);
     panel.add(modifyButton);
     modifyButton.setVisible(false);
+  }
+
+  public void addLogoutButton() {
+    logoutButton = new JButton(new AbstractAction("Logout") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout?", JOptionPane.YES_NO_OPTION);
+
+        if (reply == JOptionPane.YES_OPTION) {
+          LoginView t = new LoginView(db);
+          dispose();
+        }
+      }
+    });
+    logoutButton.setBounds(240, 420, 90, 20);
+    panel.add(logoutButton);
   }
 
   public void createJList() {
@@ -279,5 +296,30 @@ public class NormalUserView extends JFrame implements UserView {
     textBox.setText("");
   }
 
+  public void search(Query q) {
+    clearJList();
+
+    if (currentTable.equals("Task")) {
+      ArrayList<Task> taskList = db.get(q);
+      if (taskList != null) {
+        for (Task task : taskList)
+          model.addElement(new ListElement(task.getTaskName(), task.getTaskId()));
+      }   
+    } else if (currentTable.equals("User")) {
+      ArrayList<User> userList = db.get(q);
+      if (userList != null) {
+        for (User user : userList)
+          model.addElement(new ListElement(user.getUserName(), user.getUserId()));
+      }
+  }
+    } else if (currentTable.equals("Team")) {
+      ArrayList<Team> teamList = db.get(q);
+      if (teamList != null) {
+        for (Team team : teamList)
+          model.addElement(new ListElement(team.getTeamName(), team.getTeamId()));
+      }
+    }
+    textBox.setText("");
+  }
 }
 

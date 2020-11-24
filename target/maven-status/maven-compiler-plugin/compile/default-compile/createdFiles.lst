@@ -3,6 +3,7 @@ com/sdproject/app/view/CreateUserView$1.class
 com/sdproject/app/model/Task.class
 com/sdproject/app/model/UserType.class
 com/sdproject/app/view/SearchView$2.class
+com/sdproject/app/view/AdminUserView$8.class
 com/sdproject/app/view/AdminUserView$4.class
 com/sdproject/app/view/SearchView.class
 com/sdproject/app/view/AdminUserView$2.class

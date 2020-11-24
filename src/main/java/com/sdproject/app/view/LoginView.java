@@ -88,12 +88,11 @@ public class LoginView extends JFrame implements UserView {
     newUserButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         CreateUserView createView = new CreateUserView(db, LoginView.this);
-        dispose();	
       }
     });
     panel.add(newUserButton);
   }
 
   public void updateJList() {}
-
+  public void search(Query q) {}
 }
