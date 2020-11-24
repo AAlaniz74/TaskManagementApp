@@ -107,7 +107,13 @@ public class NormalUserView extends JFrame implements UserView {
     searchButton = new JButton(new AbstractAction("Search"){
       @Override
       public void actionPerformed(ActionEvent e) {
-        SearchView t = new SearchView(db);
+        if (currentTable.equals("User")) {
+          SearchUserView t = new SearchUserView(db, NormalUserView.this);
+        } else if (currentTable.equals("Task")) {
+          SearchTaskView t = new SearchTaskView(db, NormalUserView.this);
+        } else if (currentTable.equals("Team")) {
+          SearchTeamView t = new SearchTeamView(db, NormalUserView.this);
+        }
       }
     });
     bottomPanel.add(searchButton);

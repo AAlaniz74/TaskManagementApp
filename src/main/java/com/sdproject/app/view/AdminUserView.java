@@ -138,7 +138,7 @@ public class AdminUserView extends JFrame implements UserView {
         if (currentTable.equals("User")) {
           SearchUserView t = new SearchUserView(db, AdminUserView.this);
         } else if (currentTable.equals("Task")) {
-
+          SearchTaskView t = new SearchTaskView(db, AdminUserView.this);
         } else if (currentTable.equals("Team")) {
           SearchTeamView t = new SearchTeamView(db, AdminUserView.this);
         }

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import com.sdproject.app.database.DatabaseWrapper;
+import com.sdproject.app.database.Query;
 import com.sdproject.app.model.Task;
 import com.sdproject.app.model.User;
 

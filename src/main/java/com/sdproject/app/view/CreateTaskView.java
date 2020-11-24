@@ -217,7 +217,7 @@ public class CreateTaskView extends JFrame {
           return;
         } 
         
-        q = q.taskNameIs(nameField.getText()).taskDescIs(descField.getText()).createdByIdIs(currentUserID);
+        q = q.taskNameIs(nameField.getText()).taskDescIs(descField.getText()).createdByIdIs(currentUserID).assignedToIdIs(assignedToID);
 
         if (subtaskIDs.size() != 0)
           q = q.allSubtasksAre(subtaskIDs);
