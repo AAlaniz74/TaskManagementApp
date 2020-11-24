@@ -32,18 +32,19 @@ public class CreateUserView extends JFrame {
   private JTextField userField;
   private JPasswordField passField;
   private JComboBox<String> userType;
-  private JButton submit;
+  private JButton submit, cancel;
 
   public CreateUserView(DatabaseWrapper db, UserView view) {
     this.db = db;
     this.view = view;
-    panel = new JPanel(new GridLayout(5, 1));
+    panel = new JPanel(new GridLayout(5, 2));
     panel.add(new JLabel("New user creation"));
     panel.add(new JLabel(""));
     addUserLabel();
     addPassLabel();
     addTypeLabel();
     addSubmitButton();
+    addCancelButton();
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     add(panel, BorderLayout.CENTER);
@@ -95,13 +96,23 @@ public class CreateUserView extends JFrame {
           JOptionPane.showMessageDialog(null, "User name already taken.");
 	      } else {
           db.query().tableIs("User").userNameIs(newUserName).userPassIs(newUserPass).userTypeIs(newUserType).insert();
-	        JOptionPane.showMessageDialog(null, "New user created.");
-	        view.updateJList();
+          JOptionPane.showMessageDialog(null, "New user created.");
+          view.updateJList();
           dispose();
 	      }
       }
     });
     panel.add(submit);
+  }
+
+  private void addCancelButton() {
+    cancel = new JButton("CANCEL");
+    cancel.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        dispose();
+      }
+    });
+    panel.add(cancel);
   }
 
 }
