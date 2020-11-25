@@ -9,8 +9,10 @@ com/sdproject/app/view/SearchTaskView$5.class
 com/sdproject/app/view/SearchTaskView$2.class
 com/sdproject/app/view/AdminUserView$2.class
 com/sdproject/app/view/SearchTaskView$3.class
+com/sdproject/app/view/AdminUserView$9.class
 com/sdproject/app/view/ColorItem.class
 com/sdproject/app/database/Query.class
+com/sdproject/app/view/NormalUserView$8.class
 com/sdproject/app/view/ModifyTeamView$3.class
 com/sdproject/app/view/ModifyTaskView$4.class
 com/sdproject/app/view/AdminUserView$5.class
@@ -22,6 +24,7 @@ com/sdproject/app/view/AdminUserView.class
 com/sdproject/app/view/CreateTaskView$4.class
 com/sdproject/app/view/LoginView$2.class
 com/sdproject/app/view/CreateUserView.class
+com/sdproject/app/view/LoginView$3.class
 com/sdproject/app/view/ModifyTaskView$3.class
 com/sdproject/app/view/LoginView.class
 com/sdproject/app/view/AdminUserView$6.class

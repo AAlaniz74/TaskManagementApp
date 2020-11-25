@@ -2,9 +2,11 @@ package com.sdproject.app.model;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class Task {
+public class Task implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   private static int nextID = 701;
 
   private int taskId;

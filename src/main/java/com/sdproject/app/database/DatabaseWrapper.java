@@ -46,6 +46,14 @@ public class DatabaseWrapper {
     return db.getTeamMembers(q);
   }
 
+  public void serializeAll() {
+    db.serializeAll();
+  }
+
+  public void deserializeAll() {
+    db.deserializeAll();
+  }
+
   //ERROR CHECKING METHODS
 
   public boolean allUserFieldsSet(Query q) {

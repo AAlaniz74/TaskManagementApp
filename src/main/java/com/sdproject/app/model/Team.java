@@ -1,9 +1,11 @@
 package com.sdproject.app.model;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Team {
+public class Team implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   private static int nextID = 501;
 
   private int teamId;
@@ -20,9 +22,13 @@ public class Team {
     return this.teamId;
   }
 
-  public String getTeamName() { return this.teamName; }
+  public String getTeamName() { 
+    return this.teamName; 
+  }
     
-  public void setTeamName(String name) { this.teamName = name; }
+  public void setTeamName(String name) { 
+    this.teamName = name; 
+  }
     
   public ArrayList<Integer> getTeamMemberIDs() {
     return this.users;
@@ -32,7 +38,9 @@ public class Team {
     return users.size();
   }
     
-  public void setTeamMemberIDs(ArrayList<Integer> users) { this.users = users; }
+  public void setTeamMemberIDs(ArrayList<Integer> users) { 
+    this.users = users; 
+  }
     
   public void addMember(int newMember) {
     users.add(newMember);

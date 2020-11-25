@@ -7,6 +7,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
+import java.lang.ClassNotFoundException;
+
 public class DummyDatabase implements Database {
   private ArrayList<User> allUsers;
   private ArrayList<Task> allTasks;
@@ -272,6 +279,18 @@ public class DummyDatabase implements Database {
     return this.allTeams;
   }
 
+  public void setAllUsers(ArrayList<User> newUsers) {
+    this.allUsers = newUsers;
+  }
+
+  public void setAllTasks(ArrayList<Task> newTasks) {
+    this.allTasks = newTasks;
+  }
+
+  public void setAllTeams(ArrayList<Team> newTeams) {
+    this.allTeams = newTeams;
+  }
+
   public void updateRecurring() {
     for (Task task : this.allTasks) {
       if (task.getRecurringDays() != 0 && LocalDate.now().isAfter(task.getDueDate())) {
@@ -308,4 +327,61 @@ public class DummyDatabase implements Database {
       updateUserProductivity(user);
     }
   }
+
+  // SERIALIZATION METHODS
+
+  public void serializeObj(String filename, Object obj) {
+    try {
+      FileOutputStream fos = new FileOutputStream(filename);
+      ObjectOutputStream oos = new ObjectOutputStream(fos);
+      oos.writeObject(obj);
+      oos.close();
+      fos.close();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
+  }
+
+  public void serializeAll() {
+    serializeObj("ser/user.ser", this.allUsers);
+    serializeObj("ser/task.ser", this.allTasks);
+    serializeObj("ser/team.ser", this.allTeams);
+  }
+
+  public void deserializeAll() {
+    try {
+      ArrayList<User> newUsers = new ArrayList<User>();
+      FileInputStream fis = new FileInputStream("ser/user.ser");
+      ObjectInputStream ois = new ObjectInputStream(fis);
+      newUsers = (ArrayList) ois.readObject();
+      ois.close();
+      fis.close();
+      
+      ArrayList<Task> newTasks = new ArrayList<Task>();
+      fis = new FileInputStream("ser/task.ser");
+      ois = new ObjectInputStream(fis);
+      newTasks = (ArrayList) ois.readObject();
+      ois.close();
+      fis.close();
+
+      ArrayList<Team> newTeams = new ArrayList<Team>();
+      fis = new FileInputStream("ser/team.ser");
+      ois = new ObjectInputStream(fis);
+      newTeams = (ArrayList) ois.readObject();
+      ois.close();
+      fis.close();
+
+      setAllUsers(newUsers);
+      setAllTasks(newTasks);
+      setAllTeams(newTeams);
+
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      return;
+    } catch (ClassNotFoundException c) {
+      c.printStackTrace();
+      return;
+    }
+  }
+
 }

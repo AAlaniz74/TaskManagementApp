@@ -13,6 +13,8 @@ import com.sdproject.app.database.*;
 import java.time.format.DateTimeFormatter;
 import java.awt.Component;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.*;
 
 public class NormalUserView extends JFrame implements UserView {
@@ -42,8 +44,14 @@ public class NormalUserView extends JFrame implements UserView {
     setTitle("User Menu");
     setPreferredSize(new Dimension(800, 600));
     getRootPane().setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        db.serializeAll();
+        System.exit(0);
+      }
+    });
+
     topPanel = new JPanel();
     bottomPanel = new JPanel();
     topPanel.setLayout(new FlowLayout());

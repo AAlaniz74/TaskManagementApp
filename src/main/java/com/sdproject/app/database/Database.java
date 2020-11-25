@@ -14,4 +14,6 @@ public interface Database {
   public <T> T getOne(Query q);
   public ArrayList<Task> getSubtasks(Query q);
   public ArrayList<User> getTeamMembers(Query q);
+  public void serializeAll();
+  public void deserializeAll();
 }
