@@ -78,7 +78,7 @@ public class SearchUserView extends JFrame {
           q = q.userNameIs(userField.getText());
         
         String typeString = (String) userType.getSelectedItem();
-        if (typeString.equals(""))
+        if (!typeString.equals(""))
           q = q.userTypeIs(typeString);
 
         view.search(q);
