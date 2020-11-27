@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class User implements Serializable {
 
   private static final long serialVersionUID = 1L;
-	private static int nextID = 101;
 
+	private static int nextID = 101;
 	private int userId;
 	private String userName;
 	private String userPass;
@@ -56,4 +56,5 @@ public class User implements Serializable {
   public void setUserProductivity(double prod) {
     this.userProductivity = prod;
   }
+
 }

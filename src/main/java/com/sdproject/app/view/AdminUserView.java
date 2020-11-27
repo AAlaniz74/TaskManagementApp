@@ -179,8 +179,10 @@ public class AdminUserView extends JFrame implements UserView {
     list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       @Override
       public void valueChanged(ListSelectionEvent e) {
-        selectedID = (list.getSelectedValue() == null) ? 0 : list.getSelectedValue().ID;
-        displayText();
+        if (!e.getValueIsAdjusting()) {
+          selectedID = (list.getSelectedValue() == null) ? 0 : list.getSelectedValue().ID;
+          displayText();
+        }
       }
     });
 
@@ -291,6 +293,7 @@ public class AdminUserView extends JFrame implements UserView {
       Team selectedTeam = db.query().tableIs("Team").teamIdIs(selectedID).getOne();
       
       String text = "Team Name: " + selectedTeam.getTeamName() + 
+                    "\nID: " + selectedTeam.getTeamId() +
                     "\nTeam Members:";
       ArrayList<User> userlist = db.query().tableIs("Team").teamIdIs(selectedID).getTeamMembers();
       

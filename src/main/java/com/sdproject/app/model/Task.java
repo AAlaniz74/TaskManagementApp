@@ -139,4 +139,5 @@ public class Task implements Serializable {
     copy.setColorHex(this.colorHex);
     return copy;
   }
+
 }

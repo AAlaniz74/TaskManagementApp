@@ -18,6 +18,7 @@ com/sdproject/app/view/ModifyTaskView$4.class
 com/sdproject/app/view/AdminUserView$5.class
 com/sdproject/app/database/Database.class
 com/sdproject/app/model/TaskStatus.class
+com/sdproject/app/model/NextID.class
 com/sdproject/app/view/AdminUserView$3.class
 com/sdproject/app/view/SearchTaskView$4.class
 com/sdproject/app/view/AdminUserView.class

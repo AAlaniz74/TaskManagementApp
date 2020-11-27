@@ -49,6 +49,6 @@ public class Team implements Serializable {
   public void removeMember(int memberToRemove) {
     users.remove(memberToRemove);
   }
-    
+
 }
 

@@ -39,7 +39,7 @@ public class ModifyTeamView extends JFrame{
     addCancelButton();
     add(panel, BorderLayout.CENTER);
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setTitle("CreateTask");
     setSize(500, 300);
     setVisible(true);

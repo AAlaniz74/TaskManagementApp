@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.lang.ClassNotFoundException;
+import java.lang.reflect.Field;
 
 public class DummyDatabase implements Database {
   private ArrayList<User> allUsers;
@@ -342,46 +343,74 @@ public class DummyDatabase implements Database {
     }
   }
 
+  private static int getNextIdField(Class<?> clazz) {
+    try {
+      Field field = clazz.getDeclaredField("nextID");
+      field.setAccessible(true);
+      return (int) field.get(null);
+    } catch (ReflectiveOperationException ex) {
+      System.out.println(ex.getMessage());
+    }
+    return 0;
+  }
+
   public void serializeAll() {
     serializeObj("ser/user.ser", this.allUsers);
     serializeObj("ser/task.ser", this.allTasks);
     serializeObj("ser/team.ser", this.allTeams);
+
+    int userCurrentNextID = getNextIdField(User.class);
+    int taskCurrentNextID = getNextIdField(Task.class);
+    int teamCurrentNextID = getNextIdField(Team.class);
+
+    NextID nextID = new NextID(userCurrentNextID, taskCurrentNextID, teamCurrentNextID);
+    serializeObj("ser/next_id.ser", nextID);
+  }
+
+  public <T> T deserializeObj(String filename) {
+    try {
+      T obj;
+      FileInputStream fis = new FileInputStream(filename);
+      ObjectInputStream ois = new ObjectInputStream(fis);
+      obj = (T) ois.readObject();
+      ois.close();
+      fis.close();
+      return obj;
+    } catch (IOException ioe) {
+      System.out.println(ioe.getMessage());
+    } catch (ClassNotFoundException cex) {
+      System.out.println(cex.getMessage());
+    }
+    return null;
+  }
+
+  private void setNextID(Class<?> clazz, int nextID) {
+    try {
+      Field field = clazz.getDeclaredField("nextID");
+      field.setAccessible(true);
+      field.set(null, nextID);
+    } catch (ReflectiveOperationException ex) {
+      System.out.println(ex.getMessage());
+    }
   }
 
   public void deserializeAll() {
-    try {
-      ArrayList<User> newUsers = new ArrayList<User>();
-      FileInputStream fis = new FileInputStream("ser/user.ser");
-      ObjectInputStream ois = new ObjectInputStream(fis);
-      newUsers = (ArrayList) ois.readObject();
-      ois.close();
-      fis.close();
-      
-      ArrayList<Task> newTasks = new ArrayList<Task>();
-      fis = new FileInputStream("ser/task.ser");
-      ois = new ObjectInputStream(fis);
-      newTasks = (ArrayList) ois.readObject();
-      ois.close();
-      fis.close();
+      ArrayList<User> newUsers = deserializeObj("ser/user.ser");
+      ArrayList<Task> newTasks = deserializeObj("ser/task.ser");
+      ArrayList<Team> newTeams = deserializeObj("ser/team.ser");
+      NextID nextID = deserializeObj("ser/next_id.ser");
 
-      ArrayList<Team> newTeams = new ArrayList<Team>();
-      fis = new FileInputStream("ser/team.ser");
-      ois = new ObjectInputStream(fis);
-      newTeams = (ArrayList) ois.readObject();
-      ois.close();
-      fis.close();
-
-      setAllUsers(newUsers);
-      setAllTasks(newTasks);
-      setAllTeams(newTeams);
-
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-      return;
-    } catch (ClassNotFoundException c) {
-      c.printStackTrace();
-      return;
-    }
+      if (newUsers != null)
+        setAllUsers(newUsers);
+      if (newTasks != null)
+        setAllTasks(newTasks);
+      if (newTeams != null)
+        setAllTeams(newTeams);
+      if (nextID != null) {
+        setNextID(User.class, nextID.getUserNextID());
+        setNextID(Task.class, nextID.getTaskNextID());
+        setNextID(Team.class, nextID.getTeamNextID());
+      }
   }
 
 }

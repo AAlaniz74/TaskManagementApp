@@ -177,7 +177,7 @@ public class SearchTaskView extends JFrame {
 
   public void addColorHex() {
     colorLabel = new JLabel("Add color:");
-    ColorItem[] colorList = new ColorItem[] { new ColorItem("None", null), new ColorItem("Blue", "#0000ff"), new ColorItem("Red", "#ff0000"), new ColorItem("Green", "#00ff00") };
+    ColorItem[] colorList = new ColorItem[] { new ColorItem("None", null), new ColorItem("Blue", "#bae1ff"), new ColorItem("Red", "#ffb3ba"), new ColorItem("Orange", "#ffdfba"), new ColorItem("Green", "#baffc9"), new ColorItem("Purple", "#e0bbe4") };
     colorType = new JComboBox<ColorItem>(colorList);
     panel.add(colorLabel);
     panel.add(colorType);
