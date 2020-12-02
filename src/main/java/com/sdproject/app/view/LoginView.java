@@ -10,11 +10,16 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.awt.Dimension;
+import java.awt.Font;
 
 import com.sdproject.app.database.DatabaseWrapper;
 import com.sdproject.app.database.Query;
@@ -29,10 +34,17 @@ public class LoginView extends JFrame implements UserView {
   private JTextField userText;
   private JPasswordField passText;
   private JButton submit, newUserButton;
+  private GridBagConstraints gbc;
+  private Font font, font2;
 
   public LoginView(DatabaseWrapper db) {
     this.db = db;
-    panel = new JPanel(new GridLayout(4, 1));
+    panel = new JPanel(new GridBagLayout());
+    gbc = new GridBagConstraints();
+    gbc.insets = new Insets(10, 0, 10, 20);
+    font = new Font("Ariel", Font.BOLD, 13);
+    font2 = new Font("Ariel", Font.PLAIN, 15);
+
     addUserLabel();
     addPassLabel();
     addSubmitButton();
@@ -45,26 +57,45 @@ public class LoginView extends JFrame implements UserView {
       }
     });
     
-    add(panel, BorderLayout.CENTER);
+    add(panel);
     setTitle("Login to TaskApp");
-    setSize(500, 300);
+    setPreferredSize(new Dimension(500, 230));
+    pack();
+    setLocationRelativeTo(null);
     setVisible(true);
+  }
+
+  private void setGBC(int anchor, int fill, int gridx, int gridy, double weightx, double weighty){
+    gbc.anchor = anchor;
+    gbc.fill = fill;
+    gbc.weightx = weightx;
+    gbc.weighty = weighty;
+    gbc.gridx = gridx;
+    gbc.gridy = gridy;
   }
 
   private void addUserLabel() {
     userLabel = new JLabel();
+    userLabel.setFont(font);
     userLabel.setText("User Name: ");
     userText = new JTextField();
-    panel.add(userLabel);
-    panel.add(userText);
+    userText.setFont(font2);
+    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 0, .1, .2);
+    panel.add(userLabel, gbc);
+    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 0, .9, .2);
+    panel.add(userText, gbc);
   }
 
   private void addPassLabel() {
     passLabel = new JLabel();
+    passLabel.setFont(font);
     passLabel.setText("Password: ");
     passText = new JPasswordField();
-    panel.add(passLabel);
-    panel.add(passText);
+    passText.setFont(font2);
+    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 1, .1, .2);
+    panel.add(passLabel, gbc);
+    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 1, .9, .2);
+    panel.add(passText, gbc);
   }
 
   private void addSubmitButton() {
@@ -89,7 +120,8 @@ public class LoginView extends JFrame implements UserView {
         }		
       }
     });
-    panel.add(submit);
+    setGBC(GridBagConstraints.BASELINE_LEADING, GridBagConstraints.CENTER, 1, 2, 1, 1);
+    panel.add(submit, gbc);
   }
   
   private void addNewUserButton() {
@@ -99,7 +131,8 @@ public class LoginView extends JFrame implements UserView {
         CreateUserView createView = new CreateUserView(db, LoginView.this);
       }
     });
-    panel.add(newUserButton);
+    setGBC(GridBagConstraints.BASELINE, GridBagConstraints.NONE, 1, 2, .5, 1);
+    panel.add(newUserButton, gbc);
   }
 
   public void updateJList() {}

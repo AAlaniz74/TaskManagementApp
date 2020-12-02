@@ -69,6 +69,7 @@ public class NormalUserView extends JFrame implements UserView {
     createTextArea();
 
     pack();
+    setLocationRelativeTo(null);
     setVisible(true);
   }
 

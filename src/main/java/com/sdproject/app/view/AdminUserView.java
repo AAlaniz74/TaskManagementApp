@@ -66,6 +66,7 @@ public class AdminUserView extends JFrame implements UserView {
     createTextArea();
 
     pack();
+    setLocationRelativeTo(null);
     setVisible(true);
   }
 

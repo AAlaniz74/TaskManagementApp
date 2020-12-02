@@ -14,6 +14,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.awt.Insets;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 
 import com.sdproject.app.model.User;
 import com.sdproject.app.model.UserType;
@@ -27,19 +33,31 @@ public class CreateUserView extends JFrame {
   private DatabaseWrapper db;
   private UserView view;
 
-  private JPanel panel;
+  private JPanel topPanel, bottomPanel, centerPanel;
   private JLabel userLabel, passLabel, typeLabel;
   private JTextField userField;
   private JPasswordField passField;
   private JComboBox<String> userType;
   private JButton submit, cancel;
+  private GridBagConstraints gbc;
+  private Font font, font2;
 
   public CreateUserView(DatabaseWrapper db, UserView view) {
     this.db = db;
     this.view = view;
-    panel = new JPanel(new GridLayout(5, 2));
-    panel.add(new JLabel("New user creation"));
-    panel.add(new JLabel(""));
+
+    topPanel = new JPanel(new FlowLayout());
+    centerPanel = new JPanel(new GridBagLayout());
+    bottomPanel = new JPanel(new FlowLayout());
+    
+    gbc = new GridBagConstraints();
+    gbc.insets = new Insets(10, 0, 10, 20);
+    font = new Font("Ariel", Font.BOLD, 13);
+    font2 = new Font("Ariel", Font.PLAIN, 15);
+    JLabel label = new JLabel("New User Creation");
+    label.setFont(font);
+    topPanel.add(label);
+
     addUserLabel();
     addPassLabel();
     addTypeLabel();
@@ -47,36 +65,51 @@ public class CreateUserView extends JFrame {
     addCancelButton();
 
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    add(panel, BorderLayout.CENTER);
+    add(topPanel, BorderLayout.NORTH);
+    add(centerPanel, BorderLayout.CENTER);
+    add(bottomPanel, BorderLayout.SOUTH);
     setTitle("New User creation");
-    setSize(1000, 600);
+    setPreferredSize(new Dimension(500, 270));
+    pack();
+    setLocationRelativeTo(null);
     setVisible(true);
   }
 
   public void addUserLabel() {
     userLabel = new JLabel();
+    userLabel.setFont(font);
     userLabel.setText("Username: ");
     userField = new JTextField();
-    panel.add(userLabel);
-    panel.add(userField);
+    userField.setFont(font2);
+    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 0, .1, .2);
+    centerPanel.add(userLabel, gbc);
+    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 0, .9, .2);
+    centerPanel.add(userField, gbc);
   }
 
   public void addPassLabel() {
     passLabel = new JLabel();
+    passLabel.setFont(font);
     passLabel.setText("Password: ");
     passField = new JPasswordField();
-    panel.add(passLabel);
-    panel.add(passField);
+    passField.setFont(font2);
+    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 1, .1, .2);
+    centerPanel.add(passLabel, gbc);
+    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 1, .9, .2);
+    centerPanel.add(passField, gbc);
   }  
 
   public void addTypeLabel() {
     typeLabel = new JLabel();
+    typeLabel.setFont(font);
     typeLabel.setText("Select user type: ");
 		
     String[] typeList = new String[] {"NORMAL", "ADMIN"};
     userType = new JComboBox<String>(typeList);
-    panel.add(typeLabel);
-    panel.add(userType);
+    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 2, .1, .2);
+    centerPanel.add(typeLabel, gbc);
+    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.NONE, 1, 2, .9, .2);
+    centerPanel.add(userType, gbc);
   }
 
   public void addSubmitButton() {
@@ -102,7 +135,7 @@ public class CreateUserView extends JFrame {
 	      }
       }
     });
-    panel.add(submit);
+    bottomPanel.add(submit);
   }
 
   private void addCancelButton() {
@@ -112,7 +145,16 @@ public class CreateUserView extends JFrame {
         dispose();
       }
     });
-    panel.add(cancel);
+    bottomPanel.add(cancel);
+  }
+
+  private void setGBC(int anchor, int fill, int gridx, int gridy, double weightx, double weighty){
+    gbc.anchor = anchor;
+    gbc.fill = fill;
+    gbc.weightx = weightx;
+    gbc.weighty = weighty;
+    gbc.gridx = gridx;
+    gbc.gridy = gridy;
   }
 
 }

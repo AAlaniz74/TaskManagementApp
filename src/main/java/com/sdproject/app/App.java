@@ -14,7 +14,6 @@ public class App
     {
       DatabaseWrapper db = new DatabaseWrapper(new DummyDatabase());
       db.deserializeAll();
-      /*
       int test = db.query().tableIs("User").userNameIs("John").userPassIs("Pass").userTypeIs("ADMIN").insert();
       int test2 = db.query().tableIs("User").userNameIs("Jack").userPassIs("Pass").userTypeIs("NORMAL").insert();
       db.query().tableIs("Task").taskNameIs("Test Task").taskDescIs("TESSSSST").createdByIdIs(test).insert();
@@ -22,7 +21,7 @@ public class App
       teamIDs.add(test);
       teamIDs.add(test2);
       db.query().tableIs("Team").teamNameIs("Test Team").allTeamMembersAre(teamIDs).insert();
-      */
+      
 
       LoginView login = new LoginView(db);
     }
