@@ -54,9 +54,8 @@ public class DatabaseWrapper {
     db.deserializeAll();
   }
 
-  //ERROR CHECKING METHODS
-
-  public boolean allUserFieldsSet(Query q) {
-    return q.allUserFieldsSet();
+  public boolean isDatabaseEmpty() {
+    return db.isDatabaseEmpty();
   }
+
 }

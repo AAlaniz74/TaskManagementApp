@@ -188,6 +188,7 @@ public class CreateTaskView extends JFrame {
     dayFormatter.setMinimum(0);
     dayFormatter.setMaximum(Integer.MAX_VALUE);
     dayFormatter.setAllowsInvalid(false);
+    dayFormatter.setOverwriteMode(true);
     dayFormatter.setCommitsOnValidEdit(true);
 
     recurringField = new JFormattedTextField(dayFormatter);

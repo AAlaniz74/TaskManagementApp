@@ -16,4 +16,5 @@ public interface Database {
   public ArrayList<User> getTeamMembers(Query q);
   public void serializeAll();
   public void deserializeAll();
+  public boolean isDatabaseEmpty();
 }

@@ -11,7 +11,7 @@ public class Team implements Serializable {
   private int teamId;
   private String teamName;
   private ArrayList<Integer> users;
-    
+
   public Team(String teamName) {
     this.teamName = teamName;
     this.users = new ArrayList<Integer>();

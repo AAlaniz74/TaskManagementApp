@@ -280,6 +280,13 @@ public class DummyDatabase implements Database {
     return this.allTeams;
   }
 
+  public boolean isDatabaseEmpty() {
+    boolean userTest = (getAllTeams().size() == 0);
+    boolean taskTest = (getAllTasks().size() == 0);
+    boolean teamTest = (getAllTeams().size() == 0);
+    return userTest && taskTest && teamTest;
+  }
+
   public void setAllUsers(ArrayList<User> newUsers) {
     this.allUsers = newUsers;
   }
