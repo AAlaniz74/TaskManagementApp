@@ -2,12 +2,11 @@ package com.sdproject.app.view;
 
 import com.sdproject.app.database.*;
 import com.sdproject.app.model.*;
+import static com.sdproject.app.view.GBConstraints.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.BorderLayout;
-import java.awt.Insets;
 import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,7 +25,6 @@ public class ModifyUserView extends JFrame{
   private JComboBox<String> typeList;
   private JButton submitButton;
   private JButton cancelButton;
-  private GridBagConstraints gbc;
   private Font font, font2;
 
   public ModifyUserView(DatabaseWrapper db, UserView view, int selectedID) {
@@ -38,8 +36,6 @@ public class ModifyUserView extends JFrame{
     centerPanel = new JPanel(new GridBagLayout());
     bottomPanel = new JPanel(new FlowLayout());
     
-    gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 0, 10, 20);
     font = new Font("Ariel", Font.BOLD, 13);
     font2 = new Font("Ariel", Font.PLAIN, 15);
     JLabel label = new JLabel("Modify the User");
@@ -71,10 +67,8 @@ public class ModifyUserView extends JFrame{
     nameField.setFont(font2);
     nameField.setText(selectedUser.getUserName());
 
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 0, .1, .2);
-    centerPanel.add(nameLabel, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 0, .9, .2);
-    centerPanel.add(nameField, gbc);
+    centerPanel.add(nameLabel, new GBConstraints(0,0).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(nameField, new GBConstraints(1,0).anchor(LINE_START).fill(BOTH).weight(.9, .2));
   }
     
   private void addPassField() {
@@ -85,10 +79,8 @@ public class ModifyUserView extends JFrame{
     passField.setFont(font2);
     passField.setText(selectedUser.getUserPass());
 
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 1, .1, .2);
-    centerPanel.add(passLabel, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 1, .9, .2);
-    centerPanel.add(passField, gbc);
+    centerPanel.add(passLabel, new GBConstraints(0,1).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(passField, new GBConstraints(1,1).anchor(LINE_START).fill(BOTH).weight(.9, .2));
   }
     
   private void addTypeField() {
@@ -98,10 +90,8 @@ public class ModifyUserView extends JFrame{
 
     typeList = new JComboBox<String>(new String[] {"NORMAL", "ADMIN"});
 
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 2, .1, .2);
-    centerPanel.add(userType, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.NONE, 1, 2, .9, .2);
-    centerPanel.add(typeList, gbc);
+    centerPanel.add(userType, new GBConstraints(0,2).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(typeList, new GBConstraints(1,2).anchor(LINE_START).fill(NONE).weight(.9, .2));
   }
     
   public void submitButton() {
@@ -146,14 +136,5 @@ public class ModifyUserView extends JFrame{
     });
     cancelButton.setBounds(80, 155, 90, 25);
     bottomPanel.add(cancelButton);
-  }
-
-  private void setGBC(int anchor, int fill, int gridx, int gridy, double weightx, double weighty){
-    gbc.anchor = anchor;
-    gbc.fill = fill;
-    gbc.weightx = weightx;
-    gbc.weighty = weighty;
-    gbc.gridx = gridx;
-    gbc.gridy = gridy;
   }
 }

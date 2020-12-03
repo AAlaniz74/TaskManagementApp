@@ -10,23 +10,15 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.awt.Insets;
 import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import com.sdproject.app.model.User;
-import com.sdproject.app.model.UserType;
 import com.sdproject.app.database.DatabaseWrapper;
-import com.sdproject.app.database.Query;
-
-import com.sdproject.app.view.LoginView;
+import static com.sdproject.app.view.GBConstraints.*;
 
 public class CreateUserView extends JFrame {
 
@@ -39,7 +31,6 @@ public class CreateUserView extends JFrame {
   private JPasswordField passField;
   private JComboBox<String> userType;
   private JButton submit, cancel;
-  private GridBagConstraints gbc;
   private Font font, font2;
 
   public CreateUserView(DatabaseWrapper db, UserView view) {
@@ -50,8 +41,6 @@ public class CreateUserView extends JFrame {
     centerPanel = new JPanel(new GridBagLayout());
     bottomPanel = new JPanel(new FlowLayout());
     
-    gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 0, 10, 20);
     font = new Font("Ariel", Font.BOLD, 13);
     font2 = new Font("Ariel", Font.PLAIN, 15);
     JLabel label = new JLabel("New User Creation");
@@ -81,10 +70,8 @@ public class CreateUserView extends JFrame {
     userLabel.setText("Username: ");
     userField = new JTextField();
     userField.setFont(font2);
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 0, .1, .2);
-    centerPanel.add(userLabel, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 0, .9, .2);
-    centerPanel.add(userField, gbc);
+    centerPanel.add(userLabel, new GBConstraints(0,0).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(userField, new GBConstraints(1,0).anchor(LINE_START).fill(BOTH).weight(.9, .2));
   }
 
   public void addPassLabel() {
@@ -93,10 +80,8 @@ public class CreateUserView extends JFrame {
     passLabel.setText("Password: ");
     passField = new JPasswordField();
     passField.setFont(font2);
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 1, .1, .2);
-    centerPanel.add(passLabel, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 1, .9, .2);
-    centerPanel.add(passField, gbc);
+    centerPanel.add(passLabel, new GBConstraints(0,1).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(passField, new GBConstraints(1,1).anchor(LINE_START).fill(BOTH).weight(.9, .2));
   }  
 
   public void addTypeLabel() {
@@ -106,10 +91,8 @@ public class CreateUserView extends JFrame {
 		
     String[] typeList = new String[] {"NORMAL", "ADMIN"};
     userType = new JComboBox<String>(typeList);
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 2, .1, .2);
-    centerPanel.add(typeLabel, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.NONE, 1, 2, .9, .2);
-    centerPanel.add(userType, gbc);
+    centerPanel.add(typeLabel, new GBConstraints(0,2).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(userType, new GBConstraints(1,2).anchor(LINE_START).fill(NONE).weight(.9, .2));
   }
 
   public void addSubmitButton() {
@@ -147,14 +130,4 @@ public class CreateUserView extends JFrame {
     });
     bottomPanel.add(cancel);
   }
-
-  private void setGBC(int anchor, int fill, int gridx, int gridy, double weightx, double weighty){
-    gbc.anchor = anchor;
-    gbc.fill = fill;
-    gbc.weightx = weightx;
-    gbc.weighty = weighty;
-    gbc.gridx = gridx;
-    gbc.gridy = gridy;
-  }
-
 }

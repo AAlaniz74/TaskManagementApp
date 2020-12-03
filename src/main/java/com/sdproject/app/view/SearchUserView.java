@@ -4,29 +4,20 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.awt.BorderLayout;
-import java.awt.Insets;
 import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import com.sdproject.app.model.User;
-import com.sdproject.app.model.UserType;
 import com.sdproject.app.database.DatabaseWrapper;
 import com.sdproject.app.database.Query;
-
-import com.sdproject.app.view.LoginView;
+import static com.sdproject.app.view.GBConstraints.*;
 
 public class SearchUserView extends JFrame {
 
@@ -34,12 +25,10 @@ public class SearchUserView extends JFrame {
   private UserView view;
 
   private JPanel topPanel, bottomPanel, centerPanel;
-  private JLabel userLabel, passLabel, typeLabel;
+  private JLabel userLabel, typeLabel;
   private JTextField userField;
-  private JPasswordField passField;
   private JComboBox<String> userType;
   private JButton submitButton;
-  private GridBagConstraints gbc;
   private Font font, font2;
 
   public SearchUserView(DatabaseWrapper db, UserView view) {
@@ -50,8 +39,6 @@ public class SearchUserView extends JFrame {
     centerPanel = new JPanel(new GridBagLayout());
     bottomPanel = new JPanel(new FlowLayout());
     
-    gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 0, 10, 20);
     font = new Font("Ariel", Font.BOLD, 13);
     font2 = new Font("Ariel", Font.PLAIN, 15);
     JLabel label = new JLabel("Find User");
@@ -79,10 +66,8 @@ public class SearchUserView extends JFrame {
     userLabel.setText("Username: ");
     userField = new JTextField();
     userField.setFont(font2);
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 0, .1, .2);
-    centerPanel.add(userLabel, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.BOTH, 1, 0, .9, .2);
-    centerPanel.add(userField, gbc);
+    centerPanel.add(userLabel, new GBConstraints(0,0).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(userField, new GBConstraints(1,0).anchor(LINE_START).fill(BOTH).weight(.9, .2));
   }
 
   public void addTypeLabel() {
@@ -92,10 +77,8 @@ public class SearchUserView extends JFrame {
 		
     String[] typeList = new String[] {"", "NORMAL", "ADMIN"};
     userType = new JComboBox<String>(typeList);
-    setGBC(GridBagConstraints.LINE_END, GridBagConstraints.VERTICAL, 0, 2, .1, .2);
-    centerPanel.add(typeLabel, gbc);
-    setGBC(GridBagConstraints.LINE_START, GridBagConstraints.NONE, 1, 2, .9, .2);
-    centerPanel.add(userType, gbc);
+    centerPanel.add(typeLabel, new GBConstraints(0,1).anchor(LINE_END).fill(VERTICAL).weight(.1, .2));
+    centerPanel.add(userType, new GBConstraints(1,1).anchor(LINE_START).fill(NONE).weight(.9, .2));
   }
 
   public void addSubmitButton() {
@@ -117,14 +100,5 @@ public class SearchUserView extends JFrame {
       }
     });
     bottomPanel.add(submitButton);
-  }
-
-  private void setGBC(int anchor, int fill, int gridx, int gridy, double weightx, double weighty){
-    gbc.anchor = anchor;
-    gbc.fill = fill;
-    gbc.weightx = weightx;
-    gbc.weighty = weighty;
-    gbc.gridx = gridx;
-    gbc.gridy = gridy;
   }
 }
