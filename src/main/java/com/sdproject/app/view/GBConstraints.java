@@ -68,4 +68,16 @@ public class GBConstraints extends GridBagConstraints {
         return this;
     }
 
+    public GBConstraints spanX(int gridWidth)
+    {
+        this.gridwidth = gridWidth;
+        return this;
+    }
+
+  public GBConstraints spanY(int gridHeight)
+  {
+        this.gridheight = gridHeight;
+        return this;
+  }
+
 }

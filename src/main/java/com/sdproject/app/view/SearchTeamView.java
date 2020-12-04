@@ -2,9 +2,7 @@ package com.sdproject.app.view;
 
 import javax.swing.*;
 import javax.swing.JButton;
-import javax.xml.crypto.Data;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ import java.awt.Font;
 
 import com.sdproject.app.database.DatabaseWrapper;
 import com.sdproject.app.database.Query;
-import com.sdproject.app.model.Task;
 import com.sdproject.app.model.User;
 import static com.sdproject.app.view.GBConstraints.*;
 
@@ -37,13 +34,14 @@ public class SearchTeamView extends JFrame{
     this.db = db;
     this.view = view;
     teamMembers = new ArrayList<Integer>();
+    
     topPanel = new JPanel(new FlowLayout());
     centerPanel = new JPanel(new GridBagLayout());
     bottomPanel = new JPanel(new FlowLayout());   
 
     font = new Font("Ariel", Font.BOLD, 13);
     font2 = new Font("Ariel", Font.PLAIN, 15);
-    JLabel label = new JLabel("Modify the Team");
+    JLabel label = new JLabel("Search for a Team");
     label.setFont(font);
     topPanel.add(label);
 
@@ -56,7 +54,7 @@ public class SearchTeamView extends JFrame{
     add(topPanel, BorderLayout.NORTH);
     add(centerPanel, BorderLayout.CENTER);
     add(bottomPanel, BorderLayout.SOUTH);
-    setTitle("ModifyTeam");
+    setTitle("SearchTeam");
     setPreferredSize(new Dimension(300, 450));
     pack();
     setLocationRelativeTo(null);

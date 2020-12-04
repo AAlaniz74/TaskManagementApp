@@ -2,30 +2,29 @@ package com.sdproject.app.view;
 
 import javax.swing.*;
 import javax.swing.JButton;
-import javax.xml.crypto.Data;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import java.util.List;
 import java.util.Arrays;
-
 import javax.swing.text.MaskFormatter;
-import java.text.SimpleDateFormat;
 import java.text.NumberFormat;
 import javax.swing.text.NumberFormatter;
 import java.text.ParseException;
+import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 
 import com.sdproject.app.database.DatabaseWrapper;
 import com.sdproject.app.database.Query;
 import com.sdproject.app.model.Task;
-import com.sdproject.app.model.TaskStatus;
 import com.sdproject.app.model.User;
 import com.sdproject.app.model.Team;
+import static com.sdproject.app.view.GBConstraints.*;
 
 public class CreateTaskView extends JFrame {
 
@@ -36,7 +35,7 @@ public class CreateTaskView extends JFrame {
   private ArrayList<Integer> subtaskIDs;
   private int assignedToID;
 
-  private JPanel panel, subtaskPanel, assignedToPanel;
+  private JPanel topPanel, bottomPanel, leftCenterPanel, upperleftPanel, subtaskPanel, assignedToPanel;
   private JLabel nameLabel, descLabel, dueDateLabel, subtaskLabel, recurringLabel, colorLabel, assignedToLabel;
   private JTextField nameField;
   private JTextArea descField;
@@ -45,6 +44,7 @@ public class CreateTaskView extends JFrame {
   private JButton submitButton, cancelButton;
   private JScrollPane checkBoxScroll, radioBoxScroll;
   private ButtonGroup assignedButtonGroup;
+  private Font font, font2;
 
   public CreateTaskView(DatabaseWrapper db, UserView view, int currentUserID){
     this.db = db;
@@ -52,9 +52,18 @@ public class CreateTaskView extends JFrame {
     this.currentUserID = currentUserID;
     this.assignedToID = currentUserID;
     subtaskIDs = new ArrayList<Integer>();
-    panel = new JPanel(new GridLayout(9,1));
-    panel.add(new JLabel("New task creation"));
-    panel.add(new JLabel(""));
+
+    topPanel = new JPanel(new FlowLayout());
+    leftCenterPanel = new JPanel(new GridBagLayout());
+    upperleftPanel = new JPanel(new GridBagLayout());
+    bottomPanel = new JPanel(new FlowLayout());
+
+    font = new Font("Ariel", Font.BOLD, 13);
+    font2 = new Font("Ariel", Font.PLAIN, 15);
+    JLabel label = new JLabel("Create a Task");
+    label.setFont(font);
+    topPanel.add(label);
+
     addNameTextBox();
     addDescription();
     addSubtask();
@@ -65,29 +74,39 @@ public class CreateTaskView extends JFrame {
     addSubmitButton();
     addCancelButton();
 
-    add(panel, BorderLayout.CENTER);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    add(topPanel, BorderLayout.NORTH);
+    leftCenterPanel.add(upperleftPanel, new GBConstraints(0,1).fill(BOTH).insets(0, 20, 0, 0).weight(0, .15));
+    add(leftCenterPanel, BorderLayout.CENTER);
+    add(bottomPanel, BorderLayout.SOUTH);
     setTitle("CreateTask");
-    setSize(1000, 500);
+    setPreferredSize(new Dimension(740, 450));
+    pack();
+    setLocationRelativeTo(null);
     setVisible(true);
   }
 
   public void addNameTextBox(){
     nameLabel = new JLabel("Enter Name:");
-    nameField = new JTextField("", 100);
-    panel.add(nameLabel);
-    panel.add(nameField);
+    nameLabel.setFont(font);
+    nameField = new JTextField();
+    nameField.setFont(font2);
+    upperleftPanel.add(nameLabel, new GBConstraints(0,0).anchor(LINE_END).fill(VERTICAL).weight(0,0).insets(0, 0, 0, 5));
+    upperleftPanel.add(nameField, new GBConstraints(1,0).anchor(LINE_START).fill(BOTH).weight(1,.3).insets(0, 0, 10, 0));
   }
 
   public void addDescription(){
     descLabel = new JLabel("Enter Description:");
-    descField = new JTextArea(10, 100);
-    panel.add(descLabel);
-    panel.add(descField);
+    descLabel.setFont(font);
+    descField = new JTextArea();
+    descField.setFont(font2);
+    leftCenterPanel.add(descLabel, new GBConstraints(0,3).anchor(LINE_START).fill(NONE).weight(0,0).insets(0, 20, 0, 5));
+    leftCenterPanel.add(descField, new GBConstraints(0,4).anchor(LINE_START).fill(BOTH).weight(.5,.5).insets(0, 20, 0, 0));
   }
     
   public void addSubtask(){
     subtaskLabel = new JLabel("Select SubTasks");
+    subtaskLabel.setFont(font);
     subtaskPanel = new JPanel();
     subtaskPanel.setLayout(new BoxLayout(subtaskPanel, BoxLayout.Y_AXIS));
 
@@ -95,6 +114,7 @@ public class CreateTaskView extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         JCheckBox checkBox = (JCheckBox) e.getSource();
+        checkBox.setFont(font);
         int taskID = (int) checkBox.getClientProperty("ID");
         if (checkBox.isSelected()) {
           subtaskIDs.add(taskID);
@@ -107,6 +127,7 @@ public class CreateTaskView extends JFrame {
     ArrayList<Task> taskList = db.query().tableIs("Task").get();
     for (Task task : taskList) {
       JCheckBox newCheckBox = new JCheckBox(task.getTaskName());
+      newCheckBox.setFont(font);
       newCheckBox.addActionListener(actionListener);
       newCheckBox.putClientProperty("ID", task.getTaskId());
       subtaskPanel.add(newCheckBox);
@@ -115,12 +136,13 @@ public class CreateTaskView extends JFrame {
     checkBoxScroll = new JScrollPane(subtaskPanel);
     checkBoxScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-    panel.add(subtaskLabel);
-    panel.add(checkBoxScroll);
+    leftCenterPanel.add(subtaskLabel, new GBConstraints(1,0).anchor(LINE_START).fill(NONE).weight(0,0).insets(0, 20, 0, 20));
+    leftCenterPanel.add(checkBoxScroll, new GBConstraints(1,1).anchor(LINE_START).fill(BOTH).weight(.3,0).insets(0, 20, 0, 20));
   }
 
   public void addAssignedTo() {
     assignedToLabel = new JLabel("Assigned to:");
+    assignedToLabel.setFont(font);
     assignedToPanel = new JPanel();
     assignedToPanel.setLayout(new BoxLayout(assignedToPanel, BoxLayout.Y_AXIS));
     assignedButtonGroup = new ButtonGroup();
@@ -137,6 +159,7 @@ public class CreateTaskView extends JFrame {
     ArrayList<User> userList = db.query().tableIs("User").get();
     for (User user : userList) {
       JRadioButton newButton = new JRadioButton(user.getUserName());
+      newButton.setFont(font);
       newButton.addActionListener(actionListener);
       newButton.putClientProperty("ID", user.getUserId());
       
@@ -150,6 +173,7 @@ public class CreateTaskView extends JFrame {
     ArrayList<Team> teamList = db.query().tableIs("Team").get();
     for (Team team : teamList) {
       JRadioButton newButton = new JRadioButton(team.getTeamName());
+      newButton.setFont(font);
       newButton.addActionListener(actionListener);
       newButton.putClientProperty("ID", team.getTeamId());
       assignedButtonGroup.add(newButton);
@@ -159,28 +183,31 @@ public class CreateTaskView extends JFrame {
     radioBoxScroll = new JScrollPane(assignedToPanel);
     radioBoxScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-    panel.add(assignedToLabel);
-    panel.add(radioBoxScroll);
+    leftCenterPanel.add(assignedToLabel, new GBConstraints(1,3).anchor(LINE_START).fill(NONE).weight(0,0).insets(0, 20, 0, 20));
+    leftCenterPanel.add(radioBoxScroll, new GBConstraints(1,4).anchor(LINE_START).fill(BOTH).weight(0,0).insets(0, 20, 0, 20));
 
   }
 
   public void addDueDate(){
     dueDateLabel = new JLabel("Due date (use format 'yyyy-mm-dd'):");
+    dueDateLabel.setFont(font);
     try {
       MaskFormatter formatter = new MaskFormatter("####-##-##");
       formatter.setValidCharacters("0123456789");
       formatter.setPlaceholderCharacter('_');
       dueDateField = new JFormattedTextField(formatter);
+      dueDateField.setFont(font2);
     } catch (ParseException e) {
       System.err.println("Mask formatter error: " + e.getMessage());
     }
 
-    panel.add(dueDateLabel);
-    panel.add(dueDateField);  
+    upperleftPanel.add(dueDateLabel, new GBConstraints(0,1).anchor(LINE_END).fill(VERTICAL).weight(0,0).insets(0, 0, 0, 5));
+    upperleftPanel.add(dueDateField, new GBConstraints(1,1).anchor(LINE_START).fill(VERTICAL).weight(0,.3).insets(0, 0, 10, 0));  
   }
 
   public void addRecurringDays() {
-    recurringLabel = new JLabel("If recurring task, how many days should it recur? (Zero means non-recurring)");
+    recurringLabel = new JLabel("Days of Task recurring(Zero means none):");
+    recurringLabel.setFont(font);
     NumberFormat format = NumberFormat.getInstance();
     format.setGroupingUsed(false);
     NumberFormatter dayFormatter = new NumberFormatter(format);
@@ -192,17 +219,19 @@ public class CreateTaskView extends JFrame {
     dayFormatter.setCommitsOnValidEdit(true);
 
     recurringField = new JFormattedTextField(dayFormatter);
+    recurringField.setFont(font2);
     recurringField.setText("0");
-    panel.add(recurringLabel);
-    panel.add(recurringField);
+    upperleftPanel.add(recurringLabel, new GBConstraints(0,2).anchor(LINE_END).fill(VERTICAL).weight(0,0).insets(0, 0, 0, 5));
+    upperleftPanel.add(recurringField, new GBConstraints(1,2).anchor(LINE_START).fill(BOTH).weight(0,.1).insets(0, 0, 10, 0));
   }
 
   public void addColorHex() {
     colorLabel = new JLabel("Add color:");
+    colorLabel.setFont(font);
     ColorItem[] colorList = new ColorItem[] { new ColorItem("None", null), new ColorItem("Blue", "#bae1ff"), new ColorItem("Red", "#ffb3ba"), new ColorItem("Orange", "#ffdfba"), new ColorItem("Green", "#baffc9"), new ColorItem("Purple", "#e0bbe4") };
     colorType = new JComboBox<ColorItem>(colorList);
-    panel.add(colorLabel);
-    panel.add(colorType);
+    upperleftPanel.add(colorLabel, new GBConstraints(0,3).anchor(LINE_END).fill(VERTICAL).weight(0,0).insets(0, 0, 0, 5));
+    upperleftPanel.add(colorType, new GBConstraints(1,3).anchor(LINE_START).fill(BOTH).weight(0,.1).insets(0, 0, 0, 0));
   }
 
   public void addSubmitButton(){
@@ -249,7 +278,7 @@ public class CreateTaskView extends JFrame {
       }
     });
 
-    panel.add(submitButton);
+    bottomPanel.add(submitButton);
   }
 
   public boolean verifyDate(String dateStr) {
@@ -304,7 +333,7 @@ public class CreateTaskView extends JFrame {
         dispose();
       }
     });
-    panel.add(cancelButton);
+    bottomPanel.add(cancelButton);
   }
 
 }
