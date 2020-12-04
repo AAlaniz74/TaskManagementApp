@@ -200,7 +200,6 @@ public class DummyDatabase implements Database {
 
   public ArrayList<Task> getTasks(Query q) {
     ArrayList<Task> res = new ArrayList<Task>();
-    updateRecurring();
     for (Task task : allTasks) {
       if (verifyTaskMatchesQuery(task, q)) {
         res.add(task);
@@ -300,13 +299,22 @@ public class DummyDatabase implements Database {
   }
 
   public void updateRecurring() {
+    ArrayList<Task> newRecurringTasks = new ArrayList<Task>();
     for (Task task : this.allTasks) {
-      if (task.getRecurringDays() != 0 && LocalDate.now().isAfter(task.getDueDate())) {
+      if (task.getRecurringDays() != 0 && task.getActiveRecurring() && LocalDate.now().isAfter(task.getDueDate())) {
         if (task.getTaskStatus() != TaskStatus.FINISHED)
           task.setTaskStatus(TaskStatus.PAST_DUE);
-        allTasks.add(task.copyTask());        
+        Task recurringTask = task.copyTask();
+        recurringTask.setDueDate(task.getDueDate().plusDays(task.getRecurringDays()));
+        recurringTask.setTaskStatus(TaskStatus.IN_PROGRESS);
+        recurringTask.setCreatedOn(LocalDate.now());
+        recurringTask.setActiveRecurring(true);
+
+        newRecurringTasks.add(recurringTask);
+        task.setActiveRecurring(false);        
       }
     }
+    this.allTasks.addAll(newRecurringTasks);
   }
 
   public void updateUserProductivity(User user) {
@@ -418,6 +426,8 @@ public class DummyDatabase implements Database {
         setNextID(Task.class, nextID.getTaskNextID());
         setNextID(Team.class, nextID.getTeamNextID());
       }
+
+      updateRecurring();
   }
 
 }

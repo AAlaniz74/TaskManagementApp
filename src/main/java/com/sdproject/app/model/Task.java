@@ -21,6 +21,7 @@ public class Task implements Serializable {
   private LocalDate completedOn;
   private int recurringDays;
   private String colorHex;
+  private boolean activeRecurring;
 
   public Task(String name, String description, int createdById) {
    this.taskName = name;
@@ -31,6 +32,7 @@ public class Task implements Serializable {
    this.subtaskIDs = new ArrayList<Integer>();
    this.taskStatus = TaskStatus.IN_PROGRESS;
    this.taskId = nextID++;
+   this.activeRecurring = true;
   }
 
   public int getTaskId() {
@@ -97,6 +99,10 @@ public class Task implements Serializable {
     return this.createdOn;
   }
 
+  public void setCreatedOn(LocalDate newDate) {
+    this.createdOn = newDate;
+  }
+
   public LocalDate getDueDate() {
     return this.dueDate;
   }
@@ -138,6 +144,14 @@ public class Task implements Serializable {
     copy.setRecurringDays(this.recurringDays);
     copy.setColorHex(this.colorHex);
     return copy;
+  }
+
+  public void setActiveRecurring(boolean recurringStatus) {
+    this.activeRecurring = recurringStatus;
+  }
+
+  public boolean getActiveRecurring() {
+    return this.activeRecurring;
   }
 
 }

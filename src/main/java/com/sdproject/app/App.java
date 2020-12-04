@@ -29,4 +29,8 @@ public class App {
     teamIDs.add(test2);
     db.query().tableIs("Team").teamNameIs("Test Team").allTeamMembersAre(teamIDs).insert();
   }
+
+  public static void testRecurring(DatabaseWrapper db) {
+    db.query().tableIs("Task").taskNameIs("Test Recurring").taskDescIs("Testing the recurring functionality").createdByIdIs(101).assignedToIdIs(101).dueDateIs("2020-12-03").recurringDaysIs(10).insert();
+  }
 }
