@@ -12,6 +12,10 @@ import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import java.lang.ClassNotFoundException;
 import java.lang.reflect.Field;
 
@@ -370,6 +374,7 @@ public class DummyDatabase implements Database {
   }
 
   public void serializeAll() {
+    checkIfSerExists();
     serializeObj("ser/user.ser", this.allUsers);
     serializeObj("ser/task.ser", this.allTasks);
     serializeObj("ser/team.ser", this.allTeams);
@@ -409,25 +414,32 @@ public class DummyDatabase implements Database {
     }
   }
 
+  private void checkIfSerExists() {  
+    File dir = new File("ser");
+    if (!dir.exists()) {
+      dir.mkdirs();
+    }
+  }
+
   public void deserializeAll() {
-      ArrayList<User> newUsers = deserializeObj("ser/user.ser");
-      ArrayList<Task> newTasks = deserializeObj("ser/task.ser");
-      ArrayList<Team> newTeams = deserializeObj("ser/team.ser");
-      NextID nextID = deserializeObj("ser/next_id.ser");
+    ArrayList<User> newUsers = deserializeObj("ser/user.ser");
+    ArrayList<Task> newTasks = deserializeObj("ser/task.ser");
+    ArrayList<Team> newTeams = deserializeObj("ser/team.ser");
+    NextID nextID = deserializeObj("ser/next_id.ser");
 
-      if (newUsers != null)
-        setAllUsers(newUsers);
-      if (newTasks != null)
-        setAllTasks(newTasks);
-      if (newTeams != null)
-        setAllTeams(newTeams);
-      if (nextID != null) {
-        setNextID(User.class, nextID.getUserNextID());
-        setNextID(Task.class, nextID.getTaskNextID());
-        setNextID(Team.class, nextID.getTeamNextID());
-      }
+    if (newUsers != null)
+      setAllUsers(newUsers);
+    if (newTasks != null)
+      setAllTasks(newTasks);
+    if (newTeams != null)
+      setAllTeams(newTeams);
+    if (nextID != null) {
+      setNextID(User.class, nextID.getUserNextID());
+      setNextID(Task.class, nextID.getTaskNextID());
+      setNextID(Team.class, nextID.getTeamNextID());
+    }
 
-      updateRecurring();
+    updateRecurring();
   }
 
 }
