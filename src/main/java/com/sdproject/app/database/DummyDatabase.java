@@ -78,7 +78,10 @@ public class DummyDatabase implements Database {
   }
 
   public <T> T getOne(Query q) {
-    return (T) get(q).get(0);
+    if (get(q).size() != 0)
+      return (T) get(q).get(0);
+    else
+      return null;
   }
 
   public ArrayList<Task> getSubtasks(Query q) {
